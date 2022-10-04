@@ -1,11 +1,11 @@
-("use strict");
+('use strict');
 
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response } from 'express';
 const PORT = 8080;
 
 const app: Express = express();
-app.get("/", (_req: Request, res: Response) => {
-  res.send("Hello Palavras de Paz!");
+app.get('/', (_req: Request, res: Response) => {
+  res.send('Hello Palavras de Paz!');
 });
 
 app.listen(PORT, () => {
