@@ -3,6 +3,7 @@
 - Iniciar servidor para desenvolvimento `npm run start:dev`
 - Iniciar servidor para produção `npm run start`
 - Para usar o cli para commits `npm run prepare` quando iniciar o projeto
+- Caso esteja usando VSCode seguir este [tutorial](https://khalilstemmler.com/blogs/tooling/prettier/) para ativar a formatação automática ao salvar com prettier. Caso contrário, rodar `npm run prettier-watch` em um terminal para obter o mesmo resultado.
 
 ## Modelo de Negócios
 
