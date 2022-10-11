@@ -26,19 +26,19 @@
         "./src/*"
       ],
       "@test/*": [
-        "./test/*"
+        "src/test/*"
       ]
     },
     "rootDirs": [
       "./src",
-      "./test"
+      "src/test"
     ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
   "include": [
     "./src/**/*.ts",
-    "./test/**/*.ts",
+    "src/test/**/*.ts",
   ],
   "exclude": [
     "./node_modules/*",
