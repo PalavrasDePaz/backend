@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
+    "firebase": "^9.12.1",
     "firebase-admin": "^11.1.0",
     "module-alias": "^2.2.2"
   },
