@@ -5,6 +5,10 @@
 - Para usar o cli para commits `npm run prepare` quando iniciar o projeto
 - Caso esteja usando VSCode seguir este [tutorial](https://khalilstemmler.com/blogs/tooling/prettier/) para ativar a formatação automática ao salvar com prettier. Caso contrário, rodar `npm run prettier-watch` em um terminal para obter o mesmo resultado.
 
+# Autenticação Firebase
+
+- Para acessar a API do firebase é necessário recuperar a chave gerada pelo console do firebase, explicado [aqui](https://firebase.google.com/docs/admin/setup#linux-or-macos). Posteriormente, definir a variável de ambiente `GOOGLE_APPLICATION_CREDENTIALS` como o path para o arquivo gerado pelo firebase.
+
 ## Modelo de Negócios
 
 ### Organização
