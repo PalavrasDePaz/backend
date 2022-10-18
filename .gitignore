@@ -2,5 +2,5 @@ node_modules
 src/services/serviceAccountKey.json
 build
 firebase-admin.json
-
 package-lock.json
+
