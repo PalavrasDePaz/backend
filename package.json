@@ -16,7 +16,8 @@
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}"
+    "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
+    "commit": "cz"
   },
   "keywords": [],
   "author": "",

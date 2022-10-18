@@ -13,10 +13,10 @@ router.get('/', async (req: Request, res: Response) => {
     res.send('Nenhum token encontrado');
   } else {
     // idToken comes from the client app
-    const decodedToken = await admin
+    await admin
       .auth()
       .verifyIdToken(firebaseToken)
-      .then((decodedToken: any) => {
+      .then((decodedToken) => {
         //const uid = decodedToken.uid;
         res.json({
           message:
