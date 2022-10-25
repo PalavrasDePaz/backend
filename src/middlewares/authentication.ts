@@ -9,15 +9,15 @@ const autheticationMiddleware = async function (
   const firebaseToken = req.headers.authorization?.split(' ')[1];
 
   if (!firebaseToken) {
-    res.send('Nenhum header encontrado!');
+    res.status(400).send('Nenhum header encontrado!');
   } else if (!firebaseToken[1]) {
-    res.send('Nenhum token encontrado');
+    res.status(400).send('Nenhum token encontrado');
   } else {
     try {
       await admin.auth().verifyIdToken(firebaseToken);
       next();
     } catch {
-      res.send('Usuário não autenticado!');
+      res.status(401).send('Usuário não autenticado!');
     }
   }
 };
