@@ -1,6 +1,5 @@
 const { resolve } = require('path');
 const root = resolve(__dirname, '../');
-const rootConfig = require(`${root}/test/jest.config.js`);
 
 module.exports = {
         rootDir: root,

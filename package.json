@@ -8,7 +8,7 @@
     "@test": "build/test"
   },
   "scripts": {
-    "test": "jest --projects ./src/test/",
+    "test": "jest --projects ./src/test/ --silent=true",
     "start:dev": "nodemon src/index",
     "start": "npm run build && node build/index.js",
     "build": "rimraf ./build && tsc",
@@ -25,17 +25,19 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "module-alias": "^2.2.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.25.2",
     "firebase": "^9.12.1",
-    "firebase-admin": "^11.2.0",
-    "module-alias": "^2.2.2"
+    "firebase-admin": "^11.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
-    "@types/module-alias": "^2.0.1",
     "@types/jest": "^29.1.2",
+    "@types/module-alias": "^2.0.1",
     "@types/node": "^18.7.18",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
