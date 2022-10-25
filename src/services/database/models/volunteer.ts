@@ -33,7 +33,8 @@ export class Volunteer extends Model<
         }
       },
       {
-        sequelize
+        sequelize,
+        timestamps: false
       }
     );
   }
