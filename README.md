@@ -13,6 +13,10 @@
 
 - Para acessar a API do firebase é necessário recuperar a chave gerada pelo console do firebase, explicado [aqui](https://firebase.google.com/docs/admin/setup#linux-or-macos). Posteriormente, definir a variável de ambiente `GOOGLE_APPLICATION_CREDENTIALS` como o path para o arquivo gerado pelo firebase.
 
+# Exportando usuários para o Firebase
+
+- Como o projeto começou sem autenticação, os usuários do banco não possuiam ligação com nenhum serviço de autenticação. Para utilizamos o firebase, foi necessário exportar todos os usuários para esse serviço, esse processo foi feito por meio do script em `src/services/export-users-firebase.ts` que pode ser usado pelo comando `npm run export-users`. Isso resultará na criação de um uuid para cada usuário do banco que será usado para identificá-los pelo firebase, juntamente com o email já existente de cada um.
+
 ## Modelo de Negócios
 
 ### Organização

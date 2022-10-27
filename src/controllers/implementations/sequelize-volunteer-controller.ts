@@ -12,7 +12,9 @@ export class SequelizeVolunteerController implements VolunteerController {
   }
 
   async getAllVolunteers(): Promise<VolunteerEntity[]> {
-    const volunteers = await Volunteer.findAll();
+    const volunteers = await Volunteer.findAll({
+      attributes: ['name', 'email']
+    });
     return volunteers.map(_mapVolunteerToVolunteerEntity);
   }
 
