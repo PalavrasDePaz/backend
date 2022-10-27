@@ -1,5 +1,7 @@
 import { VolunteerEntity } from '@src/entities/volunteer-entity';
 import admin from '@src/services/firebase';
+import { v4 as uuidV4 } from 'uuid';
+
 import {
   UserImportRecord,
   UserImportResult
@@ -12,7 +14,7 @@ export class FirebaseUsersHandler {
     const usersToExport = volunteers.map(
       (volunteer: VolunteerEntity): UserImportRecord => {
         return {
-          uid: volunteer.email,
+          uid: uuidV4(),
           email: volunteer.email
         };
       }

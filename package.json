@@ -26,11 +26,12 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.1",
+    "firebase": "^9.12.1",
+    "firebase-admin": "^11.2.0",
     "module-alias": "^2.2.2",
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.2",
-    "firebase": "^9.12.1",
-    "firebase-admin": "^11.2.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
@@ -41,6 +42,7 @@
     "@types/module-alias": "^2.0.1",
     "@types/node": "^18.7.18",
     "@types/supertest": "^2.0.12",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "commitizen": "^4.2.5",
