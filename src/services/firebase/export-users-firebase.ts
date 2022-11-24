@@ -1,8 +1,8 @@
-import { FirebaseUsersHandler } from '@src/controllers/implementations/firebase-users-handler';
-import { SequelizeVolunteerController } from '@src/controllers/implementations/sequelize-volunteer-controller';
-import { VolunteerEntity } from '@src/entities/volunteer-entity';
+import { exportVolunteerstToFirebase } from './export-users-to-firebase';
+import { SequelizeVolunteerRepository } from '@src/domain/repositories/sequelize-volunteer-repository';
+import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { UserImportResult } from 'firebase-admin/lib/auth/user-import-builder';
-import initModels from './database';
+import initModels from '../database';
 
 function paginate<T>(array: T[], pageSize: number, pageNumber: number) {
   // from https://stackoverflow.com/questions/42761068/paginate-javascript-array
@@ -13,7 +13,6 @@ async function sendVolunteersPaginated(
   volunteers: VolunteerEntity[],
   pageSize = 1000
 ): Promise<UserImportResult[]> {
-  const firebaseUsersHandler = new FirebaseUsersHandler();
   let result: UserImportResult[] = [];
 
   const totalPages = Math.ceil(volunteers.length / pageSize);
@@ -27,9 +26,7 @@ async function sendVolunteersPaginated(
         pageNumber
       );
 
-      const pageResult = await firebaseUsersHandler.exportVolunteers(
-        pageVolunteers
-      );
+      const pageResult = await exportVolunteerstToFirebase(pageVolunteers);
       result = [...result, pageResult];
     })
   );
@@ -39,7 +36,7 @@ async function sendVolunteersPaginated(
 
 (async () => {
   initModels();
-  const sequelizeVolunteerController = new SequelizeVolunteerController();
+  const sequelizeVolunteerController = new SequelizeVolunteerRepository();
   const volunteers = await sequelizeVolunteerController.getAllVolunteers();
   const result = await sendVolunteersPaginated(volunteers);
   result.map((pageResult: UserImportResult) => {
