@@ -1,4 +1,4 @@
-import { SequelizeVolunteerRepository } from '@src/domain/repositories/sequelize-volunteer-controller';
+import { SequelizeVolunteerRepository } from '@src/domain/repositories/sequelize-volunteer-repository';
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import initModels from '@src/services/database';
