@@ -8,7 +8,7 @@
     "@test": "build/test"
   },
   "scripts": {
-    "test": "jest --projects ./src/test/ --silent=true",
+    "test": "jest --projects ./src/test/",
     "export-users": "ts-node -r tsconfig-paths/register ./src/services/export-users-firebase.ts",
     "start:dev": "nodemon src/index",
     "start": "npm run build && node build/index.js",
