@@ -1,15 +1,15 @@
-import express from 'express';
+import express, { Router } from 'express';
 import cors from 'cors';
-import router from './routes';
-import autheticationMiddleware from './middlewares/authentication';
+import autheticationMiddleware from './presentation/middlewares/authentication';
+import router from './presentation/routers';
 
-class App {
+export class App {
   public server: express.Application;
 
-  constructor() {
+  constructor(router: Router) {
     this.server = express();
     this.middleware();
-    this.router();
+    this.router(router);
   }
 
   private middleware(): void {
@@ -18,9 +18,9 @@ class App {
     this.server.use(autheticationMiddleware);
   }
 
-  public router() {
+  public router(router: Router) {
     this.server.use(router);
   }
 }
 
-export default new App().server;
+export default new App(router).server;
