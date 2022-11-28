@@ -4,20 +4,26 @@ import {
 } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { VolunteerAPI } from '@src/presentation/routers/volunteer/volunteeer-api';
-import { Application, Router } from 'express';
-import { App } from '@src/server';
-import VolunteerRouter from '@src/presentation/routers/volunteer';
+import {
+  Application,
+  NextFunction,
+  Request,
+  Response,
+  RequestHandler
+} from 'express';
+import { App } from '@src/app';
+import volunteerRoutes from '@src/presentation/routers/volunteer';
 import request from 'supertest';
 
 describe('Volunteer Router', () => {
-  class MockVolunteerController implements VolunteerRepository {
+  class MockVolunteerRepository implements VolunteerRepository {
     updateVolunteer(
       email: string,
       values: UpdateVolunteerValues
     ): Promise<boolean> {
       throw new Error('Method not implemented.');
     }
-    getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
+    async getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
       throw new Error('Method not implemented.');
     }
     getAllVolunteers(): Promise<VolunteerEntity[]> {
@@ -31,14 +37,20 @@ describe('Volunteer Router', () => {
     }
   }
 
-  let server: Application;
-  let volunteerController: VolunteerRepository;
+  const stubAuthMiddleware: RequestHandler = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    next();
+  };
+
+  let app: Application;
+  let volunteerRepository: VolunteerRepository;
   beforeAll(() => {
-    volunteerController = new MockVolunteerController();
-    const volunteerAPI = new VolunteerAPI(volunteerController);
-    const router = Router();
-    router.use('/volunteer', new VolunteerRouter(volunteerAPI).routes());
-    server = new App(router).server;
+    volunteerRepository = new MockVolunteerRepository();
+    const volunteerAPI = new VolunteerAPI(volunteerRepository);
+    app = new App(volunteerRoutes(volunteerAPI), stubAuthMiddleware).server;
   });
 
   it('Should get a user by the email and return status 200', async () => {
@@ -48,16 +60,12 @@ describe('Volunteer Router', () => {
     };
 
     jest
-      .spyOn(volunteerController, 'getVolunteerByEmail')
-      .mockImplementation((email: string): Promise<VolunteerEntity> => {
-        return new Promise(() => {
-          return volunteer;
-        });
+      .spyOn(volunteerRepository, 'getVolunteerByEmail')
+      .mockImplementation(async (_: string): Promise<VolunteerEntity> => {
+        return volunteer;
       });
 
-    const response = await request(server)
-      .get('/volunteer')
-      .send({ email: 'test@gmail.com' });
+    const response = await request(app).get(`/${volunteer.email}`);
 
     expect(response.status).toBe(200);
     expect(response.body.volunteer).toEqual(volunteer);
