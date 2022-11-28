@@ -1,7 +1,10 @@
 import 'module-alias/register';
-import server from './server';
+import autheticationMiddleware from './presentation/middlewares/authentication';
+import router from './presentation/routers';
+import { App } from './app';
 
 const PORT = 3333;
+const server = new App(router, autheticationMiddleware).server;
 
 server.listen(PORT, () => {
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
