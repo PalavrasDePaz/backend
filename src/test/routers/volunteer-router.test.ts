@@ -3,7 +3,7 @@ import {
   VolunteerRepository
 } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-import { VolunteerAPI } from '@src/presentation/routers/volunteer/volunteeer-api';
+import { VolunteerAPI } from '@src/presentation/api/volunteer';
 import {
   Application,
   NextFunction,

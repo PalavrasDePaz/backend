@@ -1,7 +1,7 @@
 import { SequelizeVolunteerRepository } from '@src/domain/repositories/sequelize-volunteer-repository';
 import { Router } from 'express';
 import volunteerRoutes from './volunteer';
-import { VolunteerAPI } from './volunteer/volunteeer-api';
+import { VolunteerAPI } from '@src/presentation/api/volunteer';
 
 const router = Router();
 router.use(

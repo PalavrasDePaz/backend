@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { VolunteerAPI } from './volunteeer-api';
+import { VolunteerAPI } from '@src/presentation/api/volunteer';
 
 export default function volunteerRoutes(api: VolunteerAPI): Router {
   const router = Router();
