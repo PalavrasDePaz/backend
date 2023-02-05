@@ -1,4 +1,4 @@
-import { VolunteerEntity } from '@src/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 
 const volunteerDummy: VolunteerEntity = {
   email: 'test@gmail.com',
