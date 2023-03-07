@@ -5,7 +5,7 @@ import {
 } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { Volunteer } from '@src/services/database/models/volunteer';
-import { ValidationError, where } from 'sequelize';
+import { ValidationError } from 'sequelize';
 import {
   volunteerEntityToModel,
   volunteerModelToEntity
