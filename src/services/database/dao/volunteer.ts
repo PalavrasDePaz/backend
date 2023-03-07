@@ -1,6 +1,7 @@
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { Volunteer } from '../models/volunteer';
 import { CreationAttributes } from 'sequelize';
+import { hashPassword } from '@src/helpers/password_hashing';
 
 export const volunteerModelToEntity = (
   volunteer: Volunteer
@@ -49,7 +50,7 @@ export const volunteerEntityToModel = (
   return {
     nome: volunteer.name,
     'e-mail': volunteer.email,
-    senha: volunteer.password,
+    senha: hashPassword(volunteer.password),
     nascimento: volunteer.birthDate,
     telefone: volunteer.phoneNumber,
     país: volunteer.country,
