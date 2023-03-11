@@ -1,7 +1,4 @@
-import {
-  UpdateVolunteerValues,
-  VolunteerRepository
-} from '@src/domain/interfaces/repositories/volunteer-repository';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { VolunteerAPI } from '@src/presentation/api/volunteer';
 import {
@@ -18,28 +15,28 @@ import request from 'supertest';
 describe('Volunteer Router', () => {
   class MockVolunteerRepository implements VolunteerRepository {
     updateVolunteer(
-      email: string,
-      values: UpdateVolunteerValues
+      _email: string,
+      _values: VolunteerEntity
     ): Promise<boolean> {
       throw new Error('Method not implemented.');
     }
-    async getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
+    async getVolunteerByEmail(_email: string): Promise<VolunteerEntity | null> {
       throw new Error('Method not implemented.');
     }
     getAllVolunteers(): Promise<VolunteerEntity[]> {
       throw new Error('Method not implemented.');
     }
-    createVolunteer(volunteer: VolunteerEntity): Promise<VolunteerEntity> {
+    createVolunteer(_volunteer: VolunteerEntity): Promise<VolunteerEntity> {
       throw new Error('Method not implemented.');
     }
-    deleteVolunteerByEmail(email: string): Promise<number> {
+    deleteVolunteerByEmail(_email: string): Promise<number> {
       throw new Error('Method not implemented.');
     }
   }
 
   const stubAuthMiddleware: RequestHandler = (
-    req: Request,
-    res: Response,
+    _req: Request,
+    _res: Response,
     next: NextFunction
   ) => {
     next();
@@ -56,7 +53,28 @@ describe('Volunteer Router', () => {
   it('Should get a user by the email and return status 200', async () => {
     const volunteer: VolunteerEntity = {
       email: 'test@gmail.com',
-      name: 'test'
+      name: 'test',
+      idvol: 0,
+      password: '',
+      birthDate: new Date(),
+      phoneNumber: '',
+      country: '',
+      state: '',
+      city: '',
+      ethnicity: '',
+      gender: '',
+      howFoundPep: '',
+      knowledgePep: '',
+      workshops: [],
+      schooling: '',
+      studiesKnowlegde: '',
+      lifeExperience: '',
+      desires: '',
+      rolesPep: [],
+      weekDisponibility: 0,
+      meetingDisponibility: '',
+      contribution: '',
+      needDeclaration: false
     };
 
     jest

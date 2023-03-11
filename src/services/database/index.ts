@@ -1,6 +1,8 @@
 import { Volunteer } from './models/volunteer';
 import sequelize from './sequelize';
 
-export default function initModels() {
+const initModels = () => {
   Volunteer.initialize(sequelize);
-}
+};
+
+export default initModels;

@@ -1,4 +1,4 @@
-import { SequelizeVolunteerRepository } from '@src/domain/repositories/sequelize-volunteer-repository';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { Router } from 'express';
 import volunteerRoutes from './volunteer';
 import { VolunteerAPI } from '@src/presentation/api/volunteer';

@@ -7,5 +7,6 @@ const PORT = 3333;
 const server = new App(router, autheticationMiddleware).server;
 
 server.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });
