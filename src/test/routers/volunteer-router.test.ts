@@ -71,8 +71,8 @@ describe('Volunteer Router', () => {
       lifeExperience: '',
       desires: '',
       rolesPep: [],
-      weekDisponibility: 0,
-      meetingDisponibility: '',
+      weekAvailability: 0,
+      meetingAvailability: '',
       contribution: '',
       needDeclaration: false
     };
