@@ -26,8 +26,8 @@ export type VolunteerEntity = {
   lifeExperience: string;
   desires: string;
   rolesPep: string[];
-  weekDisponibility: number;
-  meetingDisponibility: string;
+  weekAvailability: number;
+  meetingAvailability: string;
   interestFutureRoles?: string[];
   contribution: string;
   needDeclaration: boolean;

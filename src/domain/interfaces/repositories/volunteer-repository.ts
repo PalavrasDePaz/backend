@@ -3,7 +3,7 @@ import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 export class VolunteerNotFoundError extends Error {}
 export class VolunteerAlreadyExistsError extends Error {}
 export class WrongEmailFormatError extends Error {
-  message = '';
+  message = 'Email format is wrong';
 }
 
 export interface VolunteerRepository {

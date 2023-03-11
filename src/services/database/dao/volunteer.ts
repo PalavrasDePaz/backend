@@ -34,13 +34,13 @@ export const volunteerModelToEntity = (
     lifeExperience: volunteer.experiências,
     desires: volunteer.sonhos,
     rolesPep: volunteer.oportunidades.split(' '),
-    weekDisponibility: volunteer.tempo,
-    meetingDisponibility: volunteer.dia,
+    weekAvailability: volunteer.tempo,
+    meetingAvailability: volunteer.dia,
     interestFutureRoles: volunteer.ajudar
       ? volunteer.ajudar.split(' ')
       : undefined,
     contribution: volunteer.contribuir,
-    needDeclaration: volunteer.declaração == 'SIM' ? true : false
+    needDeclaration: volunteer.declaração == 'SIM'
   };
 };
 
@@ -71,8 +71,8 @@ export const volunteerEntityToModel = (
     experiências: volunteer.lifeExperience,
     sonhos: volunteer.desires,
     oportunidades: volunteer.rolesPep.join(' '),
-    tempo: volunteer.weekDisponibility,
-    dia: volunteer.meetingDisponibility,
+    tempo: volunteer.weekAvailability,
+    dia: volunteer.meetingAvailability,
     ajudar: volunteer.interestFutureRoles?.join(' '),
     contribuir: volunteer.contribution,
     declaração: volunteer.needDeclaration ? 'SIM' : 'NÃO'

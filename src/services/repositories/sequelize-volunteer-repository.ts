@@ -1,11 +1,6 @@
-import {
-  VolunteerAlreadyExistsError,
-  VolunteerRepository,
-  WrongEmailFormatError
-} from '@src/domain/interfaces/repositories/volunteer-repository';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { Volunteer } from '@src/services/database/models/volunteer';
-import { ValidationError } from 'sequelize';
 import {
   volunteerEntityToModel,
   volunteerModelToEntity
@@ -37,18 +32,9 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
   }
 
   async createVolunteer(volunteer: VolunteerEntity): Promise<VolunteerEntity> {
-    try {
-      const result = await Volunteer.create(volunteerEntityToModel(volunteer));
-
-      return volunteerModelToEntity(result);
-    } catch (error: unknown) {
-      if (error instanceof ValidationError) {
-        throw new WrongEmailFormatError();
-      }
-      throw new VolunteerAlreadyExistsError(
-        `Volunteer with email ${volunteer.email} already exists`
-      );
-    }
+    // TODO: add proper error handling with duplicate email
+    const result = await Volunteer.create(volunteerEntityToModel(volunteer));
+    return volunteerModelToEntity(result);
   }
 
   async deleteVolunteerByEmail(email: string): Promise<number> {
