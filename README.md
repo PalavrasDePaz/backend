@@ -43,3 +43,13 @@
 - Como funciona a questão de habilitação dos módulos?
 - O que são os cadernos?
 - Como são as aula dos cursos?
+
+### Ideias para melhorias
+
+- trocar os campos defic e qual para um único campo que define qual a deficiencia física
+
+- criar uma tabela que armazena dados sobre os workshops?
+
+- oportunidades poderia ser outra tabela?
+
+- Checar se o email é válido para o voluntário
