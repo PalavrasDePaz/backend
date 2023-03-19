@@ -1,6 +1,10 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { Request, Response } from 'express';
+import { sign } from 'jsonwebtoken';
+import { JWT_SECRET_KEY } from '@src/config/server';
+import { checkPasswordWithHash } from '@src/helpers/password_hashing';
+import { JWTPayload } from '../types/jwt-payload';
 
 export class VolunteerAPI {
   private volunteerRepository: VolunteerRepository;
@@ -8,6 +12,21 @@ export class VolunteerAPI {
   constructor(volunteerRepository: VolunteerRepository) {
     this.volunteerRepository = volunteerRepository;
   }
+
+  login = async (request: Request, response: Response) => {
+    const email = request.body.email;
+    const password = request.body.password;
+
+    const volunteer = await this.volunteerRepository.getVolunteerByEmail(email);
+
+    if (volunteer && checkPasswordWithHash(password, volunteer.password)) {
+      const payload: JWTPayload = { email: email };
+      const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
+      response.status(201).json({ volunteer: { email: email }, token: token });
+    } else {
+      response.status(400).json({ error: 'Email or Password incorrect' });
+    }
+  };
 
   updateVolunteer = async (request: Request, response: Response) => {
     try {
