@@ -1,10 +1,4 @@
-import express, {
-  NextFunction,
-  Request,
-  RequestHandler,
-  Response,
-  Router
-} from 'express';
+import express, { NextFunction, Request, Response, Router } from 'express';
 import cors from 'cors';
 import initModels from './services/database';
 import { ValidationError } from 'express-validation';
@@ -12,10 +6,10 @@ import { ValidationError } from 'express-validation';
 export class App {
   public server: express.Application;
 
-  constructor(router: Router, authMidle: RequestHandler) {
+  constructor(router: Router) {
     initModels();
     this.server = express();
-    this.middleware(authMidle);
+    this.middleware();
     this.router(router);
     this.addValidationErrorHandler();
   }
@@ -32,10 +26,9 @@ export class App {
     );
   }
 
-  private middleware(authMidle: RequestHandler) {
+  private middleware() {
     this.server.use(express.json());
     this.server.use(cors());
-    this.server.use(authMidle);
   }
 
   public router(router: Router) {
