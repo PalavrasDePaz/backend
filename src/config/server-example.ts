@@ -5,3 +5,4 @@ export const DB_HOST = process.env.DB_HOST || 'insert_host';
 export const DB_PORT: number = process.env.DB_PORT
   ? parseInt(process.env.DB_PORT)
   : 3306;
+export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'insert_jwt_key';
