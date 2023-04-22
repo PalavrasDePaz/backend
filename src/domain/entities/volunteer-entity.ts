@@ -1,12 +1,7 @@
 export type VolunteerEntity = {
-  idvol: number;
   email: string;
-  password: string;
   name: string;
   pep?: number;
-  certified?: boolean;
-  permissions?: boolean;
-  author?: string;
   birthDate: Date;
   phoneNumber: string;
   country: string;
