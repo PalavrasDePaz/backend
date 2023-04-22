@@ -1,7 +1,8 @@
 import { JWT_SECRET_KEY } from '@src/config/server';
+import { AuthError } from '@src/domain/errors/auth';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { JWTPayload } from '../types/jwt-payload';
+import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
 
 const autheticationMiddleware = async function (
   req: Request,
@@ -10,13 +11,22 @@ const autheticationMiddleware = async function (
 ) {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    if (!token) throw new Error();
+    if (!token)
+      throw new AuthError({
+        name: 'NOT_AUTHORIZED_ERROR',
+        message: 'Not Authorized'
+      });
 
-    const decoded_payload = verify(token, JWT_SECRET_KEY) as JWTPayload;
-    req.body.logged_volunteer = decoded_payload;
+    const decodedPayload = verify(token, JWT_SECRET_KEY) as VolunteerJWTPayload;
+    req.body.loggedVolunteer = decodedPayload;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Not Authorized' });
+    res.status(401).json(
+      new AuthError({
+        name: 'NOT_AUTHORIZED_ERROR',
+        message: 'Not Authorized'
+      })
+    );
   }
 };
 
