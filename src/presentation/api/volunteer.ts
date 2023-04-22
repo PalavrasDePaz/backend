@@ -1,10 +1,19 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { sign } from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '@src/config/server';
 import { checkPasswordWithHash } from '@src/helpers/password_hashing';
-import { JWTPayload } from '../types/jwt-payload';
+import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
+import {
+  TypedRequest,
+  TypedRequestBody,
+  TypedRequestParams,
+  TypedResponse
+} from '../types/typed-express';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
+import { VolunteerError } from '@src/domain/errors/volunteer';
+import { AuthError } from '@src/domain/errors/auth';
 
 export class VolunteerAPI {
   private volunteerRepository: VolunteerRepository;
@@ -13,62 +22,102 @@ export class VolunteerAPI {
     this.volunteerRepository = volunteerRepository;
   }
 
-  login = async (request: Request, response: Response) => {
+  login = async (
+    request: TypedRequestBody<{ email: string; password: string }>,
+    response: TypedResponse<string, AuthError>
+  ) => {
     const email = request.body.email;
     const password = request.body.password;
 
-    const volunteer = await this.volunteerRepository.getVolunteerByEmail(email);
+    const volunteer =
+      await this.volunteerRepository.getVolunteerWithAuthDataByEmail(email);
 
     if (volunteer && checkPasswordWithHash(password, volunteer.password)) {
-      const payload: JWTPayload = { email: email };
+      const payload: VolunteerJWTPayload = {
+        email: volunteer.email,
+        bookPermission: volunteer.bookPermission,
+        authorPermission: volunteer.authorPermission,
+        certificationPermission: volunteer.certificationPermission,
+        readPermission: volunteer.readPermission
+      };
       const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
-      response.status(201).json({ volunteer: { email: email }, token: token });
+      response.status(201).json(token);
     } else {
-      response.status(400).json({ error: 'Email or Password incorrect' });
-    }
-  };
-
-  updateVolunteer = async (request: Request, response: Response) => {
-    try {
-      const volunteer: VolunteerEntity = request.body;
-      const successUpdate = await this.volunteerRepository.updateVolunteer(
-        volunteer.email,
-        volunteer
+      response.status(400).json(
+        new AuthError({
+          name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
+          message: 'Email or Password wrong'
+        })
       );
-
-      successUpdate
-        ? response.status(200).send({ volunteer })
-        : response.status(400).send({ error: 'Volunteer not updated' });
-    } catch (error) {
-      response.status(400).send({ error: error });
     }
   };
 
-  createVolunteer = async (request: Request, response: Response) => {
+  updateVolunteer = async (
+    request: TypedRequest<{ email: string }, VolunteerEntity>,
+    response: TypedResponse<VolunteerEntity, VolunteerError>
+  ) => {
     try {
-      const volunteer: VolunteerEntity = request.body;
+      const volunteer = request.body;
+      const email = request.params.email;
+
+      const updatedVolunteer = await this.volunteerRepository.updateVolunteer(
+        volunteer,
+        email
+      );
+      response.status(200).json(updatedVolunteer);
+    } catch (error) {
+      response.status(400).json(error as VolunteerError);
+    }
+  };
+
+  createVolunteer = async (
+    request: TypedRequestBody<VolunteerWithAuthEntity>,
+    response: TypedResponse<VolunteerEntity, VolunteerError>
+  ) => {
+    try {
+      const volunteer = request.body;
       const createdVolunteer = await this.volunteerRepository.createVolunteer(
         volunteer
       );
-
-      response.status(201).send({ volunteer: createdVolunteer });
+      response.status(201).json(createdVolunteer);
     } catch (error) {
-      response.status(400).send({ error: error });
+      response.status(400).json(error as VolunteerError);
     }
   };
 
-  getAllVolunteers = async (_: Request, response: Response) => {
+  getAllVolunteers = async (
+    _: Request,
+    response: TypedResponse<VolunteerEntity[], VolunteerError>
+  ) => {
     const volunteers = await this.volunteerRepository.getAllVolunteers();
-    response.status(200).send({ volunteers: volunteers });
+    response.status(200).json(volunteers);
   };
 
-  getVolunteerByEmail = async (request: Request, response: Response) => {
+  getVolunteerByEmail = async (
+    request: TypedRequestParams<{ email: string }>,
+    response: TypedResponse<VolunteerEntity, VolunteerError>
+  ) => {
     const email = request.params.email;
-    const volunteer = await this.volunteerRepository.getVolunteerByEmail(email);
-    if (volunteer == null)
-      response
-        .status(404)
-        .send({ error: `Volunteer with email ${email} not found` });
-    else response.status(200).send({ volunteer: volunteer });
+    try {
+      const volunteer = await this.volunteerRepository.getVolunteerByEmail(
+        email
+      );
+      response.status(200).json(volunteer);
+    } catch (error) {
+      response.status(404).json(error as VolunteerError);
+    }
+  };
+
+  deleteVolunteer = async (
+    request: TypedRequestParams<{ email: string }>,
+    response: TypedResponse<null, VolunteerError>
+  ) => {
+    const email = request.params.email;
+    try {
+      await this.volunteerRepository.deleteVolunteerByEmail(email);
+      response.status(204).json();
+    } catch (error) {
+      response.status(400).json(error as VolunteerError);
+    }
   };
 }

@@ -1,19 +1,24 @@
+import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-
-export class VolunteerNotFoundError extends Error {}
-export class VolunteerAlreadyExistsError extends Error {}
-export class WrongEmailFormatError extends Error {
-  message = 'Email format is wrong';
-}
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
 
 export interface VolunteerRepository {
-  updateVolunteer(email: string, volunteer: VolunteerEntity): Promise<boolean>;
+  updateVolunteer(
+    volunteer: UpdateVolunteerEntity,
+    email: string
+  ): Promise<VolunteerEntity>;
 
-  getVolunteerByEmail(email: string): Promise<VolunteerEntity | null>;
+  getVolunteerByEmail(email: string): Promise<VolunteerEntity>;
+
+  getVolunteerWithAuthDataByEmail(
+    email: string
+  ): Promise<VolunteerWithAuthEntity>;
 
   getAllVolunteers(): Promise<VolunteerEntity[]>;
 
-  createVolunteer(volunteer: VolunteerEntity): Promise<VolunteerEntity>;
+  createVolunteer(volunteer: VolunteerWithAuthEntity): Promise<VolunteerEntity>;
 
-  deleteVolunteerByEmail(email: string): Promise<number>;
+  deleteVolunteerByEmail(email: string): Promise<void>;
+
+  createPasswordForEmail(email: string): Promise<void>;
 }

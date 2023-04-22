@@ -16,6 +16,7 @@ export class Volunteer extends Model<
   nome!: string;
   cert?: boolean;
   'habil-leitura'?: boolean;
+  'habil-livro'?: boolean;
   author?: string;
   'e-mail'!: string;
   senha!: string;
@@ -45,6 +46,7 @@ export class Volunteer extends Model<
   ajudar?: string;
   contribuir!: string;
   'declaração'!: string;
+  createdAt?: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -73,6 +75,10 @@ export class Volunteer extends Model<
           allowNull: true
         },
         'habil-leitura': {
+          type: DataTypes.BOOLEAN,
+          allowNull: true
+        },
+        'habil-livro': {
           type: DataTypes.BOOLEAN,
           allowNull: true
         },
@@ -183,11 +189,16 @@ export class Volunteer extends Model<
         declaração: {
           type: DataTypes.STRING,
           allowNull: false
+        },
+        createdAt: {
+          type: DataTypes.DATE,
+          field: 'Submission Date'
         }
       },
       {
         sequelize,
-        timestamps: false
+        timestamps: true,
+        updatedAt: false
       }
     );
   }
