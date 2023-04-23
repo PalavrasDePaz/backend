@@ -24,25 +24,33 @@ export class VolunteerAPI {
 
   login = async (
     request: TypedRequestBody<{ email: string; password: string }>,
-    response: TypedResponse<string, AuthError>
+    response: TypedResponse<{ token: string }, AuthError>
   ) => {
     const email = request.body.email;
     const password = request.body.password;
 
-    const volunteer =
-      await this.volunteerRepository.getVolunteerWithAuthDataByEmail(email);
-
-    if (volunteer && checkPasswordWithHash(password, volunteer.password)) {
-      const payload: VolunteerJWTPayload = {
-        email: volunteer.email,
-        bookPermission: volunteer.bookPermission,
-        authorPermission: volunteer.authorPermission,
-        certificationPermission: volunteer.certificationPermission,
-        readPermission: volunteer.readPermission
-      };
-      const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
-      response.status(201).json(token);
-    } else {
+    try {
+      const volunteer =
+        await this.volunteerRepository.getVolunteerWithAuthDataByEmail(email);
+      if (checkPasswordWithHash(password, volunteer.password)) {
+        const payload: VolunteerJWTPayload = {
+          email: volunteer.email,
+          bookPermission: volunteer.bookPermission,
+          authorPermission: volunteer.authorPermission,
+          certificationPermission: volunteer.certificationPermission,
+          readPermission: volunteer.readPermission
+        };
+        const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
+        response.status(200).json({ token: token });
+      } else {
+        response.status(400).json(
+          new AuthError({
+            name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
+            message: 'Email or Password wrong'
+          })
+        );
+      }
+    } catch (error) {
       response.status(400).json(
         new AuthError({
           name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
@@ -104,7 +112,7 @@ export class VolunteerAPI {
       );
       response.status(200).json(volunteer);
     } catch (error) {
-      response.status(404).json(error as VolunteerError);
+      response.status(400).json(error as VolunteerError);
     }
   };
 

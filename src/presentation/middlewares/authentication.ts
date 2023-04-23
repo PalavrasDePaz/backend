@@ -13,8 +13,8 @@ const autheticationMiddleware = async function (
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (!token)
       throw new AuthError({
-        name: 'NOT_AUTHORIZED_ERROR',
-        message: 'Not Authorized'
+        name: 'TOKEN_NOT_FOUND_ERROR',
+        message: 'Authentication token not found'
       });
 
     const decodedPayload = verify(token, JWT_SECRET_KEY) as VolunteerJWTPayload;
@@ -23,8 +23,8 @@ const autheticationMiddleware = async function (
   } catch (error) {
     res.status(401).json(
       new AuthError({
-        name: 'NOT_AUTHORIZED_ERROR',
-        message: 'Not Authorized'
+        name: 'NOT_AUTHENTICATED_ERROR',
+        message: 'Not Authenticated'
       })
     );
   }

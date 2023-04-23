@@ -6,11 +6,7 @@ import { loginValidator } from '@src/presentation/validators/login-validator';
 
 export default function volunteerNoAuthRoutes(api: VolunteerAPI): Router {
   const router = Router();
-  router.post(
-    '/create',
-    validate(createVolunteerValidator),
-    api.createVolunteer
-  );
+  router.post('/', validate(createVolunteerValidator), api.createVolunteer);
   router.post('/login', validate(loginValidator), api.login);
   return router;
 }
