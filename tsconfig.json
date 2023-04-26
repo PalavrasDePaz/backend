@@ -3,7 +3,10 @@
     "target": "es2019",
     "moduleResolution": "node",
     "module": "commonjs",
-    "lib": ["es2019", "dom"],
+    "lib": [
+      "es2019",
+      "dom",
+    ],
     "sourceMap": true,
     "outDir": "build",
     "strict": true,
@@ -19,13 +22,26 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/*"],
-      "@test/*": ["./test/*"]
+      "@src/*": [
+        "./src/*"
+      ],
+      "@test/*": [
+        "./test/*"
+      ]
     },
-    "rootDirs": ["./src", "./test"],
+    "rootDirs": [
+      "./src",
+      "./test"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "index.ts"],
-  "exclude": ["./node_modules/*", "build"]
+  "include": [
+    "./src/**/*.ts",
+    "./test/**/*.ts",
+  ],
+  "exclude": [
+    "./node_modules/*",
+    "build"
+  ]
 }
