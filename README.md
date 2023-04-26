@@ -35,10 +35,10 @@ Além disso, é necessário criar um arquivo em `src/config/server.ts` com as va
 
 Podem ser encontrados aqui:
 
-[Modelo de Negócios](https://github.com/PalavrasDePaz/backend/blob/develop/CONTRIBUTING.md)
+[Modelo de Negócios](https://github.com/PalavrasDePaz/backend/blob/develop/.github/docs/BUSINESS_REQUIREMENTS.md)
 
 ## Contribuindo
 
 Contribuições são sempre bem-vindas!
 
-Veja o [Guia de Contribuição ](https://github.com/PalavrasDePaz/backend/blob/develop/CONTRIBUTING.md) para saber como contribuir.
+Veja o [Guia de Contribuição ](https://github.com/PalavrasDePaz/backend/blob/develop/.github/docs/CONTRIBUTING.md) para saber como contribuir.
