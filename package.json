@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon",
-    "start": "npm run build && node build/index.js",
+    "start": "npm run build && node build/index.ts",
     "build": "rimraf ./build && tsc",
     "prepare": "husky install",
     "lint": "eslint . --ext .ts",
