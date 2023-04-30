@@ -11,55 +11,45 @@ import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
 import { ValidationError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { hashPassword } from '@src/helpers/password_hashing';
 
 export class SequelizeVolunteerRepository implements VolunteerRepository {
-  createPasswordForEmail(_: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async updateOrCreatePasswordForEmail(
+    email: string,
+    password: string
+  ): Promise<boolean> {
+    const updatedRows = (
+      await Volunteer.update(
+        { senha: hashPassword(password) },
+        { where: { 'e-mail': email } }
+      )
+    )[0];
+    return updatedRows ? true : false;
   }
 
   async getVolunteerWithAuthDataByEmail(
     email: string
-  ): Promise<VolunteerWithAuthEntity> {
+  ): Promise<VolunteerWithAuthEntity | null> {
     const volunteer = await Volunteer.findOne({ where: { 'e-mail': email } });
-    if (volunteer == null) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: 'Volunteer not found'
-      });
-    }
-    return volunteerModelToAuthEntity(volunteer);
+    return volunteer ? volunteerModelToAuthEntity(volunteer) : null;
   }
 
   async updateVolunteer(
     volunteer: UpdateVolunteerEntity,
     email: string
-  ): Promise<VolunteerEntity> {
-    const updatedRows = await Volunteer.update(
-      updateVolunteerEntityToUpdateModel(volunteer),
-      {
+  ): Promise<VolunteerEntity | null> {
+    const updatedRows = (
+      await Volunteer.update(updateVolunteerEntityToUpdateModel(volunteer), {
         where: { 'e-mail': email }
-      }
-    );
+      })
+    )[0];
 
-    if (updatedRows[0] == 0) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_UPDATED',
-        message: 'Volunteer not updated'
-      });
-    }
-    const updatedVolunteer = await this.getVolunteerByEmail(email);
-    return updatedVolunteer;
+    return updatedRows ? await this.getVolunteerByEmail(email) : null;
   }
 
-  async getVolunteerByEmail(email: string): Promise<VolunteerEntity> {
+  async getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
     const volunteer = await Volunteer.findOne({ where: { 'e-mail': email } });
-    if (volunteer == null) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: 'Volunteer not found'
-      });
-    }
-    return volunteerModelToEntity(volunteer);
+    return volunteer ? volunteerModelToEntity(volunteer) : null;
   }
 
   async getAllVolunteers(): Promise<VolunteerEntity[]> {
@@ -96,15 +86,11 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     }
   }
 
-  async deleteVolunteerByEmail(email: string): Promise<void> {
+  async deleteVolunteerByEmail(email: string): Promise<boolean> {
     const deletedVolunteers = await Volunteer.destroy({
       where: { 'e-mail': email }
     });
-    if (!deletedVolunteers) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: 'Volunteer not found'
-      });
-    }
+
+    return deletedVolunteers ? true : false;
   }
 }
