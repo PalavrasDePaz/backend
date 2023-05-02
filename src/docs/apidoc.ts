@@ -1,16 +1,16 @@
+import { JsonObject } from 'swagger-ui-express';
 import { createVolunteer, createVolunteerBody } from './volunteers';
 
-const apiDocumentation = {
+const apiDocumentation: JsonObject = {
   openapi: '3.0.1',
   info: {
-    version: '1.3.0',
-    title: 'My REST API - Documentation',
-    description: 'Description of my API here',
-    termsOfService: 'https://mysite.com/terms',
+    version: '1.0.0',
+    title: 'Palavraz de Paz API - Documentation',
+    description: 'Documentation of Palavraz de Paz API',
     contact: {
-      name: 'Developer name',
-      email: 'dev@example.com',
-      url: 'https://devwebsite.com'
+      name: 'João Vitor Silva Ramos',
+      email: 'joaovsramosj@gmail.com',
+      url: 'https://github.com/JVSRamos'
     },
     license: {
       name: 'Apache 2.0',
@@ -19,7 +19,7 @@ const apiDocumentation = {
   },
   servers: [
     {
-      url: 'http://localhost:4500/',
+      url: 'http://localhost:3333/',
       description: 'Local Server'
     },
     {
@@ -40,7 +40,7 @@ const apiDocumentation = {
   components: {
     securitySchemes: {
       bearerAuth: {
-        type: 'http',
+        type: 'https',
         scheme: 'bearer',
         bearerFormat: 'JWT'
       }

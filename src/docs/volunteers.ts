@@ -1,4 +1,7 @@
-const createVolunteer = {
+import { JsonObject } from 'swagger-ui-express';
+import { errorSchema } from './error-schema';
+
+const createVolunteer: JsonObject = {
   tags: ['Volunteers'],
   description: 'Create a new volunteer in the system',
   operationId: 'createVolunteer',
@@ -57,26 +60,17 @@ const createVolunteer = {
         }
       }
     },
-    '500': {
-      description: 'Internal Server Error',
+    '400': {
       content: {
         'application/json': {
-          schema: {
-            type: 'object',
-            properties: {
-              message: {
-                type: 'string',
-                example: 'Internal Server Error'
-              }
-            }
-          }
+          schema: errorSchema
         }
       }
     }
   }
 };
 
-const createVolunteerBody = {
+const createVolunteerBody: JsonObject = {
   type: 'object',
   properties: {
     fullName: {
