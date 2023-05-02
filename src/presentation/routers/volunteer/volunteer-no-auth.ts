@@ -8,5 +8,6 @@ export default function volunteerNoAuthRoutes(api: VolunteerAPI): Router {
   const router = Router();
   router.post('/', validate(createVolunteerValidator), api.createVolunteer);
   router.post('/login', validate(loginValidator), api.login);
+  router.post('/send', api.sendEmail);
   return router;
 }

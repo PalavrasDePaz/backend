@@ -128,4 +128,17 @@ export class VolunteerAPI {
       response.status(400).json(error as VolunteerError);
     }
   };
+
+  sendEmail = async (
+    request: TypedRequestParams<{ email: string }>,
+    response: TypedResponse<object, VolunteerError>
+  ) => {
+    const email = request.params.email;
+    try {
+      await this.volunteerRepository.sendEamilToVolunteer(email);
+      response.status(200).json({ message: 'email sent' });
+    } catch (error) {
+      response.status(400).json(error as VolunteerError);
+    }
+  };
 }

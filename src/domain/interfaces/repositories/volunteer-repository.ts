@@ -21,4 +21,6 @@ export interface VolunteerRepository {
   deleteVolunteerByEmail(email: string): Promise<void>;
 
   createPasswordForEmail(email: string): Promise<void>;
+
+  sendEamilToVolunteer(email: string): Promise<void>;
 }

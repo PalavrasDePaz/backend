@@ -26,4 +26,5 @@ export type VolunteerEntity = {
   interestFutureRoles?: string[];
   contribution: string;
   needDeclaration: boolean;
+  idvol?: 0;
 };
