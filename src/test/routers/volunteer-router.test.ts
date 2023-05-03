@@ -9,18 +9,26 @@ import {
   RequestHandler
 } from 'express';
 import { App } from '@src/app';
-import volunteerRoutes from '@src/presentation/routers/volunteer';
+import volunteerRoutes from '@src/presentation/routers/volunteer/volunteer';
 import request from 'supertest';
+import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
 
 describe('Volunteer Router', () => {
   class MockVolunteerRepository implements VolunteerRepository {
-    updateVolunteer(
-      _email: string,
-      _values: VolunteerEntity
-    ): Promise<boolean> {
+    getVolunteerWithAuthDataByEmail(email: string): Promise<VolunteerWithAuthEntity> {
       throw new Error('Method not implemented.');
     }
-    async getVolunteerByEmail(_email: string): Promise<VolunteerEntity | null> {
+    createPasswordForEmail(email: string): Promise<void> {
+      throw new Error('Method not implemented.');
+    }
+    updateVolunteer(
+      _volunteer: UpdateVolunteerEntity,
+      _email: string
+    ): Promise<VolunteerEntity> {
+      throw new Error('Method not implemented.');
+    }
+    async getVolunteerByEmail(_email: string): Promise<VolunteerEntity> {
       throw new Error('Method not implemented.');
     }
     getAllVolunteers(): Promise<VolunteerEntity[]> {
@@ -29,7 +37,7 @@ describe('Volunteer Router', () => {
     createVolunteer(_volunteer: VolunteerEntity): Promise<VolunteerEntity> {
       throw new Error('Method not implemented.');
     }
-    deleteVolunteerByEmail(_email: string): Promise<number> {
+    deleteVolunteerByEmail(_email: string): Promise<void> {
       throw new Error('Method not implemented.');
     }
   }
@@ -47,15 +55,15 @@ describe('Volunteer Router', () => {
   beforeAll(() => {
     volunteerRepository = new MockVolunteerRepository();
     const volunteerAPI = new VolunteerAPI(volunteerRepository);
-    app = new App(volunteerRoutes(volunteerAPI), stubAuthMiddleware).server;
+    app = new App(volunteerRoutes(volunteerAPI)).server;
   });
 
   it('Should get a user by the email and return status 200', async () => {
     const volunteer: VolunteerEntity = {
       email: 'test@gmail.com',
       name: 'test',
-      idvol: 0,
-      password: '',
+      // idvol: 0,
+      // password: '',
       birthDate: new Date(),
       phoneNumber: '',
       country: '',
