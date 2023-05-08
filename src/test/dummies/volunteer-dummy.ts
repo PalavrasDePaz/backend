@@ -3,7 +3,7 @@ import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 const volunteerDummy: VolunteerEntity = {
   email: 'test@gmail.com',
   name: 'test',
-  // idvol: 0,
+  pep: 1,
   birthDate: new Date('2023-03-01T02:27:27.610Z'),
   phoneNumber: 'test',
   country: 'test',
@@ -22,7 +22,12 @@ const volunteerDummy: VolunteerEntity = {
   weekAvailability: 20,
   meetingAvailability: 'test',
   contribution: 'test',
-  needDeclaration: false
+  needDeclaration: false,
+  bachelor: 'test',
+  sex: 'test',
+  socialName: 'test',
+  disability: undefined,
+  interestFutureRoles: ['test']
 };
 
 export default volunteerDummy;

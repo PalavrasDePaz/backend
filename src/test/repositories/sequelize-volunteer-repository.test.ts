@@ -6,8 +6,9 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-aut
 import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
 import { Volunteer } from '@src/services/database/models/volunteer';
 import volunteerModel from '../dummies/volunteer-model';
-// import { VolunteerError } from '@src/domain/errors/volunteer';
 import { ValidationError, ValidationErrorItem } from 'sequelize';
+import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import volunteerDummy from '../dummies/volunteer-dummy';
 
 describe('Volunteer Repositories', () => {
   let volunteerRepository: VolunteerRepository;
@@ -23,7 +24,7 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should get a volunteer by the email', async () => {
-    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteer: VolunteerEntity = volunteerDummy;
 
     jest
       .spyOn(Volunteer, 'findOne')
@@ -33,18 +34,18 @@ describe('Volunteer Repositories', () => {
       volunteer.email
     );
 
-    // volunteerFindOne.mockClear();
     expect(result).toEqual(volunteer);
   });
 
   it('Should create a new volunteer', async () => {
-    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteerWithAuth: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteer: VolunteerEntity = volunteerDummy;
 
     jest
       .spyOn(Volunteer, 'create')
       .mockResolvedValue(volunteerModel as unknown as Volunteer);
 
-    const result = await volunteerRepository.createVolunteer(volunteer);
+    const result = await volunteerRepository.createVolunteer(volunteerWithAuth);
 
     expect(result).toEqual(volunteer);
   });
@@ -61,7 +62,7 @@ describe('Volunteer Repositories', () => {
       { ...volunteer, name: 'newName' },
       volunteer.email
     );
-    
+
     expect(result?.name).toBe('newName');
     expect(result).toBeTruthy();
   });
@@ -69,38 +70,69 @@ describe('Volunteer Repositories', () => {
   it('Should delete a volunteer', async () => {
     const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
     jest.spyOn(Volunteer, 'destroy').mockResolvedValue(1);
-    
+
     await volunteerRepository.deleteVolunteerByEmail(volunteer.email);
-    
+
     expect(Volunteer.destroy).toHaveBeenCalled();
   });
-  
-  it('Should throw error if searched volunteer is not found', async () => {
+
+  it('Should get volunteer with auth data', async () => {
     const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
 
     jest.restoreAllMocks();
     jest
       .spyOn(Volunteer, 'findOne')
-      .mockResolvedValue(null);
+      .mockResolvedValue(volunteerModel as unknown as Volunteer);
 
-    await expect(
-      volunteerRepository.getVolunteerByEmail(volunteer.email)
-      ).rejects.toThrow('Volunteer not found');
+    const result = await volunteerRepository.getVolunteerWithAuthDataByEmail(
+      volunteer.email
+    );
+
+    expect(result).toEqual(volunteer);
   });
 
   it('Should throw error when trying to create an already existing email', async () => {
     const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
     const validationErrorItem = {
-      message: 'E-MAIL must be unique',
-    }
+      message: 'E-MAIL must be unique'
+    };
 
     jest
       .spyOn(Volunteer, 'create')
-      .mockRejectedValue(new ValidationError('E-MAIL must be unique',
-      [validationErrorItem as unknown as ValidationErrorItem]));
+      .mockRejectedValue(
+        new ValidationError('E-MAIL must be unique', [
+          validationErrorItem as unknown as ValidationErrorItem
+        ])
+      );
 
     await expect(
       volunteerRepository.createVolunteer(volunteer)
-      ).rejects.toThrow(`Volunteer with email ${volunteer.email} already exists`);
+    ).rejects.toThrow(`Volunteer with email ${volunteer.email} already exists`);
+  });
+
+  it('Should create a new password if it does not exists', async () => {
+    const volunteer: VolunteerEntity = volunteerDummy;
+
+    jest.clearAllMocks();
+    jest.spyOn(Volunteer, 'update').mockResolvedValue([1]);
+
+    const result = await volunteerRepository.updateOrCreatePasswordForEmail(
+      volunteer.email,
+      'newpassword'
+    );
+
+    expect(result).toBeTruthy();
+  });
+
+  it('Should get an array with all volunteers', async () => {
+    const volunteers: VolunteerEntity[] = [volunteerDummy];
+
+    jest
+      .spyOn(Volunteer, 'findAll')
+      .mockResolvedValue([volunteerModel] as Volunteer[]);
+
+    const result = await volunteerRepository.getAllVolunteers();
+
+    expect(result).toEqual(volunteers);
   });
 });
