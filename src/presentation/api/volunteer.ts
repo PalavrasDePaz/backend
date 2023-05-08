@@ -22,6 +22,30 @@ export class VolunteerAPI {
     this.volunteerRepository = volunteerRepository;
   }
 
+  createOrUpdatePassword = async (
+    request: TypedRequest<{ email: string }, { password: string }>,
+    response: TypedResponse<null, VolunteerError>
+  ) => {
+    const email = request.params.email;
+    const password = request.body.password;
+
+    const success =
+      await this.volunteerRepository.updateOrCreatePasswordForEmail(
+        email,
+        password
+      );
+
+    success
+      ? response.status(204).json()
+      : response.status(400).json(
+          new VolunteerError({
+            name: 'VOLUNTEER_NOT_FOUND',
+            message:
+              'Could not create or update volunteer password because it was not found'
+          })
+        );
+  };
+
   login = async (
     request: TypedRequestBody<{ email: string; password: string }>,
     response: TypedResponse<{ token: string }, AuthError>
@@ -29,28 +53,20 @@ export class VolunteerAPI {
     const email = request.body.email;
     const password = request.body.password;
 
-    try {
-      const volunteer =
-        await this.volunteerRepository.getVolunteerWithAuthDataByEmail(email);
-      if (checkPasswordWithHash(password, volunteer.password)) {
-        const payload: VolunteerJWTPayload = {
-          email: volunteer.email,
-          bookPermission: volunteer.bookPermission,
-          authorPermission: volunteer.authorPermission,
-          certificationPermission: volunteer.certificationPermission,
-          readPermission: volunteer.readPermission
-        };
-        const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
-        response.status(200).json({ token: token });
-      } else {
-        response.status(400).json(
-          new AuthError({
-            name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
-            message: 'Email or Password wrong'
-          })
-        );
-      }
-    } catch (error) {
+    const volunteer =
+      await this.volunteerRepository.getVolunteerWithAuthDataByEmail(email);
+
+    if (volunteer && checkPasswordWithHash(password, volunteer.password)) {
+      const payload: VolunteerJWTPayload = {
+        email: volunteer.email,
+        bookPermission: volunteer.bookPermission,
+        authorPermission: volunteer.authorPermission,
+        certificationPermission: volunteer.certificationPermission,
+        readPermission: volunteer.readPermission
+      };
+      const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
+      response.status(200).json({ token: token });
+    } else {
       response.status(400).json(
         new AuthError({
           name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
@@ -64,18 +80,22 @@ export class VolunteerAPI {
     request: TypedRequest<{ email: string }, VolunteerEntity>,
     response: TypedResponse<VolunteerEntity, VolunteerError>
   ) => {
-    try {
-      const volunteer = request.body;
-      const email = request.params.email;
+    const volunteer = request.body;
+    const email = request.params.email;
 
-      const updatedVolunteer = await this.volunteerRepository.updateVolunteer(
-        volunteer,
-        email
-      );
-      response.status(200).json(updatedVolunteer);
-    } catch (error) {
-      response.status(400).json(error as VolunteerError);
-    }
+    const updatedVolunteer = await this.volunteerRepository.updateVolunteer(
+      volunteer,
+      email
+    );
+
+    updatedVolunteer
+      ? response.status(200).json(updatedVolunteer)
+      : response.status(400).json(
+          new VolunteerError({
+            name: 'VOLUNTEER_NOT_UPDATED',
+            message: `Volunteer with email ${email} not updated`
+          })
+        );
   };
 
   createVolunteer = async (
@@ -106,14 +126,17 @@ export class VolunteerAPI {
     response: TypedResponse<VolunteerEntity, VolunteerError>
   ) => {
     const email = request.params.email;
-    try {
-      const volunteer = await this.volunteerRepository.getVolunteerByEmail(
-        email
-      );
-      response.status(200).json(volunteer);
-    } catch (error) {
-      response.status(400).json(error as VolunteerError);
-    }
+
+    const volunteer = await this.volunteerRepository.getVolunteerByEmail(email);
+
+    volunteer
+      ? response.status(200).json(volunteer)
+      : response.status(400).json(
+          new VolunteerError({
+            name: 'VOLUNTEER_NOT_FOUND',
+            message: `Volunteer with email ${email} not found`
+          })
+        );
   };
 
   deleteVolunteer = async (
@@ -121,11 +144,16 @@ export class VolunteerAPI {
     response: TypedResponse<null, VolunteerError>
   ) => {
     const email = request.params.email;
-    try {
+    const volunteerIsDeleted =
       await this.volunteerRepository.deleteVolunteerByEmail(email);
-      response.status(204).json();
-    } catch (error) {
-      response.status(400).json(error as VolunteerError);
-    }
+
+    volunteerIsDeleted
+      ? response.status(204).json()
+      : response.status(400).json(
+          new VolunteerError({
+            name: 'VOLUNTEER_NOT_DELETED',
+            message: `Volunteer with email ${email} not deleted`
+          })
+        );
   };
 }

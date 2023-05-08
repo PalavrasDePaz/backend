@@ -4,6 +4,7 @@ import autheticationMiddleware from '../../middlewares/authentication';
 import { validate } from 'express-validation';
 import { getVolunteerByEmailValidator } from '@src/presentation/validators/get-volunteer-by-email-validator';
 import { updateVolunteerValidator } from '@src/presentation/validators/update-volunteer-validator';
+import authorizationMiddleware from '@src/presentation/middlewares/authorization';
 
 export default function volunteerAuthRoutes(api: VolunteerAPI): Router {
   const router = Router();
@@ -11,12 +12,20 @@ export default function volunteerAuthRoutes(api: VolunteerAPI): Router {
     '/:email',
     autheticationMiddleware,
     validate(updateVolunteerValidator),
+    authorizationMiddleware,
     api.updateVolunteer
+  );
+  router.put(
+    '/:email/password',
+    autheticationMiddleware,
+    authorizationMiddleware,
+    api.createOrUpdatePassword
   );
   router.get(
     '/:email',
     autheticationMiddleware,
     validate(getVolunteerByEmailValidator),
+    authorizationMiddleware,
     api.getVolunteerByEmail
   );
   router.get('/', autheticationMiddleware, api.getAllVolunteers);
@@ -24,6 +33,7 @@ export default function volunteerAuthRoutes(api: VolunteerAPI): Router {
     '/:email',
     autheticationMiddleware,
     validate(getVolunteerByEmailValidator),
+    authorizationMiddleware,
     api.deleteVolunteer
   );
   return router;
