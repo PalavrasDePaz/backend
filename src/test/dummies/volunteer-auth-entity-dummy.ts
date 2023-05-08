@@ -1,5 +1,5 @@
-import { VolunteerWithAuthEntity } from "@src/domain/entities/volunteer-with-auth-entity";
-import volunteerDummy from "./volunteer-dummy";
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
+import volunteerDummy from './volunteer-dummy';
 
 const volunteerWithAuthDummy: VolunteerWithAuthEntity = {
   password: 'test',
@@ -8,6 +8,6 @@ const volunteerWithAuthDummy: VolunteerWithAuthEntity = {
   bookPermission: true,
   certificationPermission: true,
   ...volunteerDummy
-}
+};
 
-export default volunteerWithAuthDummy
+export default volunteerWithAuthDummy;

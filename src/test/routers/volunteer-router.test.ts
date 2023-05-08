@@ -16,7 +16,9 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-aut
 
 describe('Volunteer Router', () => {
   class MockVolunteerRepository implements VolunteerRepository {
-    getVolunteerWithAuthDataByEmail(email: string): Promise<VolunteerWithAuthEntity> {
+    getVolunteerWithAuthDataByEmail(
+      _email: string
+    ): Promise<VolunteerWithAuthEntity> {
       throw new Error('Method not implemented.');
     }
     createPasswordForEmail(email: string): Promise<void> {
