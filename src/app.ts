@@ -1,37 +1,23 @@
-import express, { NextFunction, Request, Response, Router } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import initModels from './services/database';
-import { ValidationError } from 'express-validation';
+import { RegisterRoutes } from '../build/routes';
+import { validationMiddleware } from './presentation/middlewares/validation';
+import swaggerUi from 'swagger-ui-express';
+import 'reflect-metadata';
 
-export class App {
-  public server: express.Application;
+export const app = express();
+initModels();
 
-  constructor(router: Router) {
-    initModels();
-    this.server = express();
-    this.middleware();
-    this.router(router);
-    this.addValidationErrorHandler();
-  }
+app.use(express.json());
+app.use(cors());
 
-  private addValidationErrorHandler() {
-    this.server.use(
-      (err: Error, _req: Request, res: Response, _next: NextFunction) => {
-        if (err instanceof ValidationError) {
-          return res.status(err.statusCode).json(err);
-        }
+app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
+  return res.send(
+    swaggerUi.generateHTML(await import('../build/swagger.json'))
+  );
+});
 
-        return res.status(400).json(err);
-      }
-    );
-  }
+RegisterRoutes(app);
 
-  private middleware() {
-    this.server.use(express.json());
-    this.server.use(cors());
-  }
-
-  public router(router: Router) {
-    this.server.use(router);
-  }
-}
+app.use(validationMiddleware);

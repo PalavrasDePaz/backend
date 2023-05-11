@@ -1,11 +1,9 @@
 import 'module-alias/register';
-import router from './presentation/routers';
-import { App } from './app';
+import { app } from './app';
 
-const PORT = 3333;
-const server = new App(router).server;
+const PORT = 3001;
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });

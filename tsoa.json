@@ -1,8 +1,32 @@
 {
   "entryFile": "src/index.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/presentation/api/*.ts"],
   "spec": {
-    "outputDirectory": "public",
-    "specVersion": 3
+    "outputDirectory": "build",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    } 
+  },
+  "routes": {
+    "routesDir": "build",
+    "authenticationModule": "./src/presentation/middlewares/authentication.ts",
+    "iocModule": "src/ioc"
+  },
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "./src/*"
+      ],
+      "@test/*": [
+        "src/test/*"
+      ]
+    }
   }
 }
