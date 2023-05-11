@@ -9,6 +9,7 @@
     ],
     "sourceMap": true,
     "outDir": "build",
+    "types": ["reflect-metadata"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -27,7 +28,8 @@
       ],
       "@test/*": [
         "src/test/*"
-      ]
+      ],
+      "tsoa": ["node_modules/tsoa/dist"],
     },
     "rootDirs": [
       "./src",
