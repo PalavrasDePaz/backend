@@ -133,7 +133,7 @@ export class VolunteerAPI {
     request: TypedRequestParams<{ email: string }>,
     response: TypedResponse<object, VolunteerError>
   ) => {
-    const email = request.params.email;
+    const email = request.body.email;
     try {
       await this.volunteerRepository.sendEamilToVolunteer(email);
       response.status(200).json({ message: 'email sent' });

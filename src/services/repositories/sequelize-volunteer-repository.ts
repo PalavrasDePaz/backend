@@ -110,20 +110,22 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
   }
 
   async sendEamilToVolunteer(email: string): Promise<void> {
-    const transport = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
       auth: {
-        user: 'f87c9dddfbad32',
-        pass: '93811fd471e9e7'
+        user: 'godfrey.christiansen37@ethereal.email',
+        pass: 'w3AYGATKTENVVDMrA9'
       }
     });
 
-    transport.sendMail({
-      from: 'Administrador <94fec82375-1536a5@inbox.mailtrap.io>',
-      to: email,
-      subject: 'Finalizar Cadastro',
-      html: '<p>Para finalizar o cadastro clique <a href="https://www.google.com/">aqui</a></p>'
+    const info = await transporter.sendMail({
+      from: 'Administrador <eduardorsimoes@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: 'Cadastro Palavra da Paz', // Subject line
+      html: '<p>Para finalizar  cadastr clique <a href="https://www.google.com/">aqui</a></p>' // html body
     });
+
+    console.log(info.messageId);
   }
 }
