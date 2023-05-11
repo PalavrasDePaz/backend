@@ -9,7 +9,7 @@ import {
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import { UniqueConstraintError, ValidationError } from 'sequelize';
+import { UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
 import { hashPassword } from '@src/helpers/password_hashing';
 import { provideSingleton } from '@src/helpers/provide-singleton';
