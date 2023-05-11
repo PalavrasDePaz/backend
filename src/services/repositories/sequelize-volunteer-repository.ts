@@ -9,10 +9,12 @@ import {
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import { ValidationError } from 'sequelize';
+import { UniqueConstraintError, ValidationError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
 import { hashPassword } from '@src/helpers/password_hashing';
+import { provideSingleton } from '@src/helpers/provide-singleton';
 
+@provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
   async updateOrCreatePasswordForEmail(
     email: string,
@@ -66,16 +68,10 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
       );
       return volunteerModelToEntity(result);
     } catch (error) {
-      if (
-        error instanceof ValidationError &&
-        error.errors.find(
-          (sequelizeError) => sequelizeError.message == 'E-MAIL must be unique'
-        )
-      ) {
+      if (error instanceof UniqueConstraintError) {
         throw new VolunteerError({
           name: 'VOLUNTEER_ALREADY_EXISTS',
-          message: `Volunteer with email ${volunteer.email} already exists`,
-          details: error
+          message: `Volunteer with email ${volunteer.email} already exists`
         });
       }
       throw new VolunteerError({

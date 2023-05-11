@@ -89,6 +89,7 @@ export const volunteerWithAuthEntityToCreationModel = (
     nome: volunteer.name,
     'e-mail': volunteer.email,
     senha: hashPassword(volunteer.password),
+    idpep: 0,
     nascimento: volunteer.birthDate,
     telefone: volunteer.phoneNumber,
     author: volunteer.authorPermission,
