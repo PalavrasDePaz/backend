@@ -1,41 +1,44 @@
-## Utilização
+# Palavras de Paz - API
 
-- Iniciar servidor para desenvolvimento `npm run start:dev`
-- Iniciar servidor para produção `npm run start`
-- Para usar o cli para commits `npm run prepare` quando iniciar o projeto
-- Caso esteja usando VSCode seguir este [tutorial](https://khalilstemmler.com/blogs/tooling/prettier/) para ativar a formatação automática ao salvar com prettier. Caso contrário, rodar `npm run prettier-watch` em um terminal para obter o mesmo resultado.
+Repositório Backend do Website da ONG Palavras de Paz.
 
-## Modelo de Negócios
+## Stack utilizada
 
-### Organização
+- Node.js
+- Express
+- TypeScript
+- MySQL
+- Sequelize
 
-1. **Voluntário**
-   - Usuários do site que podem participar de cursos[3].
-   - Podem realizer um cadastro no site para autenticação futura.
-   - Podem marcar presença nas aulas[4].
-   - Podem acessar seus cadernos[5].
-2. **Voluntário Administrativo**
-   - São Voluntários que possuem acesso à mais funcionalidades no site.
-   - Podem ver as funcionalidades do site que estão habilitados.
-   - Pode analisar os cadernos dos participantes dos cursos
-   - Pode analisar as presenças dos participante dos cursos
-3. **Curso**
-   - São um conjunto de aulas com exatamente 10 aulas com diferentes temas.
-4. **Presença nas aulas**
-   - A presença na aula é um formulário com algumas perguntas sobre o feedback de uma aula.
-   - Atualmente está neste [link](https://www.jotform.com/form/220305634857658).
-5. **Caderno**
-   - Perguntar
+## Instalação
 
-### Exemplo Fluxo no site
+```bash
+# Clone o repositório
+$ git clone https://github.com/PalavrasDePaz/backend
 
-- **Novo Voluntariado(exemplo atual):** Uma pessoa se interessou pelos cursos e quer participar. Ela entra em um grupo de Whatsapp, preenche o [formulário](https://form.jotform.com/220305437068653) e recebe um email com um id e o link para a aula. Posteriormente pode preencher a presença no site com o id.
+# Entre no repositório do projeto
+$ cd backend
 
-### Dúvidas
+# Instale as dependências
+$ npm install
 
-- Voluntários normais podem se tornar administrativos?
-- Voluntário administrativo possui acesso a todos os módulos?
-- Parar assistir os cursos, o usuário deve estar cadastrado?
-- Como funciona a questão de habilitação dos módulos?
-- O que são os cadernos?
-- Como são as aula dos cursos?
+# Para iniciar o servidor para desenvolvimento
+$ npm run start:dev
+
+# Para iniciar o servidor para produção
+$ npm run start
+```
+
+Além disso, é necessário criar um arquivo em `src/config/server.ts` com as variáveis do servidor seguindo o modelo `server-example.ts`.
+
+## Regras de Negócio e Requisitos
+
+Podem ser encontrados aqui:
+
+[Modelo de Negócios](https://github.com/PalavrasDePaz/backend/blob/develop/.github/docs/BUSINESS_REQUIREMENTS.md)
+
+## Contribuindo
+
+Contribuições são sempre bem-vindas!
+
+Veja o [Guia de Contribuição ](https://github.com/PalavrasDePaz/backend/blob/develop/.github/docs/CONTRIBUTING.md) para saber como contribuir.

@@ -1,14 +1,9 @@
-/* eslint-disable no-console */
-('use strict');
+import 'module-alias/register';
+import { app } from './app';
 
-import express, { Express, Request, Response } from 'express';
-const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 21043;
-
-const app: Express = express();
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello Palavras de Paz!');
-});
+const PORT = 3001;
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });

@@ -6,6 +6,7 @@
     "lib": ["es2019", "dom"],
     "sourceMap": true,
     "outDir": "build",
+    "types": ["reflect-metadata"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -19,13 +20,27 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/*"],
-      "@test/*": ["./test/*"]
+      "@src/*": [
+        "./src/*"
+      ],
+      "@test/*": [
+        "src/test/*"
+      ],
+      "tsoa": ["node_modules/tsoa/dist"],
     },
-    "rootDirs": ["./src", "./test"],
+    "rootDirs": [
+      "./src",
+      "src/test"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["./src/**/*.ts", "./test/**/*.ts", "src/util/index.ts"],
-  "exclude": ["./node_modules/*", "build"]
+  "include": [
+    "./src/**/*.ts",
+    "src/test/**/*.ts",
+  ],
+  "exclude": [
+    "./node_modules/*",
+    "build"
+  ]
 }
