@@ -9,58 +9,50 @@ import {
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import { ValidationError } from 'sequelize';
+import { UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
 import nodemailer from 'nodemailer';
+import { hashPassword } from '@src/helpers/password_hashing';
+import { provideSingleton } from '@src/helpers/provide-singleton';
 
+@provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
-  createPasswordForEmail(_: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async updateOrCreatePasswordForEmail(
+    email: string,
+    password: string
+  ): Promise<boolean> {
+    const updatedRows = (
+      await Volunteer.update(
+        { senha: hashPassword(password) },
+        { where: { 'e-mail': email } }
+      )
+    )[0];
+    return updatedRows ? true : false;
   }
 
   async getVolunteerWithAuthDataByEmail(
     email: string
-  ): Promise<VolunteerWithAuthEntity> {
+  ): Promise<VolunteerWithAuthEntity | null> {
     const volunteer = await Volunteer.findOne({ where: { 'e-mail': email } });
-    if (volunteer == null) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: 'Volunteer not found'
-      });
-    }
-    return volunteerModelToAuthEntity(volunteer);
+    return volunteer ? volunteerModelToAuthEntity(volunteer) : null;
   }
 
   async updateVolunteer(
     volunteer: UpdateVolunteerEntity,
     email: string
-  ): Promise<VolunteerEntity> {
-    const updatedRows = await Volunteer.update(
-      updateVolunteerEntityToUpdateModel(volunteer),
-      {
+  ): Promise<VolunteerEntity | null> {
+    const updatedRows = (
+      await Volunteer.update(updateVolunteerEntityToUpdateModel(volunteer), {
         where: { 'e-mail': email }
-      }
-    );
+      })
+    )[0];
 
-    if (updatedRows[0] == 0) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_UPDATED',
-        message: 'Volunteer not updated'
-      });
-    }
-    const updatedVolunteer = await this.getVolunteerByEmail(email);
-    return updatedVolunteer;
+    return updatedRows ? await this.getVolunteerByEmail(email) : null;
   }
 
-  async getVolunteerByEmail(email: string): Promise<VolunteerEntity> {
+  async getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
     const volunteer = await Volunteer.findOne({ where: { 'e-mail': email } });
-    if (volunteer == null) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: 'Volunteer not found'
-      });
-    }
-    return volunteerModelToEntity(volunteer);
+    return volunteer ? volunteerModelToEntity(volunteer) : null;
   }
 
   async getAllVolunteers(): Promise<VolunteerEntity[]> {
@@ -77,16 +69,10 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
       );
       return volunteerModelToEntity(result);
     } catch (error) {
-      if (
-        error instanceof ValidationError &&
-        error.errors.find(
-          (sequelizeError) => sequelizeError.message == 'E-MAIL must be unique'
-        )
-      ) {
+      if (error instanceof UniqueConstraintError) {
         throw new VolunteerError({
           name: 'VOLUNTEER_ALREADY_EXISTS',
-          message: `Volunteer with email ${volunteer.email} already exists`,
-          details: error
+          message: `Volunteer with email ${volunteer.email} already exists`
         });
       }
       throw new VolunteerError({
@@ -97,19 +83,15 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     }
   }
 
-  async deleteVolunteerByEmail(email: string): Promise<void> {
+  async deleteVolunteerByEmail(email: string): Promise<boolean> {
     const deletedVolunteers = await Volunteer.destroy({
       where: { 'e-mail': email }
     });
-    if (!deletedVolunteers) {
-      throw new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: 'Volunteer not found'
-      });
-    }
+
+    return deletedVolunteers ? true : false;
   }
 
-  async sendEamilToVolunteer(email: string): Promise<void> {
+  async sendEmailToVolunteer(email: string): Promise<void> {
     const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,

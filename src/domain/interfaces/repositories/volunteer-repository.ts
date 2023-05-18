@@ -6,21 +6,24 @@ export interface VolunteerRepository {
   updateVolunteer(
     volunteer: UpdateVolunteerEntity,
     email: string
-  ): Promise<VolunteerEntity>;
+  ): Promise<VolunteerEntity | null>;
 
-  getVolunteerByEmail(email: string): Promise<VolunteerEntity>;
+  getVolunteerByEmail(email: string): Promise<VolunteerEntity | null>;
 
   getVolunteerWithAuthDataByEmail(
     email: string
-  ): Promise<VolunteerWithAuthEntity>;
+  ): Promise<VolunteerWithAuthEntity | null>;
 
   getAllVolunteers(): Promise<VolunteerEntity[]>;
 
   createVolunteer(volunteer: VolunteerWithAuthEntity): Promise<VolunteerEntity>;
 
-  deleteVolunteerByEmail(email: string): Promise<void>;
+  deleteVolunteerByEmail(email: string): Promise<boolean>;
 
-  createPasswordForEmail(email: string): Promise<void>;
+  sendEmailToVolunteer(email: string): Promise<void>;
 
-  sendEamilToVolunteer(email: string): Promise<void>;
+  updateOrCreatePasswordForEmail(
+    email: string,
+    password: string
+  ): Promise<boolean>;
 }

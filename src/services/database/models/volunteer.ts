@@ -56,6 +56,10 @@ export class Volunteer extends Model<
           autoIncrement: true,
           primaryKey: true
         },
+        idpep: {
+          type: DataTypes.INTEGER,
+          allowNull: true
+        },
         nome: {
           type: DataTypes.STRING,
           allowNull: false
