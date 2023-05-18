@@ -13,6 +13,7 @@ import { UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
 import { hashPassword } from '@src/helpers/password_hashing';
 import { provideSingleton } from '@src/helpers/provide-singleton';
+import 'reflect-metadata';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {

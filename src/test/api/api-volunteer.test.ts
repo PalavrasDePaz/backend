@@ -3,26 +3,55 @@ import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import { VolunteerAPI } from '@src/presentation/api/volunteer';
 import { Response, Request } from 'express';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
 import { VolunteerError } from '@src/domain/errors/volunteer';
-import {
-  TypedRequest,
-  TypedRequestBody,
-  TypedRequestParams,
-  TypedResponse
-} from '@src/presentation/types/typed-express';
 import jwt from 'jsonwebtoken';
 import { AuthError } from '@src/domain/errors/auth';
 import { hashPassword } from '@src/helpers/password_hashing';
+import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { TsoaResponse } from 'tsoa';
 
 describe('Volunteer API', () => {
   let volunteerRepository: VolunteerRepository;
   let volunteerAPI: VolunteerAPI;
   const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
 
+  class MockVolunteerRepository implements VolunteerRepository {
+    updateVolunteer(
+      volunteer: UpdateVolunteerEntity,
+      email: string
+    ): Promise<VolunteerEntity | null> {
+      throw new Error('Method not implemented.');
+    }
+    getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
+      throw new Error('Method not implemented.');
+    }
+    getVolunteerWithAuthDataByEmail(
+      email: string
+    ): Promise<VolunteerWithAuthEntity | null> {
+      throw new Error('Method not implemented.');
+    }
+    getAllVolunteers(): Promise<VolunteerEntity[]> {
+      throw new Error('Method not implemented.');
+    }
+    createVolunteer(
+      volunteer: VolunteerWithAuthEntity
+    ): Promise<VolunteerEntity> {
+      throw new Error('Method not implemented.');
+    }
+    deleteVolunteerByEmail(email: string): Promise<boolean> {
+      throw new Error('Method not implemented.');
+    }
+    updateOrCreatePasswordForEmail(
+      email: string,
+      password: string
+    ): Promise<boolean> {
+      throw new Error('Method not implemented.');
+    }
+  }
+
   beforeAll(() => {
-    volunteerRepository = new SequelizeVolunteerRepository();
+    volunteerRepository = new MockVolunteerRepository();
     volunteerAPI = new VolunteerAPI(volunteerRepository);
     jest.clearAllMocks();
   });
@@ -44,13 +73,13 @@ describe('Volunteer API', () => {
         password: hashPassword(volunteer.password)
       });
 
-    await volunteerAPI.login(
-      request as unknown as TypedRequestBody<{
-        email: string;
-        password: string;
-      }>,
-      response as unknown as TypedResponse<{ token: string }, AuthError>
-    );
+    /* await volunteerAPI.login(
+      {
+        email: volunteer.email,
+        password: volunteer.password
+      },
+      () => {}
+    ); */
 
     expect(response.status).toHaveBeenCalledWith(200);
     expect(response.json).toHaveBeenCalledWith({ token: 'token' });

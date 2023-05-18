@@ -6,7 +6,11 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-aut
 import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
 import { Volunteer } from '@src/services/database/models/volunteer';
 import volunteerModel from '../dummies/volunteer-model';
-import { ValidationError, ValidationErrorItem } from 'sequelize';
+import {
+  UniqueConstraintError,
+  ValidationError,
+  ValidationErrorItem
+} from 'sequelize';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import volunteerDummy from '../dummies/volunteer-dummy';
 
@@ -93,16 +97,11 @@ describe('Volunteer Repositories', () => {
 
   it('Should throw error when trying to create an already existing email', async () => {
     const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
-    const validationErrorItem = {
-      message: 'E-MAIL must be unique'
-    };
 
     jest
       .spyOn(Volunteer, 'create')
       .mockRejectedValue(
-        new ValidationError('E-MAIL must be unique', [
-          validationErrorItem as unknown as ValidationErrorItem
-        ])
+        new UniqueConstraintError({ message: 'E-MAIL must be unique' })
       );
 
     await expect(
