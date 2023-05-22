@@ -6,7 +6,7 @@ import {
 } from '@src/config/server';
 import { encrypt } from '@src/helpers/message-encryption';
 import nodemailer from 'nodemailer';
-import urlJoin from 'url-join';
+import { urlJoin } from 'url-join-ts';
 
 export const sendEmailToVolunteer = async (email: string) => {
   const transporter = nodemailer.createTransport({
