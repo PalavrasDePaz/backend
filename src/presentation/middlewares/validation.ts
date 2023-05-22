@@ -16,9 +16,10 @@ export function validationMiddleware(
   if (err instanceof ValidateError) {
     // eslint-disable-next-line no-console
     console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
-    return res.status(422).json({
-      message: 'Validation Failed',
-      details: Object.keys(err?.fields).reduce((detailsAcc, field) => {
+    let formatedErroMsg;
+
+    try {
+      formatedErroMsg = Object.keys(err?.fields).reduce((detailsAcc, field) => {
         const message = err?.fields[field].message;
         const issuesArrStr = message.slice(
           message.indexOf('Issues: ') + 'Issues: '.length
@@ -26,7 +27,14 @@ export function validationMiddleware(
         const issuesArr: Record<string, Issue>[] = JSON.parse(issuesArrStr);
         issuesArr.forEach((issue) => Object.assign(detailsAcc, issue));
         return detailsAcc;
-      }, {})
+      }, {});
+    } catch (e) {
+      formatedErroMsg = err?.fields;
+    }
+
+    return res.status(422).json({
+      message: 'Validation Failed',
+      details: formatedErroMsg
     });
   } else if (err instanceof AuthError) {
     return res.status(401).json(err);
