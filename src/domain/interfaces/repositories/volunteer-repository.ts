@@ -20,8 +20,6 @@ export interface VolunteerRepository {
 
   deleteVolunteerByEmail(email: string): Promise<boolean>;
 
-  sendEmailToVolunteer(email: string): Promise<void>;
-
   updateOrCreatePasswordForEmail(
     email: string,
     password: string

@@ -11,9 +11,8 @@ import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
 import { UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
-import nodemailer from 'nodemailer';
-import { hashPassword } from '@src/helpers/password_hashing';
 import { provideSingleton } from '@src/helpers/provide-singleton';
+import { hashString } from '@src/helpers/message-hashing';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
@@ -23,7 +22,7 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
   ): Promise<boolean> {
     const updatedRows = (
       await Volunteer.update(
-        { senha: hashPassword(password) },
+        { senha: hashString(password) },
         { where: { 'e-mail': email } }
       )
     )[0];
@@ -89,25 +88,5 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     });
 
     return deletedVolunteers ? true : false;
-  }
-
-  async sendEmailToVolunteer(email: string): Promise<void> {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      auth: {
-        user: 'godfrey.christiansen37@ethereal.email',
-        pass: 'w3AYGATKTENVVDMrA9'
-      }
-    });
-
-    const info = await transporter.sendMail({
-      from: 'Administrador <eduardorsimoes@gmail.com>', // sender address
-      to: email, // list of receivers
-      subject: 'Cadastro Palavra da Paz', // Subject line
-      html: '<p>Para finalizar  cadastr clique <a href="https://www.google.com/">aqui</a></p>' // html body
-    });
-
-    console.log(info.messageId);
   }
 }
