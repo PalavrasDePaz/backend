@@ -6,7 +6,7 @@ import {
 } from '@src/config/server';
 import { encrypt } from '@src/helpers/message-encryption';
 import nodemailer from 'nodemailer';
-import { join } from 'path';
+import urlJoin from 'url-join';
 
 export const sendEmailToVolunteer = async (email: string) => {
   const transporter = nodemailer.createTransport({
@@ -20,7 +20,7 @@ export const sendEmailToVolunteer = async (email: string) => {
   });
 
   const emailHash = encrypt(email);
-  const resetPasswordPath = join(
+  const resetPasswordPath = urlJoin(
     CREATE_PASSWORD_HOST,
     CREATE_PASSWORD_ROUTE,
     emailHash
