@@ -25,7 +25,6 @@ export const expressAuthentication = async function (
         JWT_SECRET_KEY
       ) as VolunteerJWTPayload;
 
-      req.body.loggedVolunteer = decodedPayload;
       const LoggedEmail = decodedPayload.email;
       return LoggedEmail == req.params.email
         ? Promise.resolve(decodedPayload)
