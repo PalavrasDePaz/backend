@@ -7,27 +7,21 @@
  * "country": "test",
  * "state": "test",
  * "city": "test",
- * "ethnicity": "test",
- * "gender": "test",
+ * "disability": "test",
  * "howFoundPep": "test",
  * "knowledgePep": "test",
- * "workshops": [
- *   "test"
- * ],
+ * "workshops": ["test"],
  * "schooling": "test",
+ * "bachelor": "test",
  * "studiesKnowlegde": "test",
  * "lifeExperience": "test",
  * "desires": "test",
- * "rolesPep": [
- *   "test"
- * ],
- * "weekAvailability": 20,
- * "meetingAvailability": "test",
- * "contribution": "test",
+ * "rolesPep": ["test"],
+ * "interestFutureRoles": ["test"],
  * "needDeclaration": false
  * }
  */
-export type VolunteerEntity = {
+export interface VolunteerEntity {
   /**
    * @pattern ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$ must be a valid email
    */
@@ -39,11 +33,7 @@ export type VolunteerEntity = {
   country: string;
   state: string;
   city: string;
-  ethnicity: string;
   disability?: string;
-  gender: string;
-  sex?: string;
-  socialName?: string;
   howFoundPep: string;
   knowledgePep: string;
   workshops: string[];
@@ -53,9 +43,7 @@ export type VolunteerEntity = {
   lifeExperience: string;
   desires: string;
   rolesPep: string[];
-  weekAvailability: number;
-  meetingAvailability: string;
-  interestFutureRoles?: string[];
-  contribution: string;
+  interestFutureRoles: string[];
   needDeclaration: boolean;
-};
+  idvol?: number;
+}

@@ -8,11 +8,15 @@
  *  "certificationPermission": false
  * }
  */
-export type VolunteerAuthDataEntity = {
+export interface VolunteerAuthDataEntity {
+  /**
+   * @pattern ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$ must be a valid email
+   * @example "test@gmail.com"
+   */
   email: string;
   password: string;
   authorPermission?: string;
   readPermission?: boolean;
   bookPermission?: boolean;
   certificationPermission?: boolean;
-};
+}

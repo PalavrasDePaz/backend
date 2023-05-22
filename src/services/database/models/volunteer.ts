@@ -25,10 +25,10 @@ export class Volunteer extends Model<
   'país': string;
   estado!: string;
   cidade!: string;
-  etnia!: string;
+  etnia?: string;
   defic!: string;
   qual?: string;
-  genero!: string;
+  genero?: string;
   sexo?: string;
   'nome social'?: string;
   ondesoube!: string;
@@ -41,10 +41,10 @@ export class Volunteer extends Model<
   'experiências'!: string;
   sonhos!: string;
   oportunidades!: string;
-  tempo!: number;
-  dia!: string;
+  tempo?: number;
+  dia?: string;
   ajudar?: string;
-  contribuir!: string;
+  contribuir?: string;
   'declaração'!: string;
   createdAt?: Date;
 
@@ -132,7 +132,7 @@ export class Volunteer extends Model<
         },
         etnia: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
         },
         defic: {
           type: DataTypes.STRING,
@@ -140,7 +140,7 @@ export class Volunteer extends Model<
         },
         genero: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
         },
         ondesoube: {
           type: DataTypes.STRING,
@@ -176,11 +176,11 @@ export class Volunteer extends Model<
         },
         tempo: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
         },
         dia: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
         },
         ajudar: {
           type: DataTypes.STRING,
@@ -188,7 +188,7 @@ export class Volunteer extends Model<
         },
         contribuir: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
         },
         declaração: {
           type: DataTypes.STRING,
