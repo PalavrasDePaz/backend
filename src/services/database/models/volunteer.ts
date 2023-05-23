@@ -33,7 +33,7 @@ export class Volunteer extends Model<
   'nome social'?: string;
   ondesoube!: string;
   'conhecimento pep'!: string;
-  workshops!: string;
+  workshops?: string;
   escolaridade!: string;
   curso1?: string;
   curso2?: string;
@@ -152,7 +152,7 @@ export class Volunteer extends Model<
         },
         workshops: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
         },
         escolaridade: {
           type: DataTypes.STRING,
