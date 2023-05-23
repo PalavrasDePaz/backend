@@ -10,7 +10,6 @@
  * "disability": "test",
  * "howFoundPep": "test",
  * "knowledgePep": "test",
- * "workshops": ["test"],
  * "schooling": "test",
  * "bachelor": "test",
  * "studiesKnowledge": "test",
@@ -36,7 +35,6 @@ export interface VolunteerEntity {
   disability?: string;
   howFoundPep: string;
   knowledgePep: string;
-  workshops: string[];
   schooling: string;
   bachelor?: string;
   studiesKnowledge: string;
