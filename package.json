@@ -2,7 +2,7 @@
   "name": "palavrasdepaz",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "./build/src/index.js",
   "_moduleAliases": {
     "@src": "./src",
     "@test": "./src/test"
