@@ -13,7 +13,7 @@
  * "workshops": ["test"],
  * "schooling": "test",
  * "bachelor": "test",
- * "studiesKnowlegde": "test",
+ * "studiesKnowledge": "test",
  * "lifeExperience": "test",
  * "desires": "test",
  * "rolesPep": ["test"],
@@ -39,7 +39,7 @@ export interface VolunteerEntity {
   workshops: string[];
   schooling: string;
   bachelor?: string;
-  studiesKnowlegde: string;
+  studiesKnowledge: string;
   lifeExperience: string;
   desires: string;
   rolesPep: string[];
