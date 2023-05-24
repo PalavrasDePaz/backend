@@ -10,8 +10,8 @@
   "scripts": {
     "test": "jest --projects ./src/test/",
     "start:dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
-    "start": "npm run build && node build/src/index.js",
     "build": "rm -rf build && tsoa spec-and-routes && tsc && tsc-alias",
+    "start": "node build/src/index.js",
     "prepare": "husky install",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
