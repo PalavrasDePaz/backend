@@ -1,7 +1,7 @@
 export class ErrorBase<T extends string> extends Error {
   name: T | 'UNSPECIFIED_ERROR';
   message: string;
-  details: unknown;
+  details?: unknown;
 
   constructor({
     name,
