@@ -6,11 +6,7 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-aut
 import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
 import { Volunteer } from '@src/services/database/models/volunteer';
 import volunteerModel from '../dummies/volunteer-model';
-import {
-  UniqueConstraintError,
-  ValidationError,
-  ValidationErrorItem
-} from 'sequelize';
+import { UniqueConstraintError } from 'sequelize';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 import volunteerDummy from '../dummies/volunteer-dummy';
 

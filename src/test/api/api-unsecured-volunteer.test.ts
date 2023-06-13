@@ -1,15 +1,19 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-import { VolunteerAPI } from '@src/presentation/api/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
 import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
-import { ApiError } from '@src/presentation/types/api-error';
 import { VolunteerError } from '@src/domain/errors/volunteer';
+import { verify } from 'jsonwebtoken';
+import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { hashString } from '@src/helpers/message-hashing';
+import { VolunteerJWTPayload } from '@src/presentation/types/volunteer-jwt-payload';
+import { JWT_SECRET_KEY } from '@src/config/server';
+import { UnsecuredVolunteerAPI } from '@src/presentation/api/unsecured-volunteer';
+import { ApiError } from '@src/presentation/types/api-error';
 
 describe('Volunteer API', () => {
   let volunteerRepository: VolunteerRepository;
-  let volunteerAPI: VolunteerAPI;
+  let volunteerAPI: UnsecuredVolunteerAPI;
   const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
@@ -48,57 +52,46 @@ describe('Volunteer API', () => {
 
   beforeAll(() => {
     volunteerRepository = new MockVolunteerRepository();
-    volunteerAPI = new VolunteerAPI(volunteerRepository);
+    volunteerAPI = new UnsecuredVolunteerAPI(volunteerRepository);
     jest.clearAllMocks();
   });
 
-  it('Should get a user by the email', async () => {
-    jest
-      .spyOn(volunteerRepository, 'getVolunteerByEmail')
-      .mockResolvedValue(volunteer);
+  it('Should login returning an access token', async () => {
+    const tokenPayload: VolunteerJWTPayload = {
+      email: volunteer.email,
+      bookPermission: volunteer.bookPermission,
+      authorPermission: volunteer.authorPermission,
+      certificationPermission: volunteer.certificationPermission,
+      readPermission: volunteer.readPermission
+    };
 
-    const volunteerResponse = await volunteerAPI.getVolunteerByEmail(
-      volunteer.email
-    );
-    expect(volunteerResponse).toEqual(volunteer);
+    jest
+      .spyOn(volunteerRepository, 'getVolunteerWithAuthDataByEmail')
+      .mockResolvedValue({
+        ...volunteer,
+        password: hashString(volunteer.password)
+      });
+
+    const tokenWrapper = await volunteerAPI.login({
+      email: volunteer.email,
+      password: volunteer.password
+    });
+
+    const decodedTokenPayload = verify(
+      tokenWrapper.token,
+      JWT_SECRET_KEY
+    ) as VolunteerJWTPayload;
+
+    expect(decodedTokenPayload.email).toEqual(tokenPayload.email);
   });
 
-  it('Should throw an error if volunteer does not exists when getting by email', async () => {
+  it('Should throw an error when login with wrong password', async () => {
     jest
-      .spyOn(volunteerRepository, 'getVolunteerByEmail')
-      .mockResolvedValue(null);
-
-    const unkownEmail = 'notfound@gmail.com';
-
-    const expectedError = new ApiError(
-      400,
-      new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: `Volunteer with email ${unkownEmail} not found`
-      })
-    );
-
-    expect(volunteerAPI.getVolunteerByEmail(unkownEmail)).rejects.toThrow(
-      expectedError
-    );
-  });
-
-  it('Should create or update password', async () => {
-    jest
-      .spyOn(volunteerRepository, 'updateOrCreatePasswordForEmail')
-      .mockResolvedValue(true);
-
-    expect(
-      volunteerAPI.createOrUpdatePassword(volunteer.email, {
-        password: volunteer.password
-      })
-    ).resolves.not.toThrow();
-  });
-
-  it('Should throw an error if volunteer is not found when creating or updating password', async () => {
-    jest
-      .spyOn(volunteerRepository, 'updateOrCreatePasswordForEmail')
-      .mockResolvedValue(false);
+      .spyOn(volunteerRepository, 'getVolunteerWithAuthDataByEmail')
+      .mockResolvedValue({
+        ...volunteer,
+        password: hashString('wrongpass')
+      });
 
     const expectedError = new ApiError(
       400,
@@ -110,36 +103,37 @@ describe('Volunteer API', () => {
     );
 
     expect(
-      volunteerAPI.createOrUpdatePassword(volunteer.email, {
+      volunteerAPI.login({
+        email: volunteer.email,
         password: volunteer.password
       })
     ).rejects.toThrow(expectedError);
   });
 
-  it('Should delete volunteer', async () => {
+  it('Should create a volunteer and return it', async () => {
     jest
-      .spyOn(volunteerRepository, 'deleteVolunteerByEmail')
-      .mockResolvedValue(true);
+      .spyOn(volunteerRepository, 'createVolunteer')
+      .mockResolvedValue(volunteer);
 
-    expect(
-      volunteerAPI.deleteVolunteer(volunteer.email)
-    ).resolves.not.toThrow();
+    const createdVolunteer = await volunteerAPI.createVolunteer(volunteer);
+
+    expect(createdVolunteer).toEqual(volunteer);
   });
 
-  it('Should throw an error if volunteer to delete is not found', async () => {
-    jest
-      .spyOn(volunteerRepository, 'deleteVolunteerByEmail')
-      .mockResolvedValue(false);
-
+  it('Should throw an error when creating an already existing volunteer', async () => {
     const expectedError = new ApiError(
       400,
       new VolunteerError({
-        name: 'VOLUNTEER_NOT_FOUND',
-        message: `Volunteer with email ${volunteer.email} not deleted`
+        name: 'VOLUNTEER_ALREADY_EXISTS',
+        message: `Volunteer with email ${volunteer.email} already exists`
       })
     );
 
-    expect(volunteerAPI.deleteVolunteer(volunteer.email)).rejects.toThrow(
+    jest
+      .spyOn(volunteerRepository, 'createVolunteer')
+      .mockRejectedValue(expectedError);
+
+    expect(volunteerAPI.createVolunteer(volunteer)).rejects.toThrow(
       expectedError
     );
   });
