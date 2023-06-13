@@ -8,8 +8,8 @@ import { ApiError } from '../types/api-error';
 export const expressAuthentication = async function (
   req: Request,
   securityName: string,
-  scopes?: string[]
-): Promise<any> {
+  _scopes?: string[]
+): Promise<unknown> {
   if (securityName == 'jwt') {
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -53,4 +53,6 @@ export const expressAuthentication = async function (
       );
     }
   }
+
+  return;
 };
