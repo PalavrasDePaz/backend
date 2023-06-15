@@ -1,11 +1,11 @@
-import NotebooksEntity from '@src/domain/entities/notebooks-entity';
 import { NotebooksRepository } from '@src/domain/interfaces/repositories/notebooks-repository';
 import { SequelizeNotebooksRepository } from '@src/services/repositories/sequelize-notebooks-repository';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { Controller, Get, Path, Route, Security } from 'tsoa';
+import { Controller, Get, Path, Route, Security, Tags } from 'tsoa';
 
 @Route('notebooks')
+@Tags('Notebook')
 @provide(NotebooksAPI)
 export class NotebooksAPI extends Controller {
   private notebooksRepository: NotebooksRepository;
@@ -21,12 +21,12 @@ export class NotebooksAPI extends Controller {
   /**
    * Get all notebooks by a volunteer and total count.
    */
-  @Get('{idvol}')
+  @Get('count/{idvol}')
   @Security('jwt')
   public async getNotebooksByIdVol(
     @Path() idvol: number
-  ): Promise<{ count: number; notebooks: NotebooksEntity[] }> {
+  ): Promise<{ count: number }> {
     const notebooks = await this.notebooksRepository.getNotebooksByIdVol(idvol);
-    return { count: notebooks.length, notebooks };
+    return { count: notebooks.length };
   }
 }

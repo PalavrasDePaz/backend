@@ -10,6 +10,7 @@ export const volunteerModelToEntity = (
 ): VolunteerEntity => {
   return {
     email: volunteer['e-mail'],
+    idvol: volunteer.idvol,
     name: volunteer.nome,
     pep: volunteer.idpep,
     birthDate: volunteer.nascimento,
@@ -36,6 +37,7 @@ export const volunteerModelToAuthEntity = (
 ): VolunteerWithAuthEntity => {
   return {
     email: volunteer['e-mail'],
+    idvol: volunteer.idvol,
     name: volunteer.nome,
     password: volunteer.senha,
     pep: volunteer.idpep,
