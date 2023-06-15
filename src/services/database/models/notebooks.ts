@@ -1,6 +1,15 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  Sequelize
+} from 'sequelize';
 
-export class Notebooks extends Model {
+export class Notebooks extends Model<
+  InferAttributes<Notebooks>,
+  InferCreationAttributes<Notebooks>
+> {
   idcad!: number;
   idvol!: number;
   'nome do(a) aluno(a)'!: string;
@@ -34,7 +43,9 @@ export class Notebooks extends Model {
   a13?: string;
   'conclusão do avaliador'!: string;
   'exclusão de arquivos recebidos'?: string;
-  createdAt?: Date;
+  'Carimbo de data/hora'?: Date;
+  idpep?: number;
+  datareserva?: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -175,7 +186,15 @@ export class Notebooks extends Model {
         },
         'Carimbo de data/hora': {
           type: DataTypes.DATE,
-          allowNull: false
+          allowNull: true
+        },
+        idpep: {
+          type: DataTypes.INTEGER,
+          allowNull: true
+        },
+        datareserva: {
+          type: DataTypes.DATE,
+          allowNull: true
         }
       },
       {

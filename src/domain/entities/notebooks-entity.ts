@@ -1,6 +1,7 @@
 export default interface NotebooksEntity {
   idcad: number;
   idvol: number;
+  idpep?: number;
   studentName: string;
   studentRegistration: number;
   studentPrisonUnit: string | undefined;
@@ -32,5 +33,6 @@ export default interface NotebooksEntity {
   a13: string | undefined;
   conclusion: string;
   archivesExclusion: boolean;
-  createdAt: Date | undefined;
+  evaluatedDate?: Date;
+  reservationDate?: Date;
 }
