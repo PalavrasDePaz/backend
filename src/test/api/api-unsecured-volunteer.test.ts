@@ -58,6 +58,7 @@ describe('Volunteer API', () => {
 
   it('Should login returning an access token', async () => {
     const tokenPayload: VolunteerJWTPayload = {
+      idvol: volunteer.idvol,
       email: volunteer.email,
       bookPermission: volunteer.bookPermission,
       authorPermission: volunteer.authorPermission,
