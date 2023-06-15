@@ -56,6 +56,36 @@ describe('Volunteer API', () => {
     jest.clearAllMocks();
   });
 
+  it('Should check that an email exists', async () => {
+    jest
+      .spyOn(volunteerRepository, 'getVolunteerByEmail')
+      .mockResolvedValue(volunteer);
+
+    expect(
+      volunteerAPI.checkExistingEmail(volunteer.email)
+    ).resolves.not.toThrow();
+  });
+
+  it('Should throw an error when an email does not exists', async () => {
+    jest
+      .spyOn(volunteerRepository, 'getVolunteerByEmail')
+      .mockResolvedValue(null);
+
+    const unknowEmail = 'unknow@gmail.com';
+
+    const expectedError = new ApiError(
+      404,
+      new VolunteerError({
+        name: 'VOLUNTEER_NOT_FOUND',
+        message: `Volunteer with email ${unknowEmail} not found`
+      })
+    );
+
+    expect(volunteerAPI.checkExistingEmail(unknowEmail)).rejects.toThrow(
+      expectedError
+    );
+  });
+
   it('Should login returning an access token', async () => {
     const tokenPayload: VolunteerJWTPayload = {
       idvol: volunteer.idvol,
