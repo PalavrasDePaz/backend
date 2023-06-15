@@ -9,7 +9,9 @@ import {
   Body,
   Controller,
   FieldErrors,
+  Head,
   Patch,
+  Path,
   Post,
   Response,
   Route,
@@ -38,6 +40,26 @@ export class UnsecuredVolunteerAPI extends Controller {
   ) {
     super();
     this.volunteerRepository = volunteerRepository;
+  }
+
+  /**
+   * Check if the email already exists on the system.
+   *
+   */
+  @Head('{email}')
+  @SuccessResponse(200, 'The email exists')
+  @Response<VolunteerError>(404, 'Could not find the email')
+  async checkExistingEmail(@Path() email: string): Promise<void> {
+    const volunteer = await this.volunteerRepository.getVolunteerByEmail(email);
+
+    if (!volunteer)
+      throw new ApiError(
+        404,
+        new VolunteerError({
+          name: 'VOLUNTEER_NOT_FOUND',
+          message: `Volunteer with email ${email} not found`
+        })
+      );
   }
 
   /**
@@ -97,6 +119,7 @@ export class UnsecuredVolunteerAPI extends Controller {
     ) {
       const payload: VolunteerJWTPayload = {
         email: volunteer.email,
+        idvol: volunteer.idvol,
         bookPermission: volunteer.bookPermission,
         authorPermission: volunteer.authorPermission,
         certificationPermission: volunteer.certificationPermission,

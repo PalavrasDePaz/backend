@@ -2,6 +2,7 @@ import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
 
 const volunteerDummy: VolunteerEntity = {
   email: 'test@gmail.com',
+  idvol: 1,
   name: 'test',
   pep: 1,
   birthDate: new Date('2023-03-01T02:27:27.610Z'),

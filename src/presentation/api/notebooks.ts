@@ -1,13 +1,13 @@
 import { AvailableNotebookRowEntity } from '@src/domain/entities/available-notebook-row-entity';
-import NotebooksEntity from '@src/domain/entities/notebooks-entity';
 import { NotebooksRepository } from '@src/domain/interfaces/repositories/notebooks-repository';
 import { formatAvailableNotebookToTableRow } from '@src/helpers/format-available-notebook';
 import { SequelizeNotebooksRepository } from '@src/services/repositories/sequelize-notebooks-repository';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { Controller, Get, Path, Route, Security } from 'tsoa';
+import { Controller, Get, Path, Route, Security, Tags } from 'tsoa';
 
 @Route('notebooks')
+@Tags('Notebook')
 @provide(NotebooksAPI)
 export class NotebooksAPI extends Controller {
   private notebooksRepository: NotebooksRepository;
@@ -25,11 +25,9 @@ export class NotebooksAPI extends Controller {
    */
   @Get('count/{idvol}')
   @Security('jwt')
-  async getNotebooksByIdVol(
-    @Path() idvol: number
-  ): Promise<{ count: number; notebooks: NotebooksEntity[] }> {
+  async getNotebooksByIdVol(@Path() idvol: number): Promise<{ count: number }> {
     const notebooks = await this.notebooksRepository.getNotebooksByIdVol(idvol);
-    return { count: notebooks.length, notebooks };
+    return { count: notebooks.length };
   }
 
   @Get('available/{idvol}')
