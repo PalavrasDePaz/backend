@@ -12,7 +12,6 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-aut
 import { UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
 import { provideSingleton } from '@src/helpers/provide-singleton';
-import 'reflect-metadata';
 import { hashString } from '@src/helpers/message-hashing';
 
 @provideSingleton(SequelizeVolunteerRepository)

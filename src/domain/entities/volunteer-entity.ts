@@ -43,5 +43,5 @@ export interface VolunteerEntity {
   rolesPep: string[];
   interestFutureRoles: string[];
   needDeclaration: boolean;
-  idvol?: number;
+  idvol: number;
 }
