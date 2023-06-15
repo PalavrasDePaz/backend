@@ -33,7 +33,5 @@ export const sendEmailToVolunteer = async (email: string) => {
     html: `<p>Olá! Esse email foi enviado para criar sua nova senha no sistema do Palavraz de Paz, por favor utilize esse link: ${resetPasswordPath}<p>`
   });
 
-  console.log(info);
-
   return info;
 };
