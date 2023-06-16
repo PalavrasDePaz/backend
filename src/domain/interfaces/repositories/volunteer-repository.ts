@@ -1,6 +1,7 @@
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
+import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 
 export interface VolunteerRepository {
   updateVolunteer(
@@ -16,7 +17,7 @@ export interface VolunteerRepository {
 
   getAllVolunteers(): Promise<VolunteerEntity[]>;
 
-  createVolunteer(volunteer: VolunteerWithAuthEntity): Promise<VolunteerEntity>;
+  createVolunteer(volunteer: CreateVolunteerEntity): Promise<VolunteerEntity>;
 
   deleteVolunteerByEmail(email: string): Promise<boolean>;
 

@@ -2,13 +2,14 @@ import { SequelizeVolunteerRepository } from '@src/services/repositories/sequeli
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import initModels from '@src/services/database';
 import sequelize from '@src/services/database/sequelize';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
+import volunteerWithAuthEntityDummy from '../dummies/volunteer-with-auth-entity-dummy';
 import { Volunteer } from '@src/services/database/models/volunteer';
 import volunteerModel from '../dummies/volunteer-model';
 import { UniqueConstraintError } from 'sequelize';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-import volunteerDummy from '../dummies/volunteer-dummy';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
+import volunteerEntityDummy from '../dummies/volunteer-entity-dummy';
+import createVolunteerEntityDummy from '../dummies/create-volunteer-entity-dummy';
 
 describe('Volunteer Repositories', () => {
   let volunteerRepository: VolunteerRepository;
@@ -24,7 +25,7 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should get a volunteer by the email', async () => {
-    const volunteer: VolunteerEntity = volunteerDummy;
+    const volunteer: VolunteerEntity = volunteerEntityDummy;
 
     jest
       .spyOn(Volunteer, 'findOne')
@@ -38,20 +39,21 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should create a new volunteer', async () => {
-    const volunteerWithAuth: VolunteerWithAuthEntity = volunteerWithAuthDummy;
-    const volunteer: VolunteerEntity = volunteerDummy;
+    const volunteer: VolunteerEntity = volunteerEntityDummy;
 
     jest
       .spyOn(Volunteer, 'create')
       .mockResolvedValue(volunteerModel as unknown as Volunteer);
 
-    const result = await volunteerRepository.createVolunteer(volunteerWithAuth);
+    const result = await volunteerRepository.createVolunteer(
+      createVolunteerEntityDummy
+    );
 
     expect(result).toEqual(volunteer);
   });
 
   it('Should update a volunteer by the email', async () => {
-    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
     jest.spyOn(Volunteer, 'update').mockResolvedValue([1]);
     jest
@@ -68,7 +70,7 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should delete a volunteer', async () => {
-    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
     jest.spyOn(Volunteer, 'destroy').mockResolvedValue(1);
 
     await volunteerRepository.deleteVolunteerByEmail(volunteer.email);
@@ -77,7 +79,7 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should get volunteer with auth data', async () => {
-    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
     jest.restoreAllMocks();
     jest
@@ -92,7 +94,7 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should throw error when trying to create an already existing email', async () => {
-    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+    const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
     jest
       .spyOn(Volunteer, 'create')
@@ -101,12 +103,12 @@ describe('Volunteer Repositories', () => {
       );
 
     await expect(
-      volunteerRepository.createVolunteer(volunteer)
+      volunteerRepository.createVolunteer(createVolunteerEntityDummy)
     ).rejects.toThrow(`Volunteer with email ${volunteer.email} already exists`);
   });
 
   it('Should create a new password if it does not exists', async () => {
-    const volunteer: VolunteerEntity = volunteerDummy;
+    const volunteer: VolunteerEntity = volunteerEntityDummy;
 
     jest.clearAllMocks();
     jest.spyOn(Volunteer, 'update').mockResolvedValue([1]);
@@ -120,7 +122,7 @@ describe('Volunteer Repositories', () => {
   });
 
   it('Should get an array with all volunteers', async () => {
-    const volunteers: VolunteerEntity[] = [volunteerDummy];
+    const volunteers: VolunteerEntity[] = [volunteerEntityDummy];
 
     jest
       .spyOn(Volunteer, 'findAll')

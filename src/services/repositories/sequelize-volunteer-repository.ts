@@ -1,18 +1,19 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { Volunteer } from '@src/services/database/models/volunteer';
 import {
-  volunteerWithAuthEntityToCreationModel,
   volunteerModelToEntity,
   updateVolunteerEntityToUpdateModel,
-  volunteerModelToAuthEntity
+  volunteerModelToAuthEntity,
+  createVolunteerEntityToCreationModel
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
 import { UniqueConstraintError } from 'sequelize';
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { hashString } from '@src/helpers/message-hashing';
+import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
@@ -60,11 +61,11 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
   }
 
   async createVolunteer(
-    volunteer: VolunteerWithAuthEntity
+    volunteer: CreateVolunteerEntity
   ): Promise<VolunteerEntity> {
     try {
       const result = await Volunteer.create(
-        volunteerWithAuthEntityToCreationModel(volunteer)
+        createVolunteerEntityToCreationModel(volunteer)
       );
       return volunteerModelToEntity(result);
     } catch (error) {

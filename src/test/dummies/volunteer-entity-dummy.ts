@@ -1,6 +1,6 @@
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 
-const volunteerDummy: VolunteerEntity = {
+const volunteerEntityDummy: VolunteerEntity = {
   email: 'test@gmail.com',
   idvol: 1,
   name: 'test',
@@ -23,4 +23,4 @@ const volunteerDummy: VolunteerEntity = {
   interestFutureRoles: ['test']
 };
 
-export default volunteerDummy;
+export default volunteerEntityDummy;

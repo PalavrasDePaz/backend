@@ -1,5 +1,5 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import {
   Body,
@@ -19,8 +19,8 @@ import {
 import { inject } from 'inversify';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { provide } from 'inversify-binding-decorators';
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
-import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer-auth-entity';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
+import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { ApiError } from '../types/api-error';
 
 @Route('volunteers')
