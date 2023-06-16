@@ -1,10 +1,10 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
+import volunteerWithAuthEntityDummy from '../dummies/volunteer-with-auth-entity-dummy';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { verify } from 'jsonwebtoken';
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { hashString } from '@src/helpers/message-hashing';
 import { VolunteerJWTPayload } from '@src/presentation/types/volunteer-jwt-payload';
 import { JWT_SECRET_KEY } from '@src/config/server';
@@ -14,7 +14,7 @@ import { ApiError } from '@src/presentation/types/api-error';
 describe('Volunteer API', () => {
   let volunteerRepository: VolunteerRepository;
   let volunteerAPI: UnsecuredVolunteerAPI;
-  const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+  const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
     updateVolunteer(
