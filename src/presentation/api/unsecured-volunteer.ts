@@ -1,9 +1,8 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { sign } from 'jsonwebtoken';
 import { JWT_SECRET_KEY } from '@src/config/server';
 import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import {
   Body,
@@ -22,10 +21,11 @@ import { inject } from 'inversify';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { provide } from 'inversify-binding-decorators';
 import { sendEmailToVolunteer } from '@src/services/email-service/sendPasswordEmail';
-import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer-auth-entity';
+import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { checkPlainWithHash } from '@src/helpers/message-hashing';
 import { decrypt } from '@src/helpers/message-encryption';
 import { ApiError } from '../types/api-error';
+import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
@@ -148,7 +148,7 @@ export class UnsecuredVolunteerAPI extends Controller {
     message: 'Volunteer with email {some email} already exists'
   })
   async createVolunteer(
-    @Body() volunteer: VolunteerWithAuthEntity
+    @Body() volunteer: CreateVolunteerEntity
   ): Promise<VolunteerEntity> {
     try {
       const createdVolunteer = await this.volunteerRepository.createVolunteer(

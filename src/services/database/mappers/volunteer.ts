@@ -1,9 +1,10 @@
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { Volunteer } from '../models/volunteer';
 import { CreationAttributes } from 'sequelize';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { hashString } from '@src/helpers/message-hashing';
+import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 
 export const volunteerModelToEntity = (
   volunteer: Volunteer
@@ -64,8 +65,8 @@ export const volunteerModelToAuthEntity = (
   };
 };
 
-export const volunteerWithAuthEntityToCreationModel = (
-  volunteer: VolunteerWithAuthEntity
+export const createVolunteerEntityToCreationModel = (
+  volunteer: CreateVolunteerEntity
 ): CreationAttributes<Volunteer> => {
   return {
     nome: volunteer.name,

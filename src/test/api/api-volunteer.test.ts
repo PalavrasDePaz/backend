@@ -1,16 +1,16 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { VolunteerAPI } from '@src/presentation/api/volunteer';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer-with-auth-entity';
-import volunteerWithAuthDummy from '../dummies/volunteer-auth-entity-dummy';
-import { UpdateVolunteerEntity } from '@src/domain/entities/update-volunteer-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
+import volunteerWithAuthEntityDummy from '../dummies/volunteer-with-auth-entity-dummy';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { ApiError } from '@src/presentation/types/api-error';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 
 describe('Volunteer API', () => {
   let volunteerRepository: VolunteerRepository;
   let volunteerAPI: VolunteerAPI;
-  const volunteer: VolunteerWithAuthEntity = volunteerWithAuthDummy;
+  const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
     updateVolunteer(
