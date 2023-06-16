@@ -1,6 +1,6 @@
-import { AuthError } from '@src/domain/errors/auth';
 import { Request, Response, NextFunction } from 'express';
 import { ValidateError } from 'tsoa';
+import { ApiError } from '../types/api-error';
 
 type Issue = {
   message: string;
@@ -36,8 +36,8 @@ export function validationMiddleware(
       message: 'Validation Failed',
       details: formatedErroMsg
     });
-  } else if (err instanceof AuthError) {
-    return res.status(401).json(err);
+  } else if (err instanceof ApiError) {
+    return res.status(err.statusCode).json(err.error);
   } else if (err instanceof Error) {
     return res.status(500).json({
       message: 'Internal Server Error',
