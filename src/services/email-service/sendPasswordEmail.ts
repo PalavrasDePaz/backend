@@ -10,6 +10,8 @@ import nodemailer from 'nodemailer';
 import { urlJoin } from 'url-join-ts';
 
 export const sendEmailToVolunteer = async (email: string) => {
+  console.log('Entered send email function');
+
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.kinghost.net',
@@ -21,12 +23,16 @@ export const sendEmailToVolunteer = async (email: string) => {
       }
     });
 
+    console.log('Created transporter smtp');
+
     const emailHash = encrypt(email);
     const resetPasswordPath = urlJoin(
       CREATE_PASSWORD_HOST,
       CREATE_PASSWORD_ROUTE,
       emailHash
     );
+
+    console.log('Sending message to email');
 
     await new Promise((resolve, reject) => {
       transporter.sendMail(
@@ -46,6 +52,7 @@ export const sendEmailToVolunteer = async (email: string) => {
         }
       );
     });
+    transporter.close();
   } catch (error) {
     throw new SendEmailError({
       name: 'COULD_NOT_SEND_EMAIL_ERROR',
