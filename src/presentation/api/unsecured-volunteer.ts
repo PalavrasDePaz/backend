@@ -26,6 +26,7 @@ import { checkPlainWithHash } from '@src/helpers/message-hashing';
 import { decrypt } from '@src/helpers/message-encryption';
 import { ApiError } from '../types/api-error';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
+import { SendEmailError } from '@src/domain/errors/send-email';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
@@ -171,6 +172,7 @@ export class UnsecuredVolunteerAPI extends Controller {
   @Post('password-email')
   @SuccessResponse(200, 'Successfully sent the email to the volunteer')
   @Response<VolunteerError>(400, 'Could not find volunteer')
+  @Response<SendEmailError>(400, 'Could not send email')
   async sendCreatePasswordEmail(
     @Body() emailWrapper: Pick<VolunteerAuthDataEntity, 'email'>
   ): Promise<void> {
@@ -187,6 +189,10 @@ export class UnsecuredVolunteerAPI extends Controller {
         })
       );
 
-    await sendEmailToVolunteer(emailWrapper.email);
+    try {
+      await sendEmailToVolunteer(emailWrapper.email);
+    } catch (error) {
+      throw new ApiError(400, error as SendEmailError);
+    }
   }
 }
