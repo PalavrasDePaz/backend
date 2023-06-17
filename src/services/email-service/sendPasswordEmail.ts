@@ -28,14 +28,25 @@ export const sendEmailToVolunteer = async (email: string) => {
       emailHash
     );
 
-    await transporter.sendMail({
-      from: 'info@palavrasdepaz.org ',
-      to: email,
-      subject: 'Cadastro Senha Palavra da Paz',
-      html: `<p>Olá! Esse email foi enviado para criar sua nova senha no sistema do Palavraz de Paz, por favor utilize esse link: ${resetPasswordPath}<p>`
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(
+        {
+          from: 'info@palavrasdepaz.org ',
+          to: email,
+          subject: 'Cadastro Senha Palavra da Paz',
+          html: `<p>Olá! Esse email foi enviado para criar sua nova senha no sistema do Palavraz de Paz, por favor utilize esse link: ${resetPasswordPath}<p>`
+        },
+        (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            resolve(info);
+          }
+        }
+      );
     });
   } catch (error) {
-    console.error(error);
     throw new SendEmailError({
       name: 'COULD_NOT_SEND_EMAIL_ERROR',
       message: `Could not send email to ${email}`,
