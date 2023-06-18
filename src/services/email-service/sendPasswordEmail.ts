@@ -23,6 +23,14 @@ export const sendEmailToVolunteer = async (email: string) => {
       }
     });
 
+    transporter.verify(function (error, _success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Server is ready to take our messages');
+      }
+    });
+
     console.log('Created transporter smtp');
 
     const emailHash = encrypt(email);
@@ -37,7 +45,7 @@ export const sendEmailToVolunteer = async (email: string) => {
     await new Promise((resolve, reject) => {
       transporter.sendMail(
         {
-          from: 'info@palavrasdepaz.org',
+          from: EMAIL_SENDER,
           to: email,
           subject: 'Cadastro Senha Palavra da Paz',
           html: `<p>Olá! Esse email foi enviado para criar sua nova senha no sistema do Palavraz de Paz, por favor utilize esse link: ${resetPasswordPath}<p>`
@@ -52,8 +60,9 @@ export const sendEmailToVolunteer = async (email: string) => {
           }
         }
       );
+      console.log('Email sent in promise');
     });
-    transporter.close();
+    console.log('Out of the email promise');
   } catch (error) {
     throw new SendEmailError({
       name: 'COULD_NOT_SEND_EMAIL_ERROR',
