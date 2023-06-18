@@ -37,7 +37,7 @@ export const sendEmailToVolunteer = async (email: string) => {
     await new Promise((resolve, reject) => {
       transporter.sendMail(
         {
-          from: 'info@palavrasdepaz.org ',
+          from: 'info@palavrasdepaz.org',
           to: email,
           subject: 'Cadastro Senha Palavra da Paz',
           html: `<p>Olá! Esse email foi enviado para criar sua nova senha no sistema do Palavraz de Paz, por favor utilize esse link: ${resetPasswordPath}<p>`
@@ -47,6 +47,7 @@ export const sendEmailToVolunteer = async (email: string) => {
             console.error(err);
             reject(err);
           } else {
+            console.log(info);
             resolve(info);
           }
         }
