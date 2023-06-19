@@ -14,9 +14,9 @@ export const sendEmailToVolunteer = async (email: string) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      host: 'smtp.kinghost.net',
-      port: 587,
-      secure: false,
+      host: 'smtpi.kinghost.net',
+      port: 465,
+      secure: true,
       auth: {
         user: EMAIL_SENDER,
         pass: EMAIL_APP_PASSWORD
