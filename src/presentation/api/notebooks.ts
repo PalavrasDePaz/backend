@@ -2,7 +2,7 @@ import { NotebooksRepository } from '@src/domain/interfaces/repositories/noteboo
 import { SequelizeNotebooksRepository } from '@src/services/repositories/sequelize-notebooks-repository';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { Controller, Get, Path, Route, Security, Tags } from 'tsoa';
+import { Controller, Get, Path, Route, Security, SuccessResponse, Tags } from 'tsoa';
 
 @Route('notebooks')
 @Tags('Notebook')
@@ -19,14 +19,14 @@ export class NotebooksAPI extends Controller {
   }
 
   /**
-   * Get all notebooks by a volunteer and total count.
+   * Get total count of notebooks by a volunteer.
    */
   @Get('count/{idvol}')
+  @SuccessResponse(200, 'Ok')
   @Security('jwt')
   public async getNotebooksByIdVol(
     @Path() idvol: number
   ): Promise<{ count: number }> {
-    const notebooks = await this.notebooksRepository.getNotebooksByIdVol(idvol);
-    return { count: notebooks.length };
+    return this.notebooksRepository.getNotebooksByIdVol(idvol);
   }
 }
