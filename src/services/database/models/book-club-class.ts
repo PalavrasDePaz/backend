@@ -1,6 +1,15 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  Sequelize
+} from 'sequelize';
 
-export class BookClubClass extends Model {
+export class BookClubClass extends Model<
+  InferAttributes<BookClubClass>,
+  InferCreationAttributes<BookClubClass>
+> {
   idturma!: number;
   place!: number;
   datarecebrelatorio!: Date;
@@ -15,7 +24,7 @@ export class BookClubClass extends Model {
   pressedex?: string;
   datainviofunap?: Date;
   pressedex2?: string;
-  datafimaval?: Date;
+  datafimaval?: Date | null;
   parec?: string;
   idvol?: number;
   linkpasta?: string;

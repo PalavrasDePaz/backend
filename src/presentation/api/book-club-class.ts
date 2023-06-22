@@ -32,9 +32,9 @@ export class BookClubClassAPI extends Controller {
   @Get('count/{idvol}')
   @SuccessResponse(200, 'Ok')
   @Security('jwt')
-  public async getBookClubClassById(
+  public async countEvaluatedBookClubClassByIdVol(
     @Path() idvol: number
   ): Promise<{ count: number }> {
-    return this.bccRepository.getBookClubClassById(idvol);
+    return this.bccRepository.countEvaluatedBookClubClassByIdVol(idvol);
   }
 }
