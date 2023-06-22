@@ -121,10 +121,14 @@ export class UnsecuredVolunteerAPI extends Controller {
       const payload: VolunteerJWTPayload = {
         email: volunteer.email,
         idvol: volunteer.idvol,
-        bookPermission: volunteer.bookPermission,
-        authorPermission: volunteer.authorPermission,
-        certificationPermission: volunteer.certificationPermission,
-        readPermission: volunteer.readPermission
+        bookPermission: volunteer.bookPermission ? true : undefined,
+        authorPermission: volunteer.authorPermission
+          ? volunteer.authorPermission
+          : undefined,
+        certificationPermission: volunteer.certificationPermission
+          ? true
+          : undefined,
+        readPermission: volunteer.readPermission ? true : undefined
       };
       const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
       return { token: token };
