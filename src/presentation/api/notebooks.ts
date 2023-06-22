@@ -1,6 +1,5 @@
 import { AvailableNotebookRowEntity } from '@src/domain/entities/available-notebook-row-entity';
 import { ReserveNotebookDataEntity } from '@src/domain/entities/reserve-notebook-data-entity';
-import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import { formatAvailableNotebookToTableRow } from '@src/helpers/format-available-notebook';
 import { SequelizeNotebookRepository } from '@src/services/repositories/sequelize-notebooks-repository';
