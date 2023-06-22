@@ -18,7 +18,13 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     const updatedNotebooks = (
       await Notebook.update(
         { idvol, datareserva: new Date() },
-        { where: { idcad: notebookId, datareserva: null } }
+        {
+          where: {
+            idcad: notebookId,
+            datareserva: null,
+            'Carimbo de data/hora': null
+          }
+        }
       )
     )[0];
     return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
@@ -28,8 +34,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       include: { association: Notebook.associations.pep },
       where: {
         idvol,
-        'Carimbo de data/hora': { [Op.is]: null },
-        datareserva: { [Op.ne]: null }
+        'Carimbo de data/hora': null,
+        datareserva: null
       }
     });
     return notebooks.map(notebookModelToEntity);
@@ -46,6 +52,7 @@ export class SequelizeNotebookRepository implements NotebookRepository {
 
     return notebooks.map(notebookModelToEntity);
   }
+
   async getNotebooksByIdVol(idvol: number): Promise<{ count: number }> {
     const count = await Notebook.count({ where: { idvol } });
     return { count };

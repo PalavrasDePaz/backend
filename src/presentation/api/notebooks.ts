@@ -20,6 +20,9 @@ import {
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { NotebookError } from '@src/domain/errors/notebook';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
+import { VolunteerError } from '@src/domain/errors/volunteer';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
@@ -27,13 +30,17 @@ import { NotebookError } from '@src/domain/errors/notebook';
 @provide(NotebookAPI)
 export class NotebookAPI extends Controller {
   private notebooksRepository: NotebookRepository;
+  private volunteerRepository: VolunteerRepository;
 
   constructor(
     @inject(SequelizeNotebookRepository)
-    notebooksRepository: NotebookRepository
+    notebooksRepository: NotebookRepository,
+    @inject(SequelizeVolunteerRepository)
+    volunteerRepository: VolunteerRepository
   ) {
     super();
     this.notebooksRepository = notebooksRepository;
+    this.volunteerRepository = volunteerRepository;
   }
 
   /**
@@ -69,21 +76,36 @@ export class NotebookAPI extends Controller {
     );
   }
 
-  @Post('/reserved')
+  @Post('/reservation')
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully reserved notebook for volunteer')
   @Response<NotebookError>(404, 'Notebook not found', {
     name: 'NOTEBOOK_NOT_FOUND',
-    message: 'Notebook not found'
+    message: 'Notebook with id {some notebook id} not found'
   })
-  @Response<NotebookError>(400, 'Notebook already reserved', {
+  @Response<VolunteerError>(412, 'Volunteer not found', {
+    name: 'VOLUNTEER_NOT_FOUND',
+    message: 'Volunteer with id {some volunteer id} not found'
+  })
+  @Response<NotebookError>(400, 'Notebook already reserved or evaluated', {
     name: 'NOTEBOOK_ALREADY_RESERVED_ERROR',
-    message: 'Notebook already reserved'
+    message: 'Notebook already reserved or already evaluated'
   })
   async reserveNotebookForVolunteer(
     @Body() reserveData: ReserveNotebookDataEntity
   ) {
     const { idvol, notebookId } = reserveData;
+
+    const volunteer = await this.volunteerRepository.getVolunteerById(idvol);
+    if (!volunteer) {
+      throw new ApiError(
+        412,
+        new VolunteerError({
+          name: 'VOLUNTEER_NOT_FOUND',
+          message: `Volunteer with id ${idvol} not found`
+        })
+      );
+    }
 
     const notebook = await this.notebooksRepository.getNotebookById(notebookId);
     if (!notebook) {
@@ -91,7 +113,7 @@ export class NotebookAPI extends Controller {
         404,
         new NotebookError({
           name: 'NOTEBOOK_NOT_FOUND',
-          message: 'Notebook not found'
+          message: `Notebook with id ${notebookId} not found`
         })
       );
     }
@@ -107,7 +129,7 @@ export class NotebookAPI extends Controller {
         400,
         new NotebookError({
           name: 'NOTEBOOK_ALREADY_RESERVED_ERROR',
-          message: 'Notebook already reserved'
+          message: 'Notebook already reserved or already evaluated'
         })
       );
     }
