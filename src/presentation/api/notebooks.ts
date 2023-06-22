@@ -37,13 +37,15 @@ export class NotebookAPI extends Controller {
   }
 
   /**
-   * Get all notebooks by a volunteer and total count.
+   * Get total count of notebooks by a volunteer.
    */
   @Get('count/{idvol}')
+  @SuccessResponse(200, 'Ok')
   @Security('jwt')
-  async getNotebooksByIdVol(@Path() idvol: number): Promise<{ count: number }> {
-    const notebooks = await this.notebooksRepository.getNotebooksByIdVol(idvol);
-    return { count: notebooks.length };
+  public async getNotebooksByIdVol(
+    @Path() idvol: number
+  ): Promise<{ count: number }> {
+    return this.notebooksRepository.getNotebooksByIdVol(idvol);
   }
 
   @Get('available/{idvol}')
