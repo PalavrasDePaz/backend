@@ -27,7 +27,7 @@ export const volunteerModelToEntity = (
     studiesKnowledge: volunteer.estudos,
     lifeExperience: volunteer.experiências,
     desires: volunteer.sonhos,
-    rolesPep: volunteer.oportunidades.split(' '),
+    rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
     needDeclaration: volunteer.declaração == 'SIM'
   };
