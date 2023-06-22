@@ -27,9 +27,14 @@ import { decrypt } from '@src/helpers/message-encryption';
 import { ApiError } from '../types/api-error';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 import { SendEmailError } from '@src/domain/errors/send-email';
+import { validationExample } from '@src/documentation/validation-example';
 
 @Route('volunteers')
-@Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
+@Response<{ message: string; details: FieldErrors }>(
+  422,
+  'Validation Error',
+  validationExample
+)
 @provide(UnsecuredVolunteerAPI)
 @Tags('Volunteer')
 export class UnsecuredVolunteerAPI extends Controller {

@@ -23,9 +23,14 @@ import { NotebookError } from '@src/domain/errors/notebook';
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { VolunteerError } from '@src/domain/errors/volunteer';
+import { validationExample } from '@src/documentation/validation-example';
 
 @Route('notebooks')
-@Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
+@Response<{ message: string; details: FieldErrors }>(
+  422,
+  'Validation Error',
+  validationExample
+)
 @Tags('Notebook')
 @provide(NotebookAPI)
 export class NotebookAPI extends Controller {
@@ -55,6 +60,13 @@ export class NotebookAPI extends Controller {
     return this.notebooksRepository.countEvaluatedNotebooksByIdVol(idvol);
   }
 
+  /**
+   * Get available notebooks for evaluation for the volunteer,
+   * those notebooks includes the ones which does not have a reservation date
+   * or the reservations of the volunteer.
+   *
+   * (The volunteer must have readPermission, which is checked using JWT)
+   */
   @Get('available/{idvol}')
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully fetched the notebooks')
@@ -76,6 +88,12 @@ export class NotebookAPI extends Controller {
     );
   }
 
+  /**
+   * Reserve notebook for the volunteer. If the notebook is already reserve or evaluated
+   * status 400 is returned.
+   *
+   * (The volunteer must have readPermission, which is checked using JWT)
+   */
   @Post('/reservation')
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully reserved notebook for volunteer')

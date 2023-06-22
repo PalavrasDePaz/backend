@@ -23,6 +23,7 @@
 export interface VolunteerEntity {
   /**
    * @pattern ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$ must be a valid email
+   * @example "test@gmail.com"
    */
   email: string;
   name: string;

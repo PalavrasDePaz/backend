@@ -1,3 +1,4 @@
+import { validationExample } from '@src/documentation/validation-example';
 import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
 import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
 import { inject } from 'inversify';
@@ -7,13 +8,20 @@ import {
   Get,
   Path,
   Route,
+  Response,
   Security,
   SuccessResponse,
-  Tags
+  Tags,
+  FieldErrors
 } from 'tsoa';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
+@Response<{ message: string; details: FieldErrors }>(
+  422,
+  'Validation Error',
+  validationExample
+)
 @provide(BookClubClassAPI)
 export class BookClubClassAPI extends Controller {
   private bccRepository: BookClubClassRepository;
