@@ -2,7 +2,15 @@ import { BookClubClassRepository } from '@src/domain/interfaces/repositories/boo
 import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
-import { Controller, Get, Path, Route, Security, SuccessResponse, Tags } from 'tsoa';
+import {
+  Controller,
+  Get,
+  Path,
+  Route,
+  Security,
+  SuccessResponse,
+  Tags
+} from 'tsoa';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
