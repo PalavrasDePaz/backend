@@ -1,19 +1,53 @@
-import notebooksEntity from '@src/domain/entities/notebooks-entity';
-import { NotebooksRepository } from '@src/domain/interfaces/repositories/notebooks-repository';
+import { NotebookEntity } from '@src/domain/entities/notebook-entity';
+import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import { notebookModelToEntity } from '../database/mappers/notebooks';
-import { Notebooks } from '../database/models/notebooks';
+import { Notebook } from '../database/models/notebook';
 import { provideSingleton } from '@src/helpers/provide-singleton';
+import { Op } from 'sequelize';
 
-@provideSingleton(SequelizeNotebooksRepository)
-export class SequelizeNotebooksRepository implements NotebooksRepository {
-  getReservedNotebooksByIdVol(idvol: number): Promise<notebooksEntity[]> {
-    throw new Error('Method not implemented.');
+@provideSingleton(SequelizeNotebookRepository)
+export class SequelizeNotebookRepository implements NotebookRepository {
+  async getNotebookById(notebookId: number): Promise<NotebookEntity | null> {
+    const notebook = await Notebook.findOne({ where: { idcad: notebookId } });
+    return notebook ? notebookModelToEntity(notebook) : null;
   }
-  getAvailableNotebooks(): Promise<notebooksEntity[]> {
-    throw new Error('Method not implemented.');
+  async reserveNotebookForVolunteer(
+    idvol: number,
+    notebookId: number
+  ): Promise<NotebookEntity | null> {
+    const updatedNotebooks = (
+      await Notebook.update(
+        { idvol, datareserva: new Date() },
+        { where: { idcad: notebookId, datareserva: null } }
+      )
+    )[0];
+    return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
   }
-  async getNotebooksByIdVol(idvol: number): Promise<notebooksEntity[]> {
-    const notebooks = await Notebooks.findAll({ where: { idvol } });
+  async getReservedNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]> {
+    const notebooks = await Notebook.findAll({
+      include: { association: Notebook.associations.pep },
+      where: {
+        idvol,
+        'Carimbo de data/hora': { [Op.is]: null },
+        datareserva: { [Op.ne]: null }
+      }
+    });
+    return notebooks.map(notebookModelToEntity);
+  }
+
+  async getAvailableNotebooks(): Promise<NotebookEntity[]> {
+    const notebooks = await Notebook.findAll({
+      include: { association: Notebook.associations.pep },
+      where: {
+        datareserva: { [Op.is]: null },
+        'Carimbo de data/hora': { [Op.is]: null }
+      }
+    });
+
+    return notebooks.map(notebookModelToEntity);
+  }
+  async getNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]> {
+    const notebooks = await Notebook.findAll({ where: { idvol } });
     return notebooks.map(notebookModelToEntity);
   }
 }

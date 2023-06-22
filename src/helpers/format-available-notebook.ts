@@ -1,12 +1,15 @@
 import { AvailableNotebookRowEntity } from '@src/domain/entities/available-notebook-row-entity';
-import NotebooksEntity from '@src/domain/entities/notebooks-entity';
+import { NotebookEntity } from '@src/domain/entities/notebook-entity';
 
 export const formatAvailableNotebookToTableRow = (
-  notebook: NotebooksEntity
+  notebook: NotebookEntity
 ): AvailableNotebookRowEntity => {
   return {
+    notebookId: notebook.idcad,
     studentName: notebook.studentName,
     reservationDate: notebook.reservationDate,
-    notebookPath: ''
+    notebookPath: notebook.notebookDirectory
+      ? `${notebook.notebookDirectory}/${notebook.studentName}.pdf`
+      : null
   };
 };

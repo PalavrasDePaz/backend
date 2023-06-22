@@ -1,9 +1,7 @@
-import NotebooksEntity from '@src/domain/entities/notebooks-entity';
-import { Notebooks } from '../models/notebooks';
+import { NotebookEntity } from '@src/domain/entities/notebook-entity';
+import { Notebook } from '../models/notebook';
 
-export const notebookModelToEntity = (
-  notebook: Notebooks
-): NotebooksEntity => ({
+export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   idcad: notebook.idcad,
   idvol: notebook.idvol,
   idpep: notebook.idpep,
@@ -39,5 +37,6 @@ export const notebookModelToEntity = (
   conclusion: notebook['conclusão do avaliador'],
   archivesExclusion: notebook['exclusão de arquivos recebidos'] === 'SIM',
   evaluatedDate: notebook['Carimbo de data/hora'],
-  reservationDate: notebook.datareserva
+  reservationDate: notebook.datareserva,
+  notebookDirectory: notebook.pep?.directory
 });

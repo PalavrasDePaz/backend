@@ -79,7 +79,7 @@ export class Pep extends Model<
       {
         sequelize,
         timestamps: false,
-        tableName: 'Cadernos'
+        tableName: 'Pep'
       }
     );
   }

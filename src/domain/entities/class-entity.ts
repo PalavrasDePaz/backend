@@ -10,5 +10,5 @@ export type ClassEntity = {
   classTenDate?: Date;
   numEnrolled?: number;
   numEnrolledGotCertificate?: number;
-  notebooksDirectory?: string;
+  notebookDirectory?: string;
 };
