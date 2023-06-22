@@ -49,10 +49,10 @@ export class NotebookAPI extends Controller {
   @Get('count/{idvol}')
   @SuccessResponse(200, 'Ok')
   @Security('jwt')
-  public async getNotebooksByIdVol(
+  public async countEvaluatedNotebooksByIdVol(
     @Path() idvol: number
   ): Promise<{ count: number }> {
-    return this.notebooksRepository.getNotebooksByIdVol(idvol);
+    return this.notebooksRepository.countEvaluatedNotebooksByIdVol(idvol);
   }
 
   @Get('available/{idvol}')

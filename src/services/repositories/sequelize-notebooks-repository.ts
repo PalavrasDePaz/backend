@@ -53,8 +53,12 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     return notebooks.map(notebookModelToEntity);
   }
 
-  async getNotebooksByIdVol(idvol: number): Promise<{ count: number }> {
-    const count = await Notebook.count({ where: { idvol } });
+  async countEvaluatedNotebooksByIdVol(
+    idvol: number
+  ): Promise<{ count: number }> {
+    const count = await Notebook.count({
+      where: { idvol, 'Carimbo de data/hora': { [Op.ne]: null } }
+    });
     return { count };
   }
 }
