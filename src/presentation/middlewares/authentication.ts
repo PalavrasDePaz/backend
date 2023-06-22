@@ -4,12 +4,13 @@ import { Request } from 'express';
 import { verify } from 'jsonwebtoken';
 import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
 import { ApiError } from '../types/api-error';
+import { checkAuthorization } from './authorization-helper';
 
 export const expressAuthentication = async function (
   req: Request,
   securityName: string,
-  _scopes?: string[]
-): Promise<unknown> {
+  scopes?: string[]
+): Promise<undefined> {
   if (securityName == 'jwt') {
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -29,18 +30,21 @@ export const expressAuthentication = async function (
         JWT_SECRET_KEY
       ) as VolunteerJWTPayload;
 
-      const LoggedEmail = decodedPayload.email;
-      return LoggedEmail == req.params.email
-        ? Promise.resolve(decodedPayload)
-        : Promise.reject(
-            new ApiError(
-              401,
-              new AuthError({
-                name: 'NOT_AUTHORIZED_ERROR',
-                message: 'User not authorized for doing the current operation'
-              })
-            )
-          );
+      const authorized = checkAuthorization(req, decodedPayload, scopes);
+
+      if (!authorized) {
+        return Promise.reject(
+          new ApiError(
+            403,
+            new AuthError({
+              name: 'NOT_AUTHORIZED_ERROR',
+              message: 'Not Authorized'
+            })
+          )
+        );
+      }
+
+      Promise.resolve(decodedPayload);
     } catch (error) {
       return Promise.reject(
         new ApiError(
