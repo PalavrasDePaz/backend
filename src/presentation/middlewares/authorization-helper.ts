@@ -10,10 +10,17 @@ export const checkAuthorization = (
     scopes?.every((scope) => scope in loggedVolunteer) ?? true;
 
   let authorizedVolunteer = true;
-  if (req.params.email || req.params.idvol) {
+  if (
+    req.params.email ||
+    req.params.idvol ||
+    req.body.email ||
+    req.body.idvol
+  ) {
     authorizedVolunteer =
       loggedVolunteer.email == req.params.email ||
-      loggedVolunteer.idvol == Number(req.params.idvol);
+      loggedVolunteer.idvol == Number(req.params.idvol) ||
+      loggedVolunteer.email == req.body.email ||
+      loggedVolunteer.idvol == Number(req.body.idvol);
   }
 
   return authorizedRoles && authorizedVolunteer;
