@@ -27,9 +27,14 @@ import { decrypt } from '@src/helpers/message-encryption';
 import { ApiError } from '../types/api-error';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 import { SendEmailError } from '@src/domain/errors/send-email';
+import { validationExample } from '@src/documentation/validation-example';
 
 @Route('volunteers')
-@Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
+@Response<{ message: string; details: FieldErrors }>(
+  422,
+  'Validation Error',
+  validationExample
+)
 @provide(UnsecuredVolunteerAPI)
 @Tags('Volunteer')
 export class UnsecuredVolunteerAPI extends Controller {
@@ -121,10 +126,14 @@ export class UnsecuredVolunteerAPI extends Controller {
       const payload: VolunteerJWTPayload = {
         email: volunteer.email,
         idvol: volunteer.idvol,
-        bookPermission: volunteer.bookPermission,
-        authorPermission: volunteer.authorPermission,
-        certificationPermission: volunteer.certificationPermission,
-        readPermission: volunteer.readPermission
+        bookPermission: volunteer.bookPermission ? true : undefined,
+        authorPermission: volunteer.authorPermission
+          ? volunteer.authorPermission
+          : undefined,
+        certificationPermission: volunteer.certificationPermission
+          ? true
+          : undefined,
+        readPermission: volunteer.readPermission ? true : undefined
       };
       const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
       return { token: token };
