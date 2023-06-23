@@ -8,7 +8,10 @@ import { Op } from 'sequelize';
 @provideSingleton(SequelizeNotebookRepository)
 export class SequelizeNotebookRepository implements NotebookRepository {
   async getNotebookById(notebookId: number): Promise<NotebookEntity | null> {
-    const notebook = await Notebook.findOne({ where: { idcad: notebookId } });
+    const notebook = await Notebook.findOne({
+      include: { association: Notebook.associations.pep },
+      where: { idcad: notebookId }
+    });
     return notebook ? notebookModelToEntity(notebook) : null;
   }
   async reserveNotebookForVolunteer(
