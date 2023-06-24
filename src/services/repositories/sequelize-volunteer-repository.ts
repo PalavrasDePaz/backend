@@ -55,6 +55,11 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     return volunteer ? volunteerModelToEntity(volunteer) : null;
   }
 
+  async getVolunteerById(id: number): Promise<VolunteerEntity | null> {
+    const volunteer = await Volunteer.findOne({ where: { idvol: id } });
+    return volunteer ? volunteerModelToEntity(volunteer) : null;
+  }
+
   async getAllVolunteers(): Promise<VolunteerEntity[]> {
     const volunteers = await Volunteer.findAll();
     return volunteers.map(volunteerModelToEntity);

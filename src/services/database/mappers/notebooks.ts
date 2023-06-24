@@ -1,11 +1,10 @@
-import NotebooksEntity from '@src/domain/entities/notebooks-entity';
-import { Notebooks } from '../models/notebooks';
+import { NotebookEntity } from '@src/domain/entities/notebook-entity';
+import { Notebook } from '../models/notebook';
 
-export const notebookModelToEntity = (
-  notebook: Notebooks
-): NotebooksEntity => ({
+export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   idcad: notebook.idcad,
   idvol: notebook.idvol,
+  idpep: notebook.idpep,
   studentName: notebook['nome do(a) aluno(a)'],
   studentRegistration: Number(notebook['número de matrícula do(a) aluno(a)']),
   studentPrisonUnit: notebook['unidade prisional do(a) aluno(a)'],
@@ -37,5 +36,7 @@ export const notebookModelToEntity = (
   a13: notebook.a13,
   conclusion: notebook['conclusão do avaliador'],
   archivesExclusion: notebook['exclusão de arquivos recebidos'] === 'SIM',
-  createdAt: notebook.createdAt
+  evaluatedDate: notebook['Carimbo de data/hora'],
+  reservationDate: notebook.datareserva,
+  notebookDirectory: notebook.pep?.directory
 });

@@ -11,6 +11,8 @@ export interface VolunteerRepository {
 
   getVolunteerByEmail(email: string): Promise<VolunteerEntity | null>;
 
+  getVolunteerById(id: number): Promise<VolunteerEntity | null>;
+
   getVolunteerWithAuthDataByEmail(
     email: string
   ): Promise<VolunteerWithAuthEntity | null>;

@@ -22,9 +22,14 @@ import { provide } from 'inversify-binding-decorators';
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { ApiError } from '../types/api-error';
+import { validationExample } from '@src/documentation/validation-example';
 
 @Route('volunteers')
-@Response<{ message: string; details: FieldErrors }>(422, 'Validation Error')
+@Response<{ message: string; details: FieldErrors }>(
+  422,
+  'Validation Error',
+  validationExample
+)
 @Security('jwt')
 @provide(VolunteerAPI)
 @Tags('Volunteer')
