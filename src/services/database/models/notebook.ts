@@ -1,6 +1,18 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  Association,
+  BelongsToGetAssociationMixin,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  Sequelize
+} from 'sequelize';
+import { Pep } from './class';
 
-export class Notebooks extends Model {
+export class Notebook extends Model<
+  InferAttributes<Notebook>,
+  InferCreationAttributes<Notebook>
+> {
   idcad!: number;
   idvol!: number;
   'nome do(a) aluno(a)'!: string;
@@ -34,7 +46,16 @@ export class Notebooks extends Model {
   a13?: string;
   'conclusão do avaliador'!: string;
   'exclusão de arquivos recebidos'?: string;
-  createdAt?: Date;
+  'Carimbo de data/hora'?: Date | null;
+  idpep?: number;
+  datareserva?: Date | null;
+  pep?: Pep;
+
+  public static associations: {
+    pep: Association<Notebook, Pep>;
+  };
+
+  public getPeps!: BelongsToGetAssociationMixin<Pep>;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -175,7 +196,15 @@ export class Notebooks extends Model {
         },
         'Carimbo de data/hora': {
           type: DataTypes.DATE,
-          allowNull: false
+          allowNull: true
+        },
+        idpep: {
+          type: DataTypes.INTEGER,
+          allowNull: true
+        },
+        datareserva: {
+          type: DataTypes.DATE,
+          allowNull: true
         }
       },
       {

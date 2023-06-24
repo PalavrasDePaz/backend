@@ -13,6 +13,9 @@ describe('Volunteer API', () => {
   const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
+    getVolunteerById(_id: number): Promise<VolunteerEntity | null> {
+      throw new Error('Method not implemented.');
+    }
     updateVolunteer(
       _volunteer: UpdateVolunteerEntity,
       _email: string
