@@ -1,6 +1,6 @@
 node_modules
 build
-src/config/server.ts
+.env
 src/services/firebase/firebase-admin-credential.json
 firebase-admin.json
 package-lock.json
