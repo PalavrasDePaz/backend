@@ -113,30 +113,34 @@ export class UnsecuredVolunteerAPI extends Controller {
   })
   async login(
     @Body() loginData: Pick<VolunteerAuthDataEntity, 'password' | 'email'>
-  ): Promise<{ token: string }> {
-    const volunteer =
+  ): Promise<{ token: string; volunteer: VolunteerEntity }> {
+    const volunteerWithAuth =
       await this.volunteerRepository.getVolunteerWithAuthDataByEmail(
         loginData.email
       );
 
     if (
-      volunteer &&
-      checkPlainWithHash(loginData.password, volunteer.password)
+      volunteerWithAuth &&
+      checkPlainWithHash(loginData.password, volunteerWithAuth.password)
     ) {
+      const {
+        bookPermission,
+        authorPermission,
+        certificationPermission,
+        password: _password,
+        readPermission,
+        ...volunteer
+      } = volunteerWithAuth;
       const payload: VolunteerJWTPayload = {
         email: volunteer.email,
         idvol: volunteer.idvol,
-        bookPermission: volunteer.bookPermission ? true : undefined,
-        authorPermission: volunteer.authorPermission
-          ? volunteer.authorPermission
-          : undefined,
-        certificationPermission: volunteer.certificationPermission
-          ? true
-          : undefined,
-        readPermission: volunteer.readPermission ? true : undefined
+        bookPermission: bookPermission ? true : undefined,
+        authorPermission: authorPermission ? authorPermission : undefined,
+        certificationPermission: certificationPermission ? true : undefined,
+        readPermission: readPermission ? true : undefined
       };
       const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
-      return { token: token };
+      return { token: token, volunteer };
     } else {
       throw new ApiError(
         400,

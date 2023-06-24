@@ -6,6 +6,8 @@ export const formatAvailableNotebookToTableRow = (
 ): AvailableNotebookRowEntity => {
   return {
     notebookId: notebook.idcad,
+    studentId: notebook.studentRegistration,
+    idPep: notebook.idpep,
     studentName: notebook.studentName,
     reservationDate: notebook.reservationDate,
     notebookPath: notebook.notebookDirectory
