@@ -35,7 +35,7 @@ export default interface BookClubClassEntity {
   presSedex: string | undefined;
   sendDateFunap: Date | undefined;
   presSedex2: string | undefined;
-  endEvaluationDate: Date | undefined;
+  endEvaluationDate: Date | null | undefined;
   parec: string | undefined;
   idvol: number | undefined;
   folderLink: string | undefined;
