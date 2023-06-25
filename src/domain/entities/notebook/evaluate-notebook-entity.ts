@@ -8,4 +8,5 @@ export type EvaluateNotebookEntity = Omit<
   | 'idpep'
   | 'reservationDate'
   | 'evaluatedDate'
+  | 'notebookDirectory'
 >;
