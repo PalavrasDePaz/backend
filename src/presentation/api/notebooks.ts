@@ -1,5 +1,5 @@
-import { AvailableNotebookRowEntity } from '@src/domain/entities/available-notebook-row-entity';
-import { ReserveNotebookDataEntity } from '@src/domain/entities/reserve-notebook-data-entity';
+import { AvailableNotebookRowEntity } from '@src/domain/entities/notebook/available-notebook-row-entity';
+import { ReserveNotebookDataEntity } from '@src/domain/entities/notebook/reserve-notebook-data-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import { formatAvailableNotebookToTableRow } from '@src/helpers/format-available-notebook';
 import { SequelizeNotebookRepository } from '@src/services/repositories/sequelize-notebooks-repository';
@@ -16,7 +16,8 @@ import {
   Response,
   Tags,
   Post,
-  Body
+  Body,
+  Put
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { NotebookError } from '@src/domain/errors/notebook';
@@ -24,6 +25,7 @@ import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunte
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { validationExample } from '@src/documentation/validation-example';
+import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(
@@ -86,6 +88,56 @@ export class NotebookAPI extends Controller {
     return volunteerAccessableNotebooks.map((notebook) =>
       formatAvailableNotebookToTableRow(notebook)
     );
+  }
+
+  /**
+   * Evaluate a notebook
+   *
+   * (The volunteer must have readPermission, which is checked using JWT)
+   */
+  @Put('/evaluation/{notebookId}')
+  @Security('jwt', ['readPermission'])
+  @SuccessResponse(200, 'Successfully Evaluated notebook')
+  @Response<NotebookError>(404, 'Notebook not found', {
+    name: 'NOTEBOOK_NOT_FOUND',
+    message: 'Notebook with id {some notebook id} not found'
+  })
+  @Response<NotebookError>(400, 'Notebook already evaluated', {
+    name: 'NOTEBOOK_ALREADY_RESERVED_ERROR',
+    message: 'Notebook with id {some notebook id} not found'
+  })
+  async saveNotebookEvaluation(
+    @Path() notebookId: number,
+    @Body() notebookData: EvaluateNotebookEntity
+  ) {
+    const notebook = await this.notebooksRepository.getNotebookById(notebookId);
+    if (!notebook) {
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_FOUND',
+          message: `Notebook with id ${notebookId} not found`
+        })
+      );
+    }
+
+    const evaluatedNotebook =
+      await this.notebooksRepository.saveNotebookEvaluation(
+        notebookId,
+        notebookData
+      );
+
+    if (!evaluatedNotebook) {
+      throw new ApiError(
+        400,
+        new NotebookError({
+          name: 'NOTEBOOK_ALREADY_EVALUATED_ERROR',
+          message: `Notebook with id ${notebookId} already evaulated`
+        })
+      );
+    }
+
+    return evaluatedNotebook;
   }
 
   /**

@@ -1,5 +1,5 @@
-import { AvailableNotebookRowEntity } from '@src/domain/entities/available-notebook-row-entity';
-import { NotebookEntity } from '@src/domain/entities/notebook-entity';
+import { AvailableNotebookRowEntity } from '@src/domain/entities/notebook/available-notebook-row-entity';
+import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 
 export const formatAvailableNotebookToTableRow = (
   notebook: NotebookEntity

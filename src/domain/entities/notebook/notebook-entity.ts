@@ -1,4 +1,4 @@
-import { ClassEntity } from './class-entity';
+import { ClassEntity } from '../class-entity';
 
 export type NotebookEntity = {
   idcad: number;
