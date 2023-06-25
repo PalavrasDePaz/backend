@@ -96,7 +96,7 @@ export class NotebookAPI extends Controller {
    * (The volunteer must have readPermission, which is checked using JWT)
    */
   @Put('/evaluation/{notebookId}')
-  //@Security('jwt', ['readPermission'])
+  @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully Evaluated notebook')
   @Response<NotebookError>(404, 'Notebook not found', {
     name: 'NOTEBOOK_NOT_FOUND',
