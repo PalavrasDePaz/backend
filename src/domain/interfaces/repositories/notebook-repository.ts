@@ -1,4 +1,5 @@
-import { NotebookEntity } from '@src/domain/entities/notebook-entity';
+import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 
 export interface NotebookRepository {
   countEvaluatedNotebooksByIdVol(idvol: number): Promise<{ count: number }>;
@@ -6,6 +7,11 @@ export interface NotebookRepository {
   getReservedNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]>;
 
   getAvailableNotebooks(): Promise<NotebookEntity[]>;
+
+  saveNotebookEvaluation(
+    notebookId: number,
+    notebookData: EvaluateNotebookEntity
+  ): Promise<NotebookEntity | null>;
 
   reserveNotebookForVolunteer(
     idvol: number,

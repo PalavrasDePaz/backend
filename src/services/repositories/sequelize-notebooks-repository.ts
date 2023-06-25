@@ -1,12 +1,29 @@
-import { NotebookEntity } from '@src/domain/entities/notebook-entity';
+import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
-import { notebookModelToEntity } from '../database/mappers/notebooks';
+import {
+  notebookModelToEntity,
+  evaluateNotebookEntityToEvaluateNotebookModel
+} from '../database/mappers/notebooks';
 import { Notebook } from '../database/models/notebook';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { Op } from 'sequelize';
+import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
 
 @provideSingleton(SequelizeNotebookRepository)
 export class SequelizeNotebookRepository implements NotebookRepository {
+  async saveNotebookEvaluation(
+    notebookId: number,
+    notebookData: EvaluateNotebookEntity
+  ): Promise<NotebookEntity | null> {
+    const numUpdates = (
+      await Notebook.update(
+        evaluateNotebookEntityToEvaluateNotebookModel(notebookData),
+        { where: { idcad: notebookId, 'Carimbo de data/hora': null } }
+      )
+    )[0];
+
+    return numUpdates ? await this.getNotebookById(notebookId) : null;
+  }
   async getNotebookById(notebookId: number): Promise<NotebookEntity | null> {
     const notebook = await Notebook.findOne({
       include: { association: Notebook.associations.pep },
