@@ -1,8 +1,8 @@
 import {
-  CREATE_PASSWORD_HOST,
-  CREATE_PASSWORD_ROUTE,
-  EMAIL_APP_PASSWORD,
-  EMAIL_SENDER
+  RESET_PASSWORD_FRONTEND_HOST,
+  RESET_PASSWORD_FRONTED_ROUTE,
+  INFO_EMAIL_PASSWORD,
+  INFO_EMAIL
 } from '@src/config/server';
 import { SendEmailError } from '@src/domain/errors/send-email';
 import { encrypt } from '@src/helpers/message-encryption';
@@ -16,22 +16,22 @@ export const sendEmailToVolunteer = async (email: string) => {
       port: 465,
       secure: true,
       auth: {
-        user: EMAIL_SENDER,
-        pass: EMAIL_APP_PASSWORD
+        user: INFO_EMAIL,
+        pass: INFO_EMAIL_PASSWORD
       }
     });
 
     const emailHash = encrypt(email);
     const resetPasswordPath = urlJoin(
-      CREATE_PASSWORD_HOST,
-      CREATE_PASSWORD_ROUTE,
+      RESET_PASSWORD_FRONTEND_HOST,
+      RESET_PASSWORD_FRONTED_ROUTE,
       emailHash
     );
 
     await new Promise((resolve, reject) => {
       transporter.sendMail(
         {
-          from: EMAIL_SENDER,
+          from: INFO_EMAIL,
           to: email,
           subject: 'Cadastro Senha Palavra da Paz',
           html: `<p>Olá! Esse email foi enviado para criar sua nova senha no sistema do Palavraz de Paz, por favor utilize esse link: ${resetPasswordPath}<p>`
