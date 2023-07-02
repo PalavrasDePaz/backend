@@ -1,7 +1,7 @@
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { sign } from 'jsonwebtoken';
-import { JWT_SECRET_KEY } from '@src/config/server';
+import { HELPDESK_EMAIL, INFO_EMAIL, JWT_SECRET_KEY } from '@src/config/server';
 import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import {
@@ -20,7 +20,7 @@ import {
 import { inject } from 'inversify';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { provide } from 'inversify-binding-decorators';
-import { sendEmailToVolunteer } from '@src/services/email-service/sendPasswordEmail';
+import { sendEmailToVolunteer } from '@src/services/email-service/send-password-email';
 import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { checkPlainWithHash } from '@src/helpers/message-hashing';
 import { decrypt } from '@src/helpers/message-encryption';
@@ -28,6 +28,8 @@ import { ApiError } from '../types/api-error';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 import { SendEmailError } from '@src/domain/errors/send-email';
 import { validationExample } from '@src/documentation/validation-example';
+import { SupportEmailSendData } from '@src/services/email-service/types/support-email-send-data';
+import { sendEmailToSupport } from '@src/services/email-service/send-email-to-support';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -171,6 +173,34 @@ export class UnsecuredVolunteerAPI extends Controller {
       return createdVolunteer;
     } catch (error) {
       throw new ApiError(400, error as VolunteerError);
+    }
+  }
+
+  /**
+   * Sends email from volunteer to helpdesk email
+   */
+  @Post('help-email')
+  @SuccessResponse(200, 'Successfully sent help email')
+  @Response<SendEmailError>(400, 'Could not send email')
+  async sendHelpEmail(@Body() helpEmailData: SupportEmailSendData) {
+    try {
+      await sendEmailToSupport(helpEmailData, HELPDESK_EMAIL);
+    } catch (error) {
+      throw new ApiError(400, error as SendEmailError);
+    }
+  }
+
+  /**
+   * Sends email from volunteer to contact email
+   */
+  @Post('contact-email')
+  @SuccessResponse(200, 'Successfully sent help email')
+  @Response<SendEmailError>(400, 'Could not send email')
+  async sendContactEmail(@Body() contactEmailData: SupportEmailSendData) {
+    try {
+      await sendEmailToSupport(contactEmailData, INFO_EMAIL);
+    } catch (error) {
+      throw new ApiError(400, error as SendEmailError);
     }
   }
 
