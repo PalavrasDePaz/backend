@@ -11,6 +11,7 @@ import {
   Post,
   Route,
   Security,
+  Response,
   SuccessResponse,
   Tags
 } from 'tsoa';
@@ -18,6 +19,9 @@ import { ApiError } from '../types/api-error';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { AttendanceError } from '@src/domain/errors/attendance';
 import { SequelizeAttendanceRepository } from '@src/services/repositories/sequelize-attendance-repository';
+import { formatAttendanceAsWorkshopAttendanceRow } from '@src/helpers/format-attendance-row';
+import { WorkshopAttendanceRowEntity } from '@src/domain/entities/workshop-attendance-row-entity';
+import { SubmitAttendanceEntity } from '@src/domain/entities/submit-attendance-entity';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 
 @Route('attendances')
@@ -39,55 +43,58 @@ export class AttendanceAPI extends Controller {
     this.volunteerRepository = volunteerRepository;
   }
 
+  /**
+   * Get all the workshop attendances that the volunteer with idvol attended
+   */
   @Get('{idvol}')
-  @SuccessResponse(200, 'OK')
+  @SuccessResponse(200, 'Successfully got attendances')
   public async getAttencesByIdVol(
     @Path() idvol: number
-  ): Promise<{ attendances: AttendanceEntity[] }> {
+  ): Promise<WorkshopAttendanceRowEntity[]> {
     const attendances =
       await this.attendanceRepository.getAllAttendancesByIdVol(idvol);
-    if (!attendances) {
-      throw new ApiError(
-        400,
-        new AttendanceError({
-          name: 'ATTENDANCES_NOT_FOUND',
-          message: 'No attendance found'
-        })
-      );
-    }
 
-    return { attendances };
+    return attendances.map((attendance) =>
+      formatAttendanceAsWorkshopAttendanceRow(attendance)
+    );
   }
 
-  /*  @Post('{idvol}')
-  @SuccessResponse(200, 'Ok')
+  /**
+   * Submit attendance for the volunteer specified body
+   */
+  @Post()
+  @SuccessResponse(200, 'Successfully created attendance')
+  @Response<VolunteerError>(412, 'Volunteer not found', {
+    name: 'VOLUNTEER_NOT_FOUND',
+    message: 'Volunteer with id {some idvol} not found'
+  })
+  @Response<AttendanceError>(400, 'Attendance error', {
+    name: 'UNSPECIFIED_ERROR',
+    message: 'Unknown error',
+    details: 'Error details'
+  })
   public async submitAttendance(
-    @Path() idvol: number,
-    @Body() attendance: AttendanceEntity
+    @Body() attendance: SubmitAttendanceEntity
   ): Promise<AttendanceEntity> {
-    const volunteer = await this.volunteerRepository.getVolunteerById(idvol);
+    const volunteer = await this.volunteerRepository.getVolunteerById(
+      attendance.idvol
+    );
     if (!volunteer) {
       throw new ApiError(
         412,
         new VolunteerError({
           name: 'VOLUNTEER_NOT_FOUND',
-          message: `Volunteer with id ${idvol} not found`
+          message: `Volunteer with id ${attendance.idvol} not found`
         })
       );
     }
 
-    const submittedAttendance =
-      await this.attendanceRepository.submitAttendance(idvol, attendance);
-
-    if (!submittedAttendance) {
-      throw new ApiError(
-        400,
-        new AttendanceError({
-          name: 'ATTENDANCE_NOT_SUBMITTED',
-          message: 'Attendance not submitted'
-        })
-      );
+    try {
+      const submittedAttendance =
+        await this.attendanceRepository.submitAttendance(attendance);
+      return submittedAttendance;
+    } catch (error) {
+      throw new ApiError(400, error as AttendanceError);
     }
-    return submittedAttendance;
-  } */
+  }
 }
