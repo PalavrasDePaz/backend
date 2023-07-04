@@ -9,4 +9,5 @@ export type AttendanceEntity = {
   differentKnowledgeLearned?: string;
   whatChallengedYou?: string;
   expressYourself?: string;
+  submissionDate: Date;
 };

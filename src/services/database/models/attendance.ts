@@ -1,5 +1,4 @@
-import { Association, DataTypes, Model, Sequelize } from 'sequelize';
-import { Volunteer } from './volunteer';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 
 export class Attendance extends Model {
   idpres!: number;
@@ -12,10 +11,7 @@ export class Attendance extends Model {
   diferente?: string;
   desafio?: string;
   expressões?: string;
-
-  public static associations: {
-    idvol: Association<Attendance, Volunteer>;
-  };
+  createdAt!: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -23,7 +19,7 @@ export class Attendance extends Model {
         idpres: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
-          primaryKey: false
+          primaryKey: true
         },
         idvol: {
           type: DataTypes.INTEGER,
