@@ -5,6 +5,7 @@ import { Op } from 'sequelize';
 import { AssociatedBCCModelToEntity } from '../database/mappers/book-class-club';
 import AvailableEssayRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
 import { formatAvailableEssay } from '@src/helpers/format-available-essay';
+import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
 
 @provideSingleton(SequelizeBCCRepository)
 export class SequelizeBCCRepository implements BookClubClassRepository {
@@ -42,5 +43,29 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     return availableEssays
       .map(AssociatedBCCModelToEntity)
       .map(formatAvailableEssay);
+  }
+
+  async reserveEssayForVolunteer(
+    idvol: number,
+    idclass: number
+  ): Promise<AvailableEssayRowEntity | null> {
+    const updatedEssay = (
+      await BookClubClass.update(
+        { idvol, datainvioparec: new Date() },
+        { where: { idturma: idclass, datainvioparec: null, datafimaval: null } }
+      )
+    )[0];
+
+    const updatedClass = await this.getBookClubClassById(idclass);
+    return updatedEssay && updatedClass
+      ? formatAvailableEssay(updatedClass)
+      : null;
+  }
+
+  async getBookClubClassById(
+    idclass: number
+  ): Promise<AssociatedBCCEntity | null> {
+    const book = await BookClubClass.findByPk(idclass);
+    return book ? AssociatedBCCModelToEntity(book) : null;
   }
 }
