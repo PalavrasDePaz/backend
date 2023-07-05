@@ -1,4 +1,5 @@
 import { validationExample } from '@src/documentation/validation-example';
+import AvailableEssayRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
 import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
 import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
 import { inject } from 'inversify';
@@ -44,5 +45,29 @@ export class BookClubClassAPI extends Controller {
     @Path() idvol: number
   ): Promise<{ count: number }> {
     return this.bccRepository.countEvaluatedBookClubClassByIdVol(idvol);
+  }
+
+  /**
+   * Get available essays for evaluation for the volunteer,
+   * those essays includes the ones which does not have a reservation date
+   * or the reservations of the volunteer.
+   *
+   * (The volunteer must have readPermission, which is checked using JWT)
+   */
+  @Get('available/{idvol}')
+  @Security('jwt', ['readPermission'])
+  @SuccessResponse(200, 'Successfully fetched the essays')
+  async getAvailableEssays(
+    @Path() idvol: number
+  ): Promise<AvailableEssayRowEntity[]> {
+    const availableEssays = await this.bccRepository.getAvailableEssays();
+
+    const reservedEssays = await this.bccRepository.getReservedEssaysByIdVol(
+      idvol
+    );
+
+    const volunteerAccessableEssays = [...reservedEssays, ...availableEssays];
+
+    return volunteerAccessableEssays;
   }
 }

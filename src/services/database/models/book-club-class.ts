@@ -1,17 +1,19 @@
 import {
+  Association,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model,
   Sequelize
 } from 'sequelize';
+import { Place } from './place';
 
 export class BookClubClass extends Model<
   InferAttributes<BookClubClass>,
   InferCreationAttributes<BookClubClass>
 > {
   idturma!: number;
-  place!: number;
+  placeId!: number;
   datarecebrelatorio!: Date;
   emprestimo?: Date;
   devolucao?: Date;
@@ -20,7 +22,7 @@ export class BookClubClass extends Model<
   simlista?: string;
   listapresenca?: number;
   qrl!: number;
-  datainvioparec?: Date;
+  datainvioparec?: Date | null;
   pressedex?: string;
   datainviofunap?: Date;
   pressedex2?: string;
@@ -28,6 +30,9 @@ export class BookClubClass extends Model<
   parec?: string;
   idvol?: number;
   linkpasta?: string;
+  place?: Place;
+
+  public static associations: { place: Association<BookClubClass, Place> };
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -37,9 +42,10 @@ export class BookClubClass extends Model<
           autoIncrement: true,
           primaryKey: true
         },
-        place: {
+        placeId: {
           type: DataTypes.INTEGER,
-          allowNull: false
+          allowNull: false,
+          field: 'place'
         },
         datarecebrelatorio: {
           type: DataTypes.DATE,
