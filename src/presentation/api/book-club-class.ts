@@ -87,10 +87,10 @@ export class BookClubClassAPI extends Controller {
    * Reserve essay for the volunteer. If the essay is already reserved or evaluated
    * status 400 is returned.
    *
-   * (The volunteer must have readPermission, which is checked using JWT)
+   * (The volunteer must have bookPermission, which is checked using JWT)
    */
   @Put('/reservation')
-  @Security('jwt', ['readPermission'])
+  @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully reserved essay for volunteer')
   @Response<BookClubClassError>(404, 'Essay not found', {
     name: 'ESSAY_NOT_FOUND',
