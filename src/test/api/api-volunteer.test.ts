@@ -6,6 +6,7 @@ import volunteerWithAuthEntityDummy from '../dummies/volunteer-with-auth-entity-
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { ApiError } from '@src/presentation/types/api-error';
 import { VolunteerError } from '@src/domain/errors/volunteer';
+import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 
 describe('Volunteer API', () => {
   let volunteerRepository: VolunteerRepository;
@@ -13,6 +14,9 @@ describe('Volunteer API', () => {
   const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
+    getPermissionByAuthName(_name: string): Promise<PermissionEntity | null> {
+      throw new Error('Method not implemented.');
+    }
     getVolunteerById(_id: number): Promise<VolunteerEntity | null> {
       throw new Error('Method not implemented.');
     }

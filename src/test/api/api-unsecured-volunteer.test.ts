@@ -10,6 +10,7 @@ import { VolunteerJWTPayload } from '@src/presentation/types/volunteer-jwt-paylo
 import { JWT_SECRET_KEY } from '@src/config/server';
 import { UnsecuredVolunteerAPI } from '@src/presentation/api/unsecured-volunteer';
 import { ApiError } from '@src/presentation/types/api-error';
+import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 
 describe('Volunteer API', () => {
   let volunteerRepository: VolunteerRepository;
@@ -17,6 +18,9 @@ describe('Volunteer API', () => {
   const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
+    getPermissionByAuthName(_name: string): Promise<PermissionEntity | null> {
+      throw new Error('Method not implemented.');
+    }
     getVolunteerById(_id: number): Promise<VolunteerEntity | null> {
       throw new Error('Method not implemented.');
     }
@@ -105,6 +109,10 @@ describe('Volunteer API', () => {
         ...volunteer,
         password: hashString(volunteer.password)
       });
+
+    jest
+      .spyOn(volunteerRepository, 'getPermissionByAuthName')
+      .mockResolvedValue(null);
 
     const tokenWrapper = await volunteerAPI.login({
       email: volunteer.email,

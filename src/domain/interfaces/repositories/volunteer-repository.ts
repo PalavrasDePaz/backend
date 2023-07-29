@@ -2,6 +2,7 @@ import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-vol
 import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
+import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 
 export interface VolunteerRepository {
   updateVolunteer(
@@ -12,6 +13,8 @@ export interface VolunteerRepository {
   getVolunteerByEmail(email: string): Promise<VolunteerEntity | null>;
 
   getVolunteerById(id: number): Promise<VolunteerEntity | null>;
+
+  getPermissionByAuthName(name: string): Promise<PermissionEntity | null>;
 
   getVolunteerWithAuthDataByEmail(
     email: string
