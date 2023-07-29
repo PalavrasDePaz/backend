@@ -8,6 +8,7 @@ import {
   Sequelize
 } from 'sequelize';
 import { Pep } from './class';
+import { Volunteer } from './volunteer';
 
 export class Notebook extends Model<
   InferAttributes<Notebook>,
@@ -18,8 +19,6 @@ export class Notebook extends Model<
   'nome do(a) aluno(a)'!: string;
   'número de matrícula do(a) aluno(a)'?: string;
   'unidade prisional do(a) aluno(a)'?: string;
-  naval!: string;
-  'endereço de e-mail'?: string;
   'tema 1'?: string;
   'tema 2'?: string;
   'tema 3'?: string;
@@ -50,12 +49,15 @@ export class Notebook extends Model<
   idpep?: number;
   datareserva?: Date | null;
   pep?: Pep;
+  volunteer?: Volunteer;
 
   public static associations: {
     pep: Association<Notebook, Pep>;
+    volunteer: Association<Notebook, Volunteer>;
   };
 
   public getPeps!: BelongsToGetAssociationMixin<Pep>;
+  public getVolunteers!: BelongsToGetAssociationMixin<Volunteer>;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -80,15 +82,6 @@ export class Notebook extends Model<
         'unidade prisional do(a) aluno(a)': {
           type: DataTypes.STRING,
           allowNull: true
-        },
-        naval: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        'endereço de e-mail': {
-          type: DataTypes.STRING,
-          allowNull: true,
-          validate: { isEmail: true }
         },
         'tema 1': {
           type: DataTypes.STRING,
