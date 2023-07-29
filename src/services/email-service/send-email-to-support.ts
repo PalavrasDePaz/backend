@@ -18,7 +18,7 @@ export const sendEmailToSupport = async (
       }
     });
 
-    const info = await new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       transporter.sendMail(
         {
           from: supportEmailSendData.email,
@@ -35,7 +35,6 @@ export const sendEmailToSupport = async (
         }
       );
     });
-    console.log(info);
   } catch (error) {
     throw new SendEmailError({
       name: 'COULD_NOT_SEND_EMAIL_ERROR',
