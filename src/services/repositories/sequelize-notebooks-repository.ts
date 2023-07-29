@@ -8,6 +8,8 @@ import { Notebook } from '../database/models/notebook';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { Op } from 'sequelize';
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import { Volunteer } from '../database/models/volunteer';
+import { Pep } from '../database/models/class';
 
 @provideSingleton(SequelizeNotebookRepository)
 export class SequelizeNotebookRepository implements NotebookRepository {
@@ -26,7 +28,10 @@ export class SequelizeNotebookRepository implements NotebookRepository {
   }
   async getNotebookById(notebookId: number): Promise<NotebookEntity | null> {
     const notebook = await Notebook.findOne({
-      include: { association: Notebook.associations.pep },
+      include: [
+        { model: Volunteer, as: 'volunteer' },
+        { model: Pep, as: 'pep' }
+      ],
       where: { idcad: notebookId }
     });
     return notebook ? notebookModelToEntity(notebook) : null;
