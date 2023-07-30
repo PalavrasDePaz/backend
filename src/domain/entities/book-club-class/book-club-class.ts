@@ -1,3 +1,5 @@
+import { PlaceEntity } from '../place-entity';
+
 /**
  * @example {
  * "idclass": 1,
@@ -20,9 +22,8 @@
  * "folderLink": "drive-link"
  * }
  */
-export default interface BookClubClassEntity {
+interface BookClubClass {
   idclass: number;
-  place: number;
   reportReceiveDate: Date;
   loanDate: Date | undefined;
   returnDate: Date | undefined;
@@ -31,7 +32,7 @@ export default interface BookClubClassEntity {
   yesList: string | undefined;
   presenceList: number | undefined;
   qrl: number;
-  sendDateParec: Date | undefined;
+  sendDateParec: Date | null | undefined;
   presSedex: string | undefined;
   sendDateFunap: Date | undefined;
   presSedex2: string | undefined;
@@ -39,4 +40,12 @@ export default interface BookClubClassEntity {
   parec: string | undefined;
   idvol: number | undefined;
   folderLink: string | undefined;
+}
+
+export default interface BookClubClassEntity extends BookClubClass {
+  place: number;
+}
+
+export interface AssociatedBCCEntity extends BookClubClass {
+  place: PlaceEntity | undefined;
 }
