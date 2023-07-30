@@ -64,10 +64,10 @@ export class BookClubClassAPI extends Controller {
    * those essays includes the ones which does not have a reservation date
    * or the reservations of the volunteer.
    *
-   * (The volunteer must have readPermission, which is checked using JWT)
+   * (The volunteer must have bookPermission, which is checked using JWT)
    */
   @Get('available/{idvol}')
-  @Security('jwt', ['readPermission'])
+  @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully fetched the essays')
   async getAvailableEssays(
     @Path() idvol: number
