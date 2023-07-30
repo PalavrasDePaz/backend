@@ -14,9 +14,19 @@ import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-vol
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { hashString } from '@src/helpers/message-hashing';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
+import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
+import { Authorization } from '../database/models/authorization';
+import { authorizationModelToEntity } from '../database/mappers/authorization';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
+  async getPermissionByAuthName(
+    name: string
+  ): Promise<PermissionEntity | null> {
+    const permissions = await Authorization.findOne({ where: { name: name } });
+    return permissions ? authorizationModelToEntity(permissions) : null;
+  }
+
   async updateOrCreatePasswordForEmail(
     email: string,
     password: string

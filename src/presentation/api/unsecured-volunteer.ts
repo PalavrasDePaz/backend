@@ -30,6 +30,7 @@ import { SendEmailError } from '@src/domain/errors/send-email';
 import { validationExample } from '@src/documentation/validation-example';
 import { SupportEmailSendData } from '@src/services/email-service/types/support-email-send-data';
 import { sendEmailToSupport } from '@src/services/email-service/send-email-to-support';
+import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -125,9 +126,16 @@ export class UnsecuredVolunteerAPI extends Controller {
       volunteerWithAuth &&
       checkPlainWithHash(loginData.password, volunteerWithAuth.password)
     ) {
+      let permissions: PermissionEntity | null = null;
+
+      if (volunteerWithAuth.authorPermission) {
+        permissions = await this.volunteerRepository.getPermissionByAuthName(
+          volunteerWithAuth.authorPermission
+        );
+      }
+
       const {
         bookPermission,
-        authorPermission,
         certificationPermission,
         password: _password,
         readPermission,
@@ -137,10 +145,11 @@ export class UnsecuredVolunteerAPI extends Controller {
         email: volunteer.email,
         idvol: volunteer.idvol,
         bookPermission: bookPermission ? true : undefined,
-        authorPermission: authorPermission ? authorPermission : undefined,
         certificationPermission: certificationPermission ? true : undefined,
-        readPermission: readPermission ? true : undefined
+        readPermission: readPermission ? true : undefined,
+        ...permissions?.permissions
       };
+
       const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
       return { token: token, volunteer };
     } else {
