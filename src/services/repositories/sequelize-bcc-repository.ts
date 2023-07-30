@@ -3,13 +3,13 @@ import { provideSingleton } from '@src/helpers/provide-singleton';
 import { BookClubClass } from '../database/models/book-club-class';
 import { Op } from 'sequelize';
 import { AssociatedBCCModelToEntity } from '../database/mappers/book-class-club';
-import AvailableEssayRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
-import { formatAvailableEssay } from '@src/helpers/format-available-essay';
+import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
+import { formatAvailableBCClass } from '@src/helpers/format-available-bcc';
 import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
 
 @provideSingleton(SequelizeBCCRepository)
 export class SequelizeBCCRepository implements BookClubClassRepository {
-  async countEvaluatedBookClubClassByIdVol(
+  async countEvaluatedClassesByIdVol(
     idvol: number
   ): Promise<{ count: number }> {
     const count = await BookClubClass.count({
@@ -18,7 +18,7 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     return { count };
   }
 
-  async getAvailableEssays(): Promise<AvailableEssayRowEntity[]> {
+  async getAvailableClasses(): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await BookClubClass.findAll({
       include: BookClubClass.associations.place,
       where: {
@@ -30,25 +30,25 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     });
     return availableEssays
       .map(AssociatedBCCModelToEntity)
-      .map(formatAvailableEssay);
+      .map(formatAvailableBCClass);
   }
 
-  async getReservedEssaysByIdVol(
+  async getReservedClassesByIdVol(
     idvol: number
-  ): Promise<AvailableEssayRowEntity[]> {
+  ): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await BookClubClass.findAll({
       include: BookClubClass.associations.place,
       where: { idvol }
     });
     return availableEssays
       .map(AssociatedBCCModelToEntity)
-      .map(formatAvailableEssay);
+      .map(formatAvailableBCClass);
   }
 
-  async reserveEssayForVolunteer(
+  async reserveClassForVolunteer(
     idvol: number,
     idclass: number
-  ): Promise<AvailableEssayRowEntity | null> {
+  ): Promise<AvailableClassRowEntity | null> {
     const updatedEssay = (
       await BookClubClass.update(
         { idvol, datainvioparec: new Date() },
@@ -58,7 +58,7 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
 
     const updatedClass = await this.getBookClubClassById(idclass);
     return updatedEssay && updatedClass
-      ? formatAvailableEssay(updatedClass)
+      ? formatAvailableBCClass(updatedClass)
       : null;
   }
 

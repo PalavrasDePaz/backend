@@ -1,4 +1,4 @@
-export default interface AvailableEssayRowEntity {
+export default interface AvailableClassRowEntity {
   idclass: number;
   place: string | undefined;
   dateReserved: Date | null | undefined;

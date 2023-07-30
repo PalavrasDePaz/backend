@@ -1,17 +1,17 @@
-import AvailableEssayRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
+import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
 import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
 
 export interface BookClubClassRepository {
-  countEvaluatedBookClubClassByIdVol(idvol: number): Promise<{ count: number }>;
+  countEvaluatedClassesByIdVol(idvol: number): Promise<{ count: number }>;
 
-  getAvailableEssays(): Promise<AvailableEssayRowEntity[]>;
+  getAvailableClasses(): Promise<AvailableClassRowEntity[]>;
 
-  getReservedEssaysByIdVol(idvol: number): Promise<AvailableEssayRowEntity[]>;
+  getReservedClassesByIdVol(idvol: number): Promise<AvailableClassRowEntity[]>;
 
-  reserveEssayForVolunteer(
+  reserveClassForVolunteer(
     idvol: number,
     idclass: number
-  ): Promise<AvailableEssayRowEntity | null>;
+  ): Promise<AvailableClassRowEntity | null>;
 
   getBookClubClassById(idclass: number): Promise<AssociatedBCCEntity | null>;
 }

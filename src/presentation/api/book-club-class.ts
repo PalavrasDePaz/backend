@@ -1,6 +1,6 @@
 import { validationExample } from '@src/documentation/validation-example';
-import AvailableEssayRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
-import { ReserveEssayDataEntity } from '@src/domain/entities/book-club-class/reserve-essay-data-entity';
+import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
+import { ReserveClassDataEntity } from '@src/domain/entities/book-club-class/reserve-class-data-entity';
 import { BookClubClassError } from '@src/domain/errors/book-club-class';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
@@ -56,7 +56,7 @@ export class BookClubClassAPI extends Controller {
   public async countEvaluatedBookClubClassByIdVol(
     @Path() idvol: number
   ): Promise<{ count: number }> {
-    return this.bccRepository.countEvaluatedBookClubClassByIdVol(idvol);
+    return this.bccRepository.countEvaluatedClassesByIdVol(idvol);
   }
 
   /**
@@ -69,12 +69,12 @@ export class BookClubClassAPI extends Controller {
   @Get('available/{idvol}')
   @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully fetched the essays')
-  async getAvailableEssays(
+  async getAvailableClasses(
     @Path() idvol: number
-  ): Promise<AvailableEssayRowEntity[]> {
-    const availableEssays = await this.bccRepository.getAvailableEssays();
+  ): Promise<AvailableClassRowEntity[]> {
+    const availableEssays = await this.bccRepository.getAvailableClasses();
 
-    const reservedEssays = await this.bccRepository.getReservedEssaysByIdVol(
+    const reservedEssays = await this.bccRepository.getReservedClassesByIdVol(
       idvol
     );
 
@@ -104,7 +104,7 @@ export class BookClubClassAPI extends Controller {
     name: 'ESSAY_ALREADY_RESERVED_ERROR',
     message: 'Essay already reserved or already evaluated'
   })
-  async reserveEssayForVolunteer(@Body() reserveData: ReserveEssayDataEntity) {
+  async reserveClassForVolunteer(@Body() reserveData: ReserveClassDataEntity) {
     const { idvol, idclass } = reserveData;
 
     const volunteer = await this.volunteerRepository.getVolunteerById(idvol);
@@ -129,7 +129,7 @@ export class BookClubClassAPI extends Controller {
       );
     }
 
-    const reservedEssay = await this.bccRepository.reserveEssayForVolunteer(
+    const reservedEssay = await this.bccRepository.reserveClassForVolunteer(
       idvol,
       idclass
     );
