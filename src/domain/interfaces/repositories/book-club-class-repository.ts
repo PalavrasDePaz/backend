@@ -1,4 +1,4 @@
-import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-essay-row-entity';
+import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
 import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
 
 export interface BookClubClassRepository {
