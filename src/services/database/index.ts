@@ -6,12 +6,14 @@ import { Place } from './models/place';
 import { Attendance } from './models/attendance';
 import { Authorization } from './models/authorization';
 import sequelize from './sequelize';
+import { BookEvaluation } from './models/book-evaluation';
 
 const initModels = () => {
   Volunteer.initialize(sequelize);
   Notebook.initialize(sequelize);
   Attendance.initialize(sequelize);
   BookClubClass.initialize(sequelize);
+  BookEvaluation.initialize(sequelize);
   Pep.initialize(sequelize);
   Place.initialize(sequelize);
   Authorization.initialize(sequelize);
