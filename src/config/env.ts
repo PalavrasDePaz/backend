@@ -13,7 +13,9 @@ const envSchema = z.object({
   HELPDESK_EMAIL: z.string(),
   INFO_EMAIL_PASSWORD: z.string(),
   RESET_PASSWORD_FRONTED_ROUTE: z.string(),
-  RESET_PASSWORD_FRONTEND_HOST: z.string()
+  RESET_PASSWORD_FRONTEND_HOST: z.string(),
+  GOOGLE_CLOUD_KEY: z.string(),
+  STORAGE_DOWNLOAD_FOLDER: z.string()
 });
 
 export const ENV = envSchema.parse(process.env);
