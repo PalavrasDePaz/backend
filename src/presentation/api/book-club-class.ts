@@ -20,9 +20,17 @@ import {
   Tags,
   FieldErrors,
   Put,
-  Body
+  Body,
+  Request
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
+import { FileHandler } from '@src/services/files/file-handler';
+import { DriveFileHandler } from '@src/services/files/drive-file-handler';
+import express from 'express';
+import path from 'path';
+import { createReadStream, mkdirSync, rmSync } from 'fs';
+import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
+import { Readable } from 'stream';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -35,16 +43,80 @@ import { ApiError } from '../types/api-error';
 export class BookClubClassAPI extends Controller {
   private bccRepository: BookClubClassRepository;
   private volunteerRepository: VolunteerRepository;
+  private fileHandler: FileHandler;
 
   constructor(
     @inject(SequelizeBCCRepository)
     bccRepository: BookClubClassRepository,
     @inject(SequelizeVolunteerRepository)
-    volunteerRepository: VolunteerRepository
+    volunteerRepository: VolunteerRepository,
+    @inject(DriveFileHandler)
+    fileHandler: FileHandler
   ) {
     super();
     this.bccRepository = bccRepository;
     this.volunteerRepository = volunteerRepository;
+    this.fileHandler = fileHandler;
+  }
+
+  /**
+   * Download files of the book club class as a zip
+   *
+   * (The volunteer must have bookPermission, which is checked using JWT)
+   */
+  @Get('download/{idclass}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(200, 'Successfully downloaded the files')
+  @Response<BookClubClassError>(404, 'Essay not found', {
+    name: 'ESSAY_NOT_FOUND',
+    message: 'Essay with id {some class id} not found'
+  })
+  public async downloadClassReport(
+    @Path() idclass: number,
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const bcclass = await this.bccRepository.getBookClubClassById(idclass);
+    if (!bcclass)
+      throw new ApiError(
+        404,
+        new BookClubClassError({
+          name: 'ESSAY_NOT_FOUND',
+          message: `Essay with id ${idclass} not found`
+        })
+      );
+
+    // get target from format https://drive.google.com/drive/folders/{target}?usp=sharing
+    const folderId =
+      bcclass.folderLink?.split('/').slice(-1)[0].split('?')[0] ?? '';
+
+    const downloadFolder = path.join(
+      STORAGE_DOWNLOAD_FOLDER,
+      `${req.body.loggedUser.idvol}`
+    );
+    mkdirSync(downloadFolder, { recursive: true });
+
+    await this.fileHandler.downloadFilesFromSourceToFolder(
+      folderId,
+      downloadFolder
+    );
+
+    await this.fileHandler.zipFiles(downloadFolder, `${idclass}.zip`);
+
+    const zipNameForClient = await this.fileHandler.getFolderName(folderId);
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `${zipNameForClient}.zip`
+    );
+
+    const zipPath = path.join(downloadFolder, `${idclass}.zip`);
+    const stream = createReadStream(zipPath);
+
+    stream.on('end', () => {
+      rmSync(downloadFolder, { recursive: true });
+    });
+
+    return stream;
   }
 
   /**
