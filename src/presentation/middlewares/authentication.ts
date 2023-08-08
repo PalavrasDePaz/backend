@@ -43,7 +43,7 @@ export const expressAuthentication = async function (
           )
         );
       }
-
+      req.body.loggedUser = decodedPayload;
       Promise.resolve(decodedPayload);
     } catch (error) {
       return Promise.reject(

@@ -60,7 +60,12 @@ export class BookClubClassAPI extends Controller {
   }
 
   @Get('download/{idclass}')
+  @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully downloaded the files')
+  @Response<BookClubClassError>(404, 'Essay not found', {
+    name: 'ESSAY_NOT_FOUND',
+    message: 'Essay with id {some class id} not found'
+  })
   public async downloadClassReport(
     @Path() idclass: number,
     @Request() req: express.Request
@@ -79,7 +84,10 @@ export class BookClubClassAPI extends Controller {
     const folderId =
       bcclass.folderLink?.split('/').slice(-1)[0].split('?')[0] ?? '';
 
-    const downloadFolder = STORAGE_DOWNLOAD_FOLDER;
+    const downloadFolder = path.join(
+      STORAGE_DOWNLOAD_FOLDER,
+      `${req.body.loggedUser.idvol}`
+    );
     mkdirSync(downloadFolder, { recursive: true });
 
     await this.fileHandler.downloadFilesFromSourceToFolder(
