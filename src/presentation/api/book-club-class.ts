@@ -59,6 +59,11 @@ export class BookClubClassAPI extends Controller {
     this.fileHandler = fileHandler;
   }
 
+  /**
+   * Download files of the book club class as a zip
+   *
+   * (The volunteer must have bookPermission, which is checked using JWT)
+   */
   @Get('download/{idclass}')
   @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully downloaded the files')
