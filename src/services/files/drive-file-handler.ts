@@ -9,8 +9,19 @@ import archiver from 'archiver';
 @provideSingleton(DriveFileHandler)
 export class DriveFileHandler implements FileHandler {
   drive: drive_v3.Drive;
+
   constructor() {
     this.drive = new drive_v3.Drive({ auth: GOOGLE_CLOUD_KEY });
+  }
+
+  async getFolderName(source: string): Promise<string> {
+    const resp = await this.drive.files.get({
+      fileId: source,
+      supportsAllDrives: true,
+      fields: 'name'
+    });
+
+    return resp.data.name ?? '';
   }
 
   private async getFileBufferFromId(fileId: string): Promise<Buffer> {
@@ -22,6 +33,7 @@ export class DriveFileHandler implements FileHandler {
       },
       { responseType: 'arraybuffer' }
     );
+
     // using any because of not found type from library
     const buffer = Buffer.from(resp.data as any, 'base64');
     return buffer;

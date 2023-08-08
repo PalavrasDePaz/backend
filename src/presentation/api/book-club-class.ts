@@ -102,9 +102,11 @@ export class BookClubClassAPI extends Controller {
 
     await this.fileHandler.zipFiles(downloadFolder, `${idclass}.zip`);
 
+    const zipNameForClient = await this.fileHandler.getFolderName(folderId);
+
     req.res?.setHeader(
       'Content-Disposition',
-      'attachment; filename=' + `${idclass}.zip`
+      'attachment; filename=' + `${zipNameForClient}.zip`
     );
 
     const zipPath = path.join(downloadFolder, `${idclass}.zip`);

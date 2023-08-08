@@ -5,4 +5,6 @@ export interface FileHandler {
   ): Promise<void[]>;
 
   zipFiles(source: string, zipName: string): Promise<void>;
+
+  getFolderName(source: string): Promise<string>;
 }
