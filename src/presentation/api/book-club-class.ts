@@ -116,7 +116,12 @@ export class BookClubClassAPI extends Controller {
 
     const stream = createReadStream(zipPath);
 
-    stream.on('end', () => {
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
       rmSync(downloadFolder, { recursive: true });
     });
 
