@@ -5,6 +5,7 @@ import { GOOGLE_CLOUD_KEY } from '@src/config/server';
 import { createWriteStream, readdirSync, writeFileSync } from 'fs';
 import path from 'path';
 import archiver from 'archiver';
+import { logger } from '../logger/logger';
 
 @provideSingleton(DriveFileHandler)
 export class DriveFileHandler implements FileHandler {
@@ -12,6 +13,7 @@ export class DriveFileHandler implements FileHandler {
 
   constructor() {
     this.drive = new drive_v3.Drive({ auth: GOOGLE_CLOUD_KEY });
+    logger.debug('Created drive Cliente');
   }
 
   async getFolderName(source: string): Promise<string> {
@@ -49,6 +51,8 @@ export class DriveFileHandler implements FileHandler {
       })
     ).data.files;
 
+    logger.debug('Fetched files from drive');
+
     return files ? files : [];
   }
 
@@ -74,6 +78,8 @@ export class DriveFileHandler implements FileHandler {
     const archive = archiver('zip', { zlib: { level: 9 } });
     const stream = createWriteStream(zipPath);
     const files = readdirSync(source);
+
+    logger.debug('Start Creating Zip File');
 
     return new Promise((resolve, reject) => {
       files.forEach((file) =>
