@@ -111,8 +111,8 @@ export class BookClubClassAPI extends Controller {
       'Content-Disposition',
       'attachment; filename=' + `${zipNameForClient}.zip`
     );
-    req.res?.setHeader('Content-Type', 'application/zip');
-    req.res?.setHeader('Content-Length', statSync(zipPath).size);
+    //req.res?.setHeader('Content-Type', 'application/zip');
+    //req.res?.setHeader('Content-Length', statSync(zipPath).size);
 
     logger.info(`Files on download folder: ${readdirSync(downloadFolder)}`);
 
