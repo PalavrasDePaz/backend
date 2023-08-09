@@ -41,6 +41,7 @@
     "tsoa": "^5.1.1",
     "url-join-ts": "^1.0.5",
     "uuid": "^9.0.0",
+    "winston": "^3.10.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
