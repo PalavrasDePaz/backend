@@ -28,7 +28,7 @@ import { FileHandler } from '@src/services/files/file-handler';
 import { DriveFileHandler } from '@src/services/files/drive-file-handler';
 import express from 'express';
 import path from 'path';
-import { createReadStream, mkdirSync, readdirSync, rmSync } from 'fs';
+import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
@@ -105,14 +105,14 @@ export class BookClubClassAPI extends Controller {
 
     const zipNameForClient = await this.fileHandler.getFolderName(folderId);
 
+    const zipPath = path.join(downloadFolder, `${idclass}.zip`);
+
     req.res?.setHeader(
       'Content-Disposition',
       'attachment; filename=' + `${zipNameForClient}.zip`
     );
-
     req.res?.setHeader('Content-Type', 'application/zip');
-
-    const zipPath = path.join(downloadFolder, `${idclass}.zip`);
+    req.res?.setHeader('Content-Length', statSync(zipPath).size);
 
     logger.info(`Files on download folder: ${readdirSync(downloadFolder)}`);
 
