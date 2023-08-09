@@ -81,7 +81,7 @@ export class DriveFileHandler implements FileHandler {
     const stream = createWriteStream(zipPath);
     const files = readdirSync(source);
 
-    logger.info('Start Creating Zip File');
+    logger.info(`Start Creating Zip File from list: ${files}`);
 
     return new Promise((resolve, reject) => {
       files.forEach((file) =>

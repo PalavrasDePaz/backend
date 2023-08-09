@@ -28,9 +28,10 @@ import { FileHandler } from '@src/services/files/file-handler';
 import { DriveFileHandler } from '@src/services/files/drive-file-handler';
 import express from 'express';
 import path from 'path';
-import { createReadStream, mkdirSync, rmSync } from 'fs';
+import { createReadStream, mkdirSync, readdirSync, rmSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
+import { logger } from '@src/services/logger/logger';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -110,6 +111,9 @@ export class BookClubClassAPI extends Controller {
     );
 
     const zipPath = path.join(downloadFolder, `${idclass}.zip`);
+
+    logger.info(`Files on download folder: ${readdirSync(downloadFolder)}`);
+
     const stream = createReadStream(zipPath);
 
     stream.on('end', () => {
