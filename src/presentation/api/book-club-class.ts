@@ -28,7 +28,7 @@ import { FileHandler } from '@src/services/files/file-handler';
 import { DriveFileHandler } from '@src/services/files/drive-file-handler';
 import express from 'express';
 import path from 'path';
-import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
+import { createReadStream, mkdirSync, readdirSync, rmSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
@@ -90,10 +90,8 @@ export class BookClubClassAPI extends Controller {
     const folderId =
       bcclass.folderLink?.split('/').slice(-1)[0].split('?')[0] ?? '';
 
-    const downloadFolder = path.join(
-      STORAGE_DOWNLOAD_FOLDER,
-      `${req.body.loggedUser.idvol}`
-    );
+    const volunteerId = req.res?.locals.user.idvol;
+    const downloadFolder = path.join(STORAGE_DOWNLOAD_FOLDER, `${volunteerId}`);
     mkdirSync(downloadFolder, { recursive: true });
 
     await this.fileHandler.downloadFilesFromSourceToFolder(
