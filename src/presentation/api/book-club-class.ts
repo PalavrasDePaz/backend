@@ -110,6 +110,8 @@ export class BookClubClassAPI extends Controller {
       'attachment; filename=' + `${zipNameForClient}.zip`
     );
 
+    req.res?.setHeader('Content-Type', 'application/zip');
+
     const zipPath = path.join(downloadFolder, `${idclass}.zip`);
 
     logger.info(`Files on download folder: ${readdirSync(downloadFolder)}`);
