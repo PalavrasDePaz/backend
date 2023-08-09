@@ -2,7 +2,7 @@ import { drive_v3 } from '@googleapis/drive';
 import { FileHandler } from './file-handler';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { GOOGLE_CLOUD_KEY } from '@src/config/server';
-import { createWriteStream, readdirSync, writeFileSync } from 'fs';
+import { createWriteStream, readdirSync, writeFile } from 'fs';
 import path from 'path';
 import archiver from 'archiver';
 import { logger } from '../logger/logger';
@@ -13,7 +13,7 @@ export class DriveFileHandler implements FileHandler {
 
   constructor() {
     this.drive = new drive_v3.Drive({ auth: GOOGLE_CLOUD_KEY });
-    logger.debug('Created drive Cliente');
+    logger.info('Created drive Cliente');
   }
 
   async getFolderName(source: string): Promise<string> {
@@ -51,7 +51,7 @@ export class DriveFileHandler implements FileHandler {
       })
     ).data.files;
 
-    logger.debug('Fetched files from drive');
+    logger.info('Fetched files from drive');
 
     return files ? files : [];
   }
@@ -67,7 +67,9 @@ export class DriveFileHandler implements FileHandler {
         if (file.id && file.name) {
           const fileBuffer = await this.getFileBufferFromId(file.id);
           const filepath = path.join(folder, file.name);
-          writeFileSync(filepath, fileBuffer);
+          writeFile(filepath, fileBuffer, (err) => {
+            if (err) logger.error(err);
+          });
         }
       })
     );
@@ -79,7 +81,7 @@ export class DriveFileHandler implements FileHandler {
     const stream = createWriteStream(zipPath);
     const files = readdirSync(source);
 
-    logger.debug('Start Creating Zip File');
+    logger.info('Start Creating Zip File');
 
     return new Promise((resolve, reject) => {
       files.forEach((file) =>
@@ -88,7 +90,12 @@ export class DriveFileHandler implements FileHandler {
         })
       );
 
-      archive.on('error', (err) => reject(err)).pipe(stream);
+      archive
+        .on('error', (err) => {
+          if (err) logger.error(err);
+          reject(err);
+        })
+        .pipe(stream);
       archive.on('end', () => {
         resolve();
       });
