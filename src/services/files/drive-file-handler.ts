@@ -6,6 +6,7 @@ import { createWriteStream, readdirSync, writeFile } from 'fs';
 import path from 'path';
 import archiver from 'archiver';
 import { logger } from '../logger/logger';
+import { FetchFilesError } from '@src/domain/errors/fetch-files';
 
 @provideSingleton(DriveFileHandler)
 export class DriveFileHandler implements FileHandler {
@@ -14,6 +15,26 @@ export class DriveFileHandler implements FileHandler {
   constructor() {
     this.drive = new drive_v3.Drive({ auth: GOOGLE_CLOUD_KEY });
     logger.info('Created drive Cliente');
+  }
+
+  async donwloadFileBufferFromName(
+    source: string,
+    fileName: string
+  ): Promise<Buffer> {
+    const files = (
+      await this.drive.files.list({
+        supportsAllDrives: true,
+        q: `"${source}" in parents and name = '${fileName}.pdf'`
+      })
+    ).data.files;
+
+    if (!files || !files[0].id)
+      throw new FetchFilesError({
+        name: 'FILE_NOT_FOUND',
+        message: `Could not find file with name ${fileName}.pdf`
+      });
+
+    return this.getFileBufferFromId(files[0].id);
   }
 
   async getFolderName(source: string): Promise<string> {
