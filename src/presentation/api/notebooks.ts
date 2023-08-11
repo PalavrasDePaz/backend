@@ -17,7 +17,8 @@ import {
   Tags,
   Post,
   Body,
-  Put
+  Put,
+  Request
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { NotebookError } from '@src/domain/errors/notebook';
@@ -26,6 +27,12 @@ import { SequelizeVolunteerRepository } from '@src/services/repositories/sequeli
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { validationExample } from '@src/documentation/validation-example';
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import { Readable } from 'stream';
+import express from 'express';
+import { FileHandler } from '@src/services/files/file-handler';
+import { DriveFileHandler } from '@src/services/files/drive-file-handler';
+import { logger } from '@src/services/logger/logger';
+import { FetchFilesError } from '@src/domain/errors/fetch-files';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(
@@ -38,16 +45,20 @@ import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-n
 export class NotebookAPI extends Controller {
   private notebooksRepository: NotebookRepository;
   private volunteerRepository: VolunteerRepository;
+  private fileHandler: FileHandler;
 
   constructor(
     @inject(SequelizeNotebookRepository)
     notebooksRepository: NotebookRepository,
     @inject(SequelizeVolunteerRepository)
-    volunteerRepository: VolunteerRepository
+    volunteerRepository: VolunteerRepository,
+    @inject(DriveFileHandler)
+    fileHandler: FileHandler
   ) {
     super();
     this.notebooksRepository = notebooksRepository;
     this.volunteerRepository = volunteerRepository;
+    this.fileHandler = fileHandler;
   }
 
   /**
@@ -60,6 +71,77 @@ export class NotebookAPI extends Controller {
     @Path() idvol: number
   ): Promise<{ count: number }> {
     return this.notebooksRepository.countEvaluatedNotebooksByIdVol(idvol);
+  }
+
+  /**
+   * Download the notebook with specified id
+   *
+   * (The volunteer must have readPermission, which is checked using JWT)
+   */
+  @Get('download/{notebookId}')
+  @Security('jwt', ['readPermission'])
+  @SuccessResponse(200, 'Successfully downloaded the files')
+  @Response<NotebookError>(404, 'Essay not found', {
+    name: 'NOTEBOOK_NOT_FOUND',
+    message: 'Notebook with id {some Id} not found'
+  })
+  public async downloadNotebookFromId(
+    @Path() notebookId: number,
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const notebook = await this.notebooksRepository.getNotebookById(notebookId);
+    if (!notebook)
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_FOUND',
+          message: `Notebook with id ${notebookId} not found`
+        })
+      );
+
+    if (!notebook.notebookDirectory)
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_DIRECTORY_NOT_FOUND_ERROR',
+          message: 'Could not found notebook directory'
+        })
+      );
+
+    // get target from format https://drive.google.com/drive/folders/{target}?usp=sharing
+    const folderId = notebook.notebookDirectory
+      .split('/')
+      .slice(-1)[0]
+      .split('?')[0];
+
+    let fileBuffer: Buffer;
+    try {
+      fileBuffer = await this.fileHandler.donwloadFileBufferFromName(
+        folderId,
+        notebook.studentName
+      );
+    } catch (error) {
+      throw new ApiError(404, error as FetchFilesError);
+    }
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `${notebook.studentName}.pdf`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', fileBuffer.byteLength);
+
+    const stream = Readable.from(fileBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 
   /**
