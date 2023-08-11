@@ -7,4 +7,6 @@ export interface FileHandler {
   zipFiles(source: string, zipName: string): Promise<void>;
 
   getFolderName(source: string): Promise<string>;
+
+  donwloadFileBufferFromName(source: string, fileName: string): Promise<Buffer>;
 }
