@@ -86,9 +86,17 @@ export class BookClubClassAPI extends Controller {
         })
       );
 
+    if (!bcclass.folderLink)
+      throw new ApiError(
+        404,
+        new BookClubClassError({
+          name: 'ESSAYS_DIRECTORY_NOT_FOUND_ERROR',
+          message: 'Could not find essays directory'
+        })
+      );
+
     // get target from format https://drive.google.com/drive/folders/{target}?usp=sharing
-    const folderId =
-      bcclass.folderLink?.split('/').slice(-1)[0].split('?')[0] ?? '';
+    const folderId = bcclass.folderLink.split('/').slice(-1)[0].split('?')[0];
 
     const volunteerId = req.res?.locals.user.idvol;
     const downloadFolder = path.join(STORAGE_DOWNLOAD_FOLDER, `${volunteerId}`);
