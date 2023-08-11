@@ -28,9 +28,10 @@ import { FileHandler } from '@src/services/files/file-handler';
 import { DriveFileHandler } from '@src/services/files/drive-file-handler';
 import express from 'express';
 import path from 'path';
-import { createReadStream, mkdirSync, rmSync } from 'fs';
+import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
+import { logger } from '@src/services/logger/logger';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -89,10 +90,8 @@ export class BookClubClassAPI extends Controller {
     const folderId =
       bcclass.folderLink?.split('/').slice(-1)[0].split('?')[0] ?? '';
 
-    const downloadFolder = path.join(
-      STORAGE_DOWNLOAD_FOLDER,
-      `${req.body.loggedUser.idvol}`
-    );
+    const volunteerId = req.res?.locals.user.idvol;
+    const downloadFolder = path.join(STORAGE_DOWNLOAD_FOLDER, `${volunteerId}`);
     mkdirSync(downloadFolder, { recursive: true });
 
     await this.fileHandler.downloadFilesFromSourceToFolder(
@@ -104,15 +103,25 @@ export class BookClubClassAPI extends Controller {
 
     const zipNameForClient = await this.fileHandler.getFolderName(folderId);
 
+    const zipPath = path.join(downloadFolder, `${idclass}.zip`);
+
     req.res?.setHeader(
       'Content-Disposition',
       'attachment; filename=' + `${zipNameForClient}.zip`
     );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', statSync(zipPath).size);
 
-    const zipPath = path.join(downloadFolder, `${idclass}.zip`);
+    logger.info(`Files on download folder: ${readdirSync(downloadFolder)}`);
+
     const stream = createReadStream(zipPath);
 
-    stream.on('end', () => {
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
       rmSync(downloadFolder, { recursive: true });
     });
 
