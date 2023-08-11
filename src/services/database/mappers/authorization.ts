@@ -7,11 +7,11 @@ export const authorizationModelToEntity = (
   return {
     name: authorization.name,
     permissions: {
-      attendance: authorization['mod presenca'],
-      manageVolunteer: authorization['mod ger vol'],
-      determineVolunteer: authorization['mod det vol'],
-      essay: authorization['mod bo redacao'],
-      notebook: authorization['mod bo cadernos']
+      attendanceModulePermission: authorization['mod presenca'],
+      manageVolunteerModulePermission: authorization['mod ger vol'],
+      determineVolunteerModulePermission: authorization['mod det vol'],
+      essayModulePermission: authorization['mod bo redacao'],
+      notebookModulePermission: authorization['mod bo cadernos']
     }
   };
 };
