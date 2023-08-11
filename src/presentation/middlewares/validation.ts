@@ -13,7 +13,6 @@ export function validationMiddleware(
   res: Response,
   next: NextFunction
 ): Response | void {
-  console.error(err);
   if (err instanceof ValidateError) {
     // eslint-disable-next-line no-console
     console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
