@@ -107,6 +107,35 @@ export class UnsecuredVolunteerAPI extends Controller {
 
   /**
    * Generate an access token for the volunteer if his login data is correct
+   *
+   * Example of token with all permissions:
+   *
+   * {
+   *
+   *   "email": "test@gmail.com",
+   *
+   *   "idvol": 1,
+   *
+   *   "bookPermission": true,
+   *
+   *   "readPermission": true,
+   *
+   *   "attendanceModulePermission": true,
+   *
+   *   "manageVolunteerModulePermission": true,
+   *
+   *   "determineVolunteerModulePermission": true,
+   *
+   *   "essayModulePermission": true,
+   *
+   *   "notebookModulePermission": true,
+   *
+   *   "iat": 1691699195,
+   *
+   *   "exp": 1691706395
+   *
+   * }
+   *
    */
   @Post('login')
   @SuccessResponse(200, 'Success Login')
