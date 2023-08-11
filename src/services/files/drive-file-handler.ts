@@ -37,6 +37,7 @@ export class DriveFileHandler implements FileHandler {
     );
 
     // using any because of not found type from library
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = Buffer.from(resp.data as any, 'base64');
     return buffer;
   }

@@ -1,9 +1,9 @@
 export type PermissionUnionType =
-  | 'attendance'
-  | 'manageVolunteer'
-  | 'determineVolunteer'
-  | 'essay'
-  | 'notebook';
+  | 'attendanceModulePermission'
+  | 'manageVolunteerModulePermission'
+  | 'determineVolunteerModulePermission'
+  | 'essayModulePermission'
+  | 'notebookModulePermission';
 
 export type PermissionEntity = {
   name: string;
