@@ -1,4 +1,4 @@
-import { ErrorBase } from '@src/helpers/error-base';
+import { ErrorBase } from '@src/domain/errors/error-base';
 
 export class ApiError<T extends string> extends Error {
   statusCode: number;
