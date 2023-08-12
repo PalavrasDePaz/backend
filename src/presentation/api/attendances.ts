@@ -19,10 +19,10 @@ import { ApiError } from '../types/api-error';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { AttendanceError } from '@src/domain/errors/attendance';
 import { SequelizeAttendanceRepository } from '@src/services/repositories/sequelize-attendance-repository';
-import { formatAttendanceAsWorkshopAttendanceRow } from '@src/helpers/format-attendance-row';
 import { WorkshopAttendanceRowEntity } from '@src/domain/entities/workshop-attendance-row-entity';
 import { SubmitAttendanceEntity } from '@src/domain/entities/submit-attendance-entity';
 import { VolunteerError } from '@src/domain/errors/volunteer';
+import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
 
 @Route('attendances')
 @Tags('Attendance')

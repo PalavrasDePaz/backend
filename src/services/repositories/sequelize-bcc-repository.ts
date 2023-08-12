@@ -4,8 +4,8 @@ import { BookClubClass } from '../database/models/book-club-class';
 import { Op } from 'sequelize';
 import { AssociatedBCCModelToEntity } from '../database/mappers/book-class-club';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
-import { formatAvailableBCClass } from '@src/helpers/format-available-bcc';
 import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
+import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
 
 @provideSingleton(SequelizeBCCRepository)
 export class SequelizeBCCRepository implements BookClubClassRepository {

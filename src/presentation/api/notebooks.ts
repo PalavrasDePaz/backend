@@ -1,7 +1,6 @@
 import { AvailableNotebookRowEntity } from '@src/domain/entities/notebook/available-notebook-row-entity';
 import { ReserveNotebookDataEntity } from '@src/domain/entities/notebook/reserve-notebook-data-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
-import { formatAvailableNotebookToTableRow } from '@src/helpers/format-available-notebook';
 import { SequelizeNotebookRepository } from '@src/services/repositories/sequelize-notebooks-repository';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
@@ -33,6 +32,7 @@ import { FileHandler } from '@src/services/files/file-handler';
 import { DriveFileHandler } from '@src/services/files/drive-file-handler';
 import { logger } from '@src/services/logger/logger';
 import { FetchFilesError } from '@src/domain/errors/fetch-files';
+import { formatAvailableNotebookToTableRow } from '@src/domain/entity-formatters/format-available-notebook';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(
