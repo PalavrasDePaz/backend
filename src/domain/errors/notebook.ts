@@ -1,4 +1,4 @@
-import { ErrorBase } from '@src/helpers/error-base';
+import { ErrorBase } from './error-base';
 
 type ErrorName =
   | 'NOTEBOOK_NOT_FOUND'
