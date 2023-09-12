@@ -44,6 +44,20 @@ export class AttendanceAPI extends Controller {
   }
 
   /**
+   * Get volunteer attendance metrics such as course attendances, number of evaluations and others.
+   * The objects returned in this route has field names in portuguese as the use of the route is only to
+   * convert those objects to a view such as a table for the volunteers of the project
+   *
+   * (The volunteer must have manageVolunteerModulePermission, which is checked using JWT)
+   */
+  @Get('metrics/')
+  @Security('jwt', ['manageVolunteerModulePermission'])
+  @SuccessResponse(200, 'Successfully generated the metrics')
+  public async getVolunteersAttendanceMetrics(): Promise<unknown> {
+    return await this.attendanceRepository.getVolunteersAttendanceMetrics();
+  }
+
+  /**
    * Get all the workshop attendances that the volunteer with idvol attended
    */
   @Get('{idvol}')

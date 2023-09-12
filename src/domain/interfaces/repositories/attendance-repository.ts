@@ -7,4 +7,6 @@ export interface AttendanceRepository {
   submitAttendance(
     attendance: SubmitAttendanceEntity
   ): Promise<AttendanceEntity>;
+
+  getVolunteersAttendanceMetrics(): Promise<unknown>;
 }
