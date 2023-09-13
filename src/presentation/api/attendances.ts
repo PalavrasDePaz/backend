@@ -13,7 +13,8 @@ import {
   Security,
   Response,
   SuccessResponse,
-  Tags
+  Tags,
+  Example
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
@@ -53,8 +54,11 @@ export class AttendanceAPI extends Controller {
   @Get('metrics/')
   @Security('jwt', ['manageVolunteerModulePermission'])
   @SuccessResponse(200, 'Successfully generated the metrics')
-  public async getVolunteersAttendanceMetrics(): Promise<unknown> {
-    return await this.attendanceRepository.getVolunteersAttendanceMetrics();
+  @Example({ metrics: [{ field1: 'something1' }, { field1: 'something2' }] })
+  public async getVolunteersAttendanceMetrics(): Promise<{ metrics: unknown }> {
+    const metrics =
+      await this.attendanceRepository.getVolunteersAttendanceMetrics();
+    return { metrics: metrics };
   }
 
   /**
