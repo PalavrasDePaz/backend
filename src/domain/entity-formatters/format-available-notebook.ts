@@ -7,7 +7,6 @@ export const formatAvailableNotebookToTableRow = (
   return {
     notebookId: notebook.idcad,
     studentId: notebook.studentRegistration,
-    idPep: notebook.idpep,
     classId: notebook.idpep ?? -1,
     studentName: notebook.studentName,
     reservationDate: notebook.reservationDate,
