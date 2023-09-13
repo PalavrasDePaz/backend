@@ -47,7 +47,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
           where: {
             idcad: notebookId,
             datareserva: null,
-            'Carimbo de data/hora': null
+            'Carimbo de data/hora': null,
+            aprovado: 'SIM'
           }
         }
       )
@@ -60,7 +61,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       where: {
         idvol,
         'Carimbo de data/hora': null,
-        datareserva: null
+        datareserva: null,
+        aprovado: 'SIM'
       }
     });
     return notebooks.map(notebookModelToEntity);
@@ -70,8 +72,9 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     const notebooks = await Notebook.findAll({
       include: { association: Notebook.associations.pep },
       where: {
-        datareserva: { [Op.is]: null },
-        'Carimbo de data/hora': { [Op.is]: null }
+        datareserva: null,
+        'Carimbo de data/hora': null,
+        aprovado: 'SIM'
       }
     });
 

@@ -35,6 +35,7 @@ export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   a11: notebook.a11,
   a12: notebook.a12,
   a13: notebook.a13,
+  approved: notebook.aprovado == 'SIM' ? true : false,
   conclusion: notebook['conclusão do avaliador'],
   archivesExclusion: notebook['exclusão de arquivos recebidos'] === 'SIM',
   evaluatedDate: notebook['Carimbo de data/hora'],

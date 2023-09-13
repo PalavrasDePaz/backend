@@ -9,4 +9,5 @@ export type EvaluateNotebookEntity = Omit<
   | 'reservationDate'
   | 'evaluatedDate'
   | 'notebookDirectory'
+  | 'approved'
 >;

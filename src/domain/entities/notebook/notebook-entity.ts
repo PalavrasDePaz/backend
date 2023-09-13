@@ -34,6 +34,7 @@ export type NotebookEntity = {
   a12?: string;
   a13?: string;
   conclusion: string;
+  approved: boolean;
   archivesExclusion: boolean;
   evaluatedDate?: Date | null;
   reservationDate?: Date | null;
