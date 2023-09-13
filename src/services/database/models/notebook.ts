@@ -48,6 +48,7 @@ export class Notebook extends Model<
   'Carimbo de data/hora'?: Date | null;
   idpep?: number;
   datareserva?: Date | null;
+  aprovado?: string;
   pep?: Pep;
   volunteer?: Volunteer;
 
@@ -189,6 +190,10 @@ export class Notebook extends Model<
         },
         'Carimbo de data/hora': {
           type: DataTypes.DATE,
+          allowNull: true
+        },
+        aprovado: {
+          type: DataTypes.STRING,
           allowNull: true
         },
         idpep: {
