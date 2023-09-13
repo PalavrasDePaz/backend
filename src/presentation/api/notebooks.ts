@@ -14,7 +14,6 @@ import {
   SuccessResponse,
   Response,
   Tags,
-  Post,
   Body,
   Put,
   Request
@@ -228,7 +227,7 @@ export class NotebookAPI extends Controller {
    *
    * (The volunteer must have readPermission, which is checked using JWT)
    */
-  @Post('/reservation')
+  @Put('/reservation')
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully reserved notebook for volunteer')
   @Response<NotebookError>(404, 'Notebook not found', {
