@@ -61,7 +61,6 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       where: {
         idvol,
         'Carimbo de data/hora': null,
-        datareserva: null,
         aprovado: 'SIM'
       }
     });
