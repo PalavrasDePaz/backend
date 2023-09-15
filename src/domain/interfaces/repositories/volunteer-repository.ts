@@ -10,6 +10,8 @@ export interface VolunteerRepository {
     email: string
   ): Promise<VolunteerEntity | null>;
 
+  getVolunteersFromDate(date: Date): Promise<VolunteerEntity[]>;
+
   getVolunteerByEmail(email: string): Promise<VolunteerEntity | null>;
 
   getVolunteerById(id: number): Promise<VolunteerEntity | null>;
