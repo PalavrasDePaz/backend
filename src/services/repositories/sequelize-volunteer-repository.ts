@@ -9,7 +9,7 @@ import {
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
-import { UniqueConstraintError } from 'sequelize';
+import { Op, UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { hashString } from '@src/helpers/message-hashing';
@@ -20,6 +20,16 @@ import { authorizationModelToEntity } from '../database/mappers/authorization';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
+  async getVolunteersFromDate(date: Date): Promise<VolunteerEntity[]> {
+    const attendances = await Volunteer.findAll({
+      where: {
+        createdAt: { [Op.gte]: date }
+      },
+      order: [['createdAt', 'DESC']]
+    });
+
+    return attendances.map(volunteerModelToEntity);
+  }
   async getPermissionByAuthName(
     name: string
   ): Promise<PermissionEntity | null> {

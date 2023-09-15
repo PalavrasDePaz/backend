@@ -45,6 +45,23 @@ export class VolunteerAPI extends Controller {
   }
 
   /**
+   * Get all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)
+   *
+   * (The volunteer must have determineVolunteerModulePermission, which is checked using JWT)
+   *
+   * @example date "2023-09-12"
+   */
+  @Get('from/{date}')
+  @Security('jwt', ['determineVolunteerModulePermission'])
+  @SuccessResponse(200, 'Successfully got volunteer data')
+  public async getVolunteersFromDate(
+    @Path() date: string
+  ): Promise<VolunteerEntity[]> {
+    const dateFormated = new Date(date);
+    return await this.volunteerRepository.getVolunteersFromDate(dateFormated);
+  }
+
+  /**
    * Create the volunteer password if it does not exist or udpdate it.
    *
    * (The logged volunteer can only use the operation on it's own email, unless admin)

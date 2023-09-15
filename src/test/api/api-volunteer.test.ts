@@ -14,6 +14,9 @@ describe('Volunteer API', () => {
   const volunteer: VolunteerWithAuthEntity = volunteerWithAuthEntityDummy;
 
   class MockVolunteerRepository implements VolunteerRepository {
+    getVolunteersFromDate(_date: Date): Promise<VolunteerEntity[]> {
+      throw new Error('Method not implemented.');
+    }
     getPermissionByAuthName(_name: string): Promise<PermissionEntity | null> {
       throw new Error('Method not implemented.');
     }

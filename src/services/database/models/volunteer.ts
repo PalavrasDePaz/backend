@@ -46,7 +46,7 @@ export class Volunteer extends Model<
   ajudar?: string;
   contribuir?: string;
   'declaração'!: string;
-  createdAt?: Date;
+  createdAt!: CreationOptional<Date>;
 
   public static initialize(sequelize: Sequelize) {
     this.init(

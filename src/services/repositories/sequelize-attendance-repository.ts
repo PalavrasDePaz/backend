@@ -9,11 +9,22 @@ import { provideSingleton } from '@src/helpers/provide-singleton';
 import { SubmitAttendanceEntity } from '@src/domain/entities/submit-attendance-entity';
 import { AttendanceError } from '@src/domain/errors/attendance';
 import sequelize from '../database/sequelize';
-import { QueryTypes } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import attendanceThemeMap from '@src/helpers/attendance/attendance-theme-map';
 
 @provideSingleton(SequelizeAttendanceRepository)
 export class SequelizeAttendanceRepository implements AttendanceRepository {
+  async getAttendancesFromDate(date: Date): Promise<AttendanceEntity[]> {
+    const attendances = await Attendance.findAll({
+      where: {
+        createdAt: { [Op.gte]: date }
+      },
+      order: [['createdAt', 'DESC']]
+    });
+
+    return attendances.map(attendanceModelToEntity);
+  }
+
   async getAllAttendancesByIdVol(idvol: number): Promise<AttendanceEntity[]> {
     const attendances = await Attendance.findAll({
       where: { idvol },

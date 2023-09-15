@@ -29,7 +29,8 @@ export const volunteerModelToEntity = (
     desires: volunteer.sonhos,
     rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
-    needDeclaration: volunteer.declaração == 'SIM'
+    needDeclaration: volunteer.declaração == 'SIM',
+    createdAt: volunteer.createdAt
   };
 };
 
@@ -61,7 +62,8 @@ export const volunteerModelToAuthEntity = (
     desires: volunteer.sonhos,
     rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
-    needDeclaration: volunteer.declaração == 'SIM'
+    needDeclaration: volunteer.declaração == 'SIM',
+    createdAt: volunteer.createdAt
   };
 };
 

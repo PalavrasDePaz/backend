@@ -46,4 +46,5 @@ export interface VolunteerEntity {
   interestFutureRoles: string[];
   needDeclaration: boolean;
   idvol: number;
+  createdAt: Date;
 }

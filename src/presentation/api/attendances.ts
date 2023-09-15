@@ -45,6 +45,23 @@ export class AttendanceAPI extends Controller {
   }
 
   /**
+   * Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)
+   *
+   * (The volunteer must have attendanceModulePermission, which is checked using JWT)
+   *
+   * @example date "2023-09-12"
+   */
+  @Get('from/{date}')
+  @Security('jwt', ['attendanceModulePermission'])
+  @SuccessResponse(200, 'Successfully got attendances')
+  public async getAttendancesFromDate(
+    @Path() date: string
+  ): Promise<AttendanceEntity[]> {
+    const dateFormated = new Date(date);
+    return await this.attendanceRepository.getAttendancesFromDate(dateFormated);
+  }
+
+  /**
    * Get volunteer attendance metrics such as course attendances, number of evaluations and others.
    * The objects returned in this route has field names in portuguese as the use of the route is only to
    * convert those objects to a view such as a table for the volunteers of the project
@@ -64,7 +81,7 @@ export class AttendanceAPI extends Controller {
   /**
    * Get all the workshop attendances that the volunteer with idvol attended
    */
-  @Get('{idvol}')
+  @Get('volunteer/{idvol}')
   @SuccessResponse(200, 'Successfully got attendances')
   public async getAttencesByIdVol(
     @Path() idvol: number
