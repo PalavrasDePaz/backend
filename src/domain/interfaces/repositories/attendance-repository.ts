@@ -9,4 +9,6 @@ export interface AttendanceRepository {
   ): Promise<AttendanceEntity>;
 
   getVolunteersAttendanceMetrics(): Promise<unknown>;
+
+  getAttendancesFromDate(date: Date): Promise<AttendanceEntity[]>;
 }
