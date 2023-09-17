@@ -253,7 +253,23 @@ export class BookClubClassAPI extends Controller {
     return await this.bccRepository.getClassesFromId(classId);
   }
 
+  /**
+   * Update class values available at UpdateBCClassEntity from class with classId
+   *
+   *
+   * (The volunteer must have essayModulePermission, which is checked using JWT)
+   */
   @Put('{classId}')
+  @Security('jwt', ['essayModulePermission'])
+  @SuccessResponse(200, 'Successfully updated the class')
+  @Response<BookClubClassError>(404, 'Could not find class', {
+    name: 'ESSAY_NOT_FOUND',
+    message: `Essay with id {classId} not found`
+  })
+  @Response<BookClubClassError>(400, 'Could not update class', {
+    name: 'ClASS_NOT_UPDATED_ERROR',
+    message: `Class with ID {classId} not updated`
+  })
   async updateClass(
     @Path() classId: number,
     @Body() bookClubClass: UpdateBCClassEntity

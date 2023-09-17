@@ -31,6 +31,8 @@ export class BookEvaluationAPI extends Controller {
 
   /**
    * Create multiple multiple evaluations
+   *
+   * (The volunteer must have bookPermission, which is checked using JWT)
    */
   @Post()
   @Security('jwt', ['bookPermission'])
