@@ -19,7 +19,7 @@ export const attendanceModelToEntity = (
   submissionDate: attendance.createdAt
 });
 
-export const SubmitAttendanceEntityToCreationModel = (
+export const submitAttendanceEntityToCreationModel = (
   attendance: SubmitAttendanceEntity
 ): CreationAttributes<Attendance> => ({
   idvol: attendance.idvol,

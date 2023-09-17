@@ -1,7 +1,7 @@
 import { Model } from 'sequelize';
 
-type updateModel<T extends Model> = {
+type UpdateModel<T extends Model> = {
   [key in keyof T]?: T[key];
 };
 
-export default updateModel;
+export default UpdateModel;

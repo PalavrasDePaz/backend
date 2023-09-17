@@ -3,7 +3,7 @@ import BookClubClassEntity, {
 } from '@src/domain/entities/book-club-class/book-club-class';
 import { BookClubClass } from '../models/book-club-class';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
-import updateModel from './helpers/update-model-type';
+import UpdateModel from './helpers/update-model-type';
 
 export const BCCModelToEntity = (
   bookClubClass: BookClubClass
@@ -53,7 +53,7 @@ export const AssociatedBCCModelToEntity = (
 
 export const updateBCClassEntityToUpdateModel = (
   bookClubClass: UpdateBCClassEntity
-): updateModel<BookClubClass> => {
+): UpdateModel<BookClubClass> => {
   return {
     datarecebrelatorio: bookClubClass.reportReceiveDate,
     emprestimo: bookClubClass.loanDate,

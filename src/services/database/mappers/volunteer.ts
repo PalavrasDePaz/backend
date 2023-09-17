@@ -5,7 +5,7 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/voluntee
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { hashString } from '@src/helpers/message-hashing';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
-import updateModel from './helpers/update-model-type';
+import UpdateModel from './helpers/update-model-type';
 
 export const volunteerModelToEntity = (
   volunteer: Volunteer
@@ -102,7 +102,7 @@ export const createVolunteerEntityToCreationModel = (
 
 export const updateVolunteerEntityToUpdateModel = (
   volunteer: UpdateVolunteerEntity
-): updateModel<Volunteer> => {
+): UpdateModel<Volunteer> => {
   return {
     nome: volunteer.name,
     nascimento: volunteer.birthDate,
