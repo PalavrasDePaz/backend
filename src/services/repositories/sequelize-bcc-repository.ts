@@ -2,10 +2,14 @@ import { BookClubClassRepository } from '@src/domain/interfaces/repositories/boo
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { BookClubClass } from '../database/models/book-club-class';
 import { Op } from 'sequelize';
-import { AssociatedBCCModelToEntity } from '../database/mappers/book-class-club';
+import {
+  AssociatedBCCModelToEntity,
+  updateBCClassEntityToUpdateModel
+} from '../database/mappers/book-class-club';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
 import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
 import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
+import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
 
 @provideSingleton(SequelizeBCCRepository)
 export class SequelizeBCCRepository implements BookClubClassRepository {
@@ -65,7 +69,35 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
   async getBookClubClassById(
     idclass: number
   ): Promise<AssociatedBCCEntity | null> {
-    const book = await BookClubClass.findByPk(idclass);
+    const book = await BookClubClass.findByPk(idclass, {
+      include: BookClubClass.associations.place
+    });
     return book ? AssociatedBCCModelToEntity(book) : null;
+  }
+
+  async getClassesFromId(classId: number): Promise<AssociatedBCCEntity[]> {
+    const classes = await BookClubClass.findAll({
+      where: {
+        idturma: { [Op.gte]: classId }
+      }
+    });
+
+    return classes.map(AssociatedBCCModelToEntity);
+  }
+
+  async updatedClass(
+    classId: number,
+    bookClubClass: UpdateBCClassEntity
+  ): Promise<AssociatedBCCEntity | null> {
+    const updatedRows = (
+      await BookClubClass.update(
+        updateBCClassEntityToUpdateModel(bookClubClass),
+        {
+          where: { idturma: classId }
+        }
+      )
+    )[0];
+
+    return updatedRows ? await this.getBookClubClassById(classId) : null;
   }
 }

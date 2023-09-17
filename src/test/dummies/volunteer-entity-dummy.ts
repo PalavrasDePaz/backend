@@ -20,7 +20,8 @@ const volunteerEntityDummy: VolunteerEntity = {
   needDeclaration: false,
   bachelor: 'test',
   disability: undefined,
-  interestFutureRoles: ['test']
+  interestFutureRoles: ['test'],
+  createdAt: new Date('2023-09-12')
 };
 
 export default volunteerEntityDummy;
