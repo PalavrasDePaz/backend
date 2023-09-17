@@ -32,6 +32,8 @@ import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
+import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
+import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -234,5 +236,70 @@ export class BookClubClassAPI extends Controller {
     }
 
     return reservedEssay;
+  }
+
+  /**
+   * Get all the book club classes starting from the classId in the path
+   *
+   *
+   * (The volunteer must have essayModulePermission, which is checked using JWT)
+   */
+  @Get('from-id/{classId}')
+  @Security('jwt', ['essayModulePermission'])
+  @SuccessResponse(200, 'Successfully fetched the classes')
+  async getClassesFromId(
+    @Path() classId: number
+  ): Promise<AssociatedBCCEntity[]> {
+    return await this.bccRepository.getClassesFromId(classId);
+  }
+
+  /**
+   * Update class values available at UpdateBCClassEntity from class with classId
+   *
+   *
+   * (The volunteer must have essayModulePermission, which is checked using JWT)
+   */
+  @Put('{classId}')
+  @Security('jwt', ['essayModulePermission'])
+  @SuccessResponse(200, 'Successfully updated the class')
+  @Response<BookClubClassError>(404, 'Could not find class', {
+    name: 'ESSAY_NOT_FOUND',
+    message: `Essay with id {classId} not found`
+  })
+  @Response<BookClubClassError>(400, 'Could not update class', {
+    name: 'ClASS_NOT_UPDATED_ERROR',
+    message: `Class with ID {classId} not updated`
+  })
+  async updateClass(
+    @Path() classId: number,
+    @Body() bookClubClass: UpdateBCClassEntity
+  ): Promise<AssociatedBCCEntity> {
+    const book = await this.bccRepository.getBookClubClassById(classId);
+    if (!book) {
+      throw new ApiError(
+        404,
+        new BookClubClassError({
+          name: 'ESSAY_NOT_FOUND',
+          message: `Essay with id ${classId} not found`
+        })
+      );
+    }
+
+    const updatedBCC = await this.bccRepository.updatedClass(
+      classId,
+      bookClubClass
+    );
+
+    if (!updatedBCC) {
+      throw new ApiError(
+        400,
+        new BookClubClassError({
+          name: 'ClASS_NOT_UPDATED_ERROR',
+          message: `Class with ID ${classId} not updated`
+        })
+      );
+    }
+
+    return updatedBCC;
   }
 }

@@ -1,7 +1,7 @@
 import { AttendanceEntity } from '@src/domain/entities/attendance-entity';
 import { AttendanceRepository } from '@src/domain/interfaces/repositories/attendance-repository';
 import {
-  SubmitAttendanceEntityToCreationModel,
+  submitAttendanceEntityToCreationModel,
   attendanceModelToEntity
 } from '../database/mappers/attendance';
 import { Attendance } from '../database/models/attendance';
@@ -38,7 +38,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
   ): Promise<AttendanceEntity> {
     try {
       const createdAttendance = await Attendance.create(
-        SubmitAttendanceEntityToCreationModel(attendance)
+        submitAttendanceEntityToCreationModel(attendance)
       );
 
       return attendanceModelToEntity(createdAttendance);
