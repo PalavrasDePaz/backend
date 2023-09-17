@@ -1,4 +1,4 @@
-import { PepClassEntity } from '../pep-class-entity';
+import { PepClassEntity } from '../pep-class/pep-class-entity';
 
 export type NotebookEntity = {
   idcad: number;
