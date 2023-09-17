@@ -3,10 +3,13 @@ import { provide } from 'inversify-binding-decorators';
 import {
   Body,
   Controller,
+  Path,
   Post,
+  Put,
   Route,
   Security,
   SuccessResponse,
+  Response,
   Tags
 } from 'tsoa';
 import { BookEvaluationRepository } from '@src/domain/interfaces/repositories/book-evaluation-repository';
@@ -14,6 +17,8 @@ import { SequelizeBookEvaluationRepository } from '@src/services/repositories/se
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { ApiError } from '../types/api-error';
 import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
+import { BookEvaluationEntity } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
 
 @Route('book-evaluations')
 @Tags('Book evaluation')
@@ -47,5 +52,57 @@ export class BookEvaluationAPI extends Controller {
     } catch (error) {
       throw new ApiError(400, error as BookEvaluationError);
     }
+  }
+
+  /**
+   * Update class values available at UpdateBookEvaluationEntity from class with evaluationId
+   *
+   *
+   * (The volunteer must have essayModulePermission, which is checked using JWT)
+   */
+  @Put('{evaluationId}')
+  @Security('jwt', ['essayModulePermission'])
+  @SuccessResponse(200, 'Successfully Upadated the evaluation')
+  @Response<BookEvaluationError>(404, 'Could not find evaluation', {
+    name: 'EVALUATION_NOT_FOUND_ERROR',
+    message: `Evaluation with id {evaluationId} not found`
+  })
+  @Response<BookEvaluationError>(400, 'Could not update evaluation', {
+    name: 'EVALUATION_NOT_UPDATED_ERROR',
+    message: `Evaluation with ID {evaluationId} not updated`
+  })
+  async updateBookEvaluation(
+    @Path() evaluationId: number,
+    @Body() evaluation: UpdateBookEvaluationEntity
+  ): Promise<BookEvaluationEntity> {
+    const searchEvaluation =
+      await this.bookEvaluationRepository.getBookEvaluationById(evaluationId);
+    if (!searchEvaluation) {
+      throw new ApiError(
+        404,
+        new BookEvaluationError({
+          name: 'EVALUATION_NOT_FOUND_ERROR',
+          message: `Evaluation with id ${evaluationId} not found`
+        })
+      );
+    }
+
+    const updatedEvaluation =
+      await this.bookEvaluationRepository.updatedBookEvaluation(
+        evaluationId,
+        evaluation
+      );
+
+    if (!updatedEvaluation) {
+      throw new ApiError(
+        400,
+        new BookEvaluationError({
+          name: 'EVALUATION_NOT_UPDATED_ERROR',
+          message: `Evaluation with id ${evaluationId} not upated`
+        })
+      );
+    }
+
+    return updatedEvaluation;
   }
 }
