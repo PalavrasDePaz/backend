@@ -75,7 +75,9 @@ export class NotebookAPI extends Controller {
   }
 
   /**
-   * Download the notebook with specified id
+   * Download the notebook with specified id as a pdf file
+   * The return of this route is a stream (content type: application/octet-stream)
+   * and the response header include the file as an attachement
    *
    * (The volunteer must have readPermission, which is checked using JWT)
    */
