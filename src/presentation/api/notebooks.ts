@@ -1,5 +1,8 @@
 import { AvailableNotebookRowEntity } from '@src/domain/entities/notebook/available-notebook-row-entity';
-import { ReserveNotebookDataEntity } from '@src/domain/entities/notebook/reserve-notebook-data-entity';
+import {
+  ReserveNotebookDataEntity,
+  RevertReserveNotebookDataEntity
+} from '@src/domain/entities/notebook/reserve-notebook-data-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import { SequelizeNotebookRepository } from '@src/services/repositories/sequelize-notebooks-repository';
 import { inject } from 'inversify';
@@ -286,5 +289,50 @@ export class NotebookAPI extends Controller {
     }
 
     return formatAvailableNotebookToTableRow(reservedNotebook);
+  }
+
+  /**
+   * Revert reserve notebook for the volunteer.
+   */
+
+  @Put('/revert-reservation')
+  @Security('jwt', ['readPermission'])
+  @SuccessResponse(200, 'Successfully revert reserved notebook for volunteer')
+  @Response<NotebookError>(404, 'Notebook not found', {
+    name: 'NOTEBOOK_NOT_FOUND',
+    message: 'Notebook with id {some notebook id} not found'
+  })
+  async revertReserveNotebookForVolunteer(
+    @Body() reserveData: RevertReserveNotebookDataEntity
+  ) {
+    const { notebookId } = reserveData;
+
+    const notebook = await this.notebooksRepository.getNotebookById(notebookId);
+    if (!notebook) {
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_FOUND',
+          message: `Notebook with id ${notebookId} not found`
+        })
+      );
+    }
+
+    const revertReservedNotebook =
+      await this.notebooksRepository.revertReserveNotebookForVolunteer(
+        notebookId
+      );
+
+    if (!revertReservedNotebook) {
+      throw new ApiError(
+        400,
+        new NotebookError({
+          name: 'NOTEBOOK_ALREADY_RESERVED_ERROR',
+          message: 'Notebook already revert reserved or already evaluated'
+        })
+      );
+    }
+
+    return formatAvailableNotebookToTableRow(revertReservedNotebook);
   }
 }
