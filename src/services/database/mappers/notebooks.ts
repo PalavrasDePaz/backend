@@ -1,6 +1,8 @@
 import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 import { Notebook } from '../models/notebook';
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import UpdateModel from './helpers/update-model-type';
+import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 
 export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   idcad: notebook.idcad,
@@ -43,13 +45,9 @@ export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   notebookDirectory: notebook.pep?.directory
 });
 
-type EvaluateNotebookModel = {
-  [key in keyof Notebook]?: Notebook[key];
-};
-
 export const evaluateNotebookEntityToEvaluateNotebookModel = (
   notebook: EvaluateNotebookEntity
-): EvaluateNotebookModel => ({
+): UpdateModel<Notebook> => ({
   idvol: notebook.idvol,
   'unidade prisional do(a) aluno(a)': notebook.studentPrisonUnit,
   'tema 1': notebook.subject1,
@@ -80,3 +78,40 @@ export const evaluateNotebookEntityToEvaluateNotebookModel = (
   'exclusão de arquivos recebidos': notebook.archivesExclusion ? 'SIM' : 'NÃO',
   'Carimbo de data/hora': new Date()
 });
+
+export const updateNotebookEntityToUpdateModel = (
+  notebook: UpdateNotebookEntity
+): UpdateModel<Notebook> => {
+  return {
+    'tema 1': notebook.subject1,
+    'tema 2': notebook.subject2,
+    'tema 3': notebook.subject3,
+    'tema 4': notebook.subject4,
+    'tema 5': notebook.subject5,
+    'tema 6': notebook.subject6,
+    'tema 7': notebook.subject7,
+    'tema 8': notebook.subject8,
+    'tema 9': notebook.subject9,
+    'tema 10': notebook.subject10,
+    'conteúdos relevantes': notebook.relevantContent,
+    aprovado: notebook.approved ? "SIM" : "NÃO",
+    a1: notebook.a1,
+    a2: notebook.a2,
+    a3: notebook.a3,
+    a4: notebook.a4,
+    a5: notebook.a5,
+    a6: notebook.a6,
+    a7: notebook.a7,
+    a8: notebook.a8,
+    a9: notebook.a9,
+    a10: notebook.a10,
+    a11: notebook.a11,
+    a12: notebook.a12,
+    a13: notebook.a13,
+    'conclusão do avaliador': notebook.conclusion,
+    'exclusão de arquivos recebidos': notebook.archivesExclusion
+      ? 'SIM'
+      : 'NÃO',
+    'Carimbo de data/hora': notebook.evaluatedDate
+  };
+};

@@ -32,6 +32,8 @@ import { DriveFileHandler } from '@src/services/files/drive-file-handler';
 import { logger } from '@src/services/logger/logger';
 import { FetchFilesError } from '@src/domain/errors/fetch-files';
 import { formatAvailableNotebookToTableRow } from '@src/domain/entity-formatters/format-available-notebook';
+import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
+import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(
@@ -81,7 +83,7 @@ export class NotebookAPI extends Controller {
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully downloaded the files')
   @Response<NotebookError>(404, 'Essay not found', {
-    name: 'NOTEBOOK_NOT_FOUND',
+    name: 'NOTEBOOK_NOT_FOUND_ERROR',
     message: 'Notebook with id {some Id} not found'
   })
   public async downloadNotebookFromId(
@@ -93,7 +95,7 @@ export class NotebookAPI extends Controller {
       throw new ApiError(
         404,
         new NotebookError({
-          name: 'NOTEBOOK_NOT_FOUND',
+          name: 'NOTEBOOK_NOT_FOUND_ERROR',
           message: `Notebook with id ${notebookId} not found`
         })
       );
@@ -180,7 +182,7 @@ export class NotebookAPI extends Controller {
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully Evaluated notebook')
   @Response<NotebookError>(404, 'Notebook not found', {
-    name: 'NOTEBOOK_NOT_FOUND',
+    name: 'NOTEBOOK_NOT_FOUND_ERROR',
     message: 'Notebook with id {some notebook id} not found'
   })
   @Response<NotebookError>(400, 'Notebook already evaluated', {
@@ -196,7 +198,7 @@ export class NotebookAPI extends Controller {
       throw new ApiError(
         404,
         new NotebookError({
-          name: 'NOTEBOOK_NOT_FOUND',
+          name: 'NOTEBOOK_NOT_FOUND_ERROR',
           message: `Notebook with id ${notebookId} not found`
         })
       );
@@ -231,7 +233,7 @@ export class NotebookAPI extends Controller {
   @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully reserved notebook for volunteer')
   @Response<NotebookError>(404, 'Notebook not found', {
-    name: 'NOTEBOOK_NOT_FOUND',
+    name: 'NOTEBOOK_NOT_FOUND_ERROR',
     message: 'Notebook with id {some notebook id} not found'
   })
   @Response<VolunteerError>(412, 'Volunteer not found', {
@@ -263,7 +265,7 @@ export class NotebookAPI extends Controller {
       throw new ApiError(
         404,
         new NotebookError({
-          name: 'NOTEBOOK_NOT_FOUND',
+          name: 'NOTEBOOK_NOT_FOUND_ERROR',
           message: `Notebook with id ${notebookId} not found`
         })
       );
@@ -286,5 +288,57 @@ export class NotebookAPI extends Controller {
     }
 
     return formatAvailableNotebookToTableRow(reservedNotebook);
+  }
+
+  /**
+   * Update notebook values available at UpdateNotebookEntity from notebook with notebookId
+   *
+   *
+   * (The volunteer must have notebookModulePermission, which is checked using JWT)
+   */
+  @Put('{notebookId}')
+  @Security('jwt', ['notebookModulePermission'])
+  @SuccessResponse(200, 'Successfully updated the class')
+  @Response<NotebookError>(404, 'Could not find notebook', {
+    name: 'NOTEBOOK_NOT_FOUND_ERROR',
+    message: `Notebook with id {notebookId} not found`
+  })
+  @Response<NotebookError>(400, 'Could not update notebook', {
+    name: 'NOTEBOOK_NOT_UPDATED_ERROR',
+    message: `Notebook with ID {notebookId} not updated`
+  })
+  async updateNotebook(
+    @Path() notebookId: number,
+    @Body() notebook: UpdateNotebookEntity
+  ): Promise<NotebookEntity> {
+    const searchNotebook = await this.notebooksRepository.getNotebookById(
+      notebookId
+    );
+    if (!searchNotebook) {
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_FOUND_ERROR',
+          message: `Notebook with id ${notebookId} not found`
+        })
+      );
+    }
+
+    const updatedNotebook = await this.notebooksRepository.updatedNotebook(
+      notebookId,
+      notebook
+    );
+
+    if (!updatedNotebook) {
+      throw new ApiError(
+        400,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_UPDATED_ERROR',
+          message: `Notebook with ID ${notebookId} not updated`
+        })
+      );
+    }
+
+    return updatedNotebook;
   }
 }
