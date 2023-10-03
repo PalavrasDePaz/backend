@@ -47,7 +47,7 @@ export class Place extends Model<
           allowNull: false
         },
         closed: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BOOLEAN,
           allowNull: false
         }
       },

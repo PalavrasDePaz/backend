@@ -1,4 +1,4 @@
-import { ClassEntity } from '../class-entity';
+import { PepClassEntity } from '../pep-class/pep-class-entity';
 
 export type NotebookEntity = {
   idcad: number;
@@ -38,4 +38,4 @@ export type NotebookEntity = {
   archivesExclusion: boolean;
   evaluatedDate?: Date | null;
   reservationDate?: Date | null;
-} & Pick<ClassEntity, 'notebookDirectory'>;
+} & Pick<PepClassEntity, 'notebookDirectory'>;
