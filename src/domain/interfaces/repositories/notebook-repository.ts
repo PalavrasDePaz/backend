@@ -1,5 +1,6 @@
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
 import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
+import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 
 export interface NotebookRepository {
   countEvaluatedNotebooksByIdVol(idvol: number): Promise<{ count: number }>;
@@ -23,4 +24,9 @@ export interface NotebookRepository {
   ): Promise<NotebookEntity | null>;
 
   getNotebookById(notebookId: number): Promise<NotebookEntity | null>;
+
+  updatedNotebook(
+    notebookId: number,
+    notebook: UpdateNotebookEntity
+  ): Promise<NotebookEntity | null>;
 }

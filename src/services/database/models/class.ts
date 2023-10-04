@@ -40,7 +40,7 @@ export class Pep extends Model<
           allowNull: true
         },
         'Report Y/N': {
-          type: DataTypes.INTEGER,
+          type: DataTypes.BOOLEAN,
           allowNull: true
         },
         dayReceived: {

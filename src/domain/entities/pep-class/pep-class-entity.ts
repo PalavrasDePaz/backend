@@ -1,4 +1,4 @@
-export type ClassEntity = {
+export type PepClassEntity = {
   id: number;
   placeId: number;
   groupName?: string;

@@ -2,7 +2,8 @@ import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import {
   notebookModelToEntity,
-  evaluateNotebookEntityToEvaluateNotebookModel
+  evaluateNotebookEntityToEvaluateNotebookModel,
+  updateNotebookEntityToUpdateModel
 } from '../database/mappers/notebooks';
 import { Notebook } from '../database/models/notebook';
 import { provideSingleton } from '@src/helpers/provide-singleton';
@@ -10,6 +11,7 @@ import { Op } from 'sequelize';
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
 import { Volunteer } from '../database/models/volunteer';
 import { Pep } from '../database/models/class';
+import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 
 @provideSingleton(SequelizeNotebookRepository)
 export class SequelizeNotebookRepository implements NotebookRepository {
@@ -60,16 +62,19 @@ export class SequelizeNotebookRepository implements NotebookRepository {
   ): Promise<NotebookEntity | null> {
     const updatedNotebooks = (
       await Notebook.update(
-        { idvol: undefined, datareserva: null },
+        { idvol: null, datareserva: null },
         {
           where: {
             idcad: notebookId,
             datareserva: { [Op.not]: null },
-            idvol: { [Op.not]: undefined }
+            idvol: { [Op.not]: null }
           }
         }
       )
     )[0];
+    
+    console.log(notebookId);
+
     return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
   }
   async getReservedNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]> {
@@ -104,5 +109,18 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       where: { idvol, 'Carimbo de data/hora': { [Op.ne]: null } }
     });
     return { count };
+  }
+
+  async updatedNotebook(
+    notebookId: number,
+    notebook: UpdateNotebookEntity
+  ): Promise<NotebookEntity | null> {
+    const updatedRows = (
+      await Notebook.update(updateNotebookEntityToUpdateModel(notebook), {
+        where: { idcad: notebookId }
+      })
+    )[0];
+
+    return updatedRows ? await this.getNotebookById(notebookId) : null;
   }
 }

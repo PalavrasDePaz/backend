@@ -64,6 +64,8 @@ export class BookClubClassAPI extends Controller {
 
   /**
    * Download files of the book club class as a zip
+   * The return of this route is a stream (content type: application/octet-stream)
+   * and the response header include the file as an attachement
    *
    * (The volunteer must have bookPermission, which is checked using JWT)
    */
