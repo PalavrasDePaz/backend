@@ -3,8 +3,3 @@ import { VolunteerEntity } from '../volunteer/volunteer-entity';
 
 export type ReserveNotebookDataEntity = Pick<VolunteerEntity, 'idvol'> &
   Pick<AvailableNotebookRowEntity, 'notebookId'>;
-
-export type RevertReserveNotebookDataEntity = Pick<
-  AvailableNotebookRowEntity,
-  'notebookId'
->;

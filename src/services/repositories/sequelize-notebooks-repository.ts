@@ -73,8 +73,6 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       )
     )[0];
     
-    console.log(notebookId);
-
     return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
   }
   async getReservedNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]> {
