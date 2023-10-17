@@ -239,6 +239,43 @@ export class BookClubClassAPI extends Controller {
 
     return reservedEssay;
   }
+  /**
+   * Reserve essay for the volunteer.
+   */
+  @Put('/revert-reservation/{classId}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(200, 'Successfully reserved essay for volunteer')
+  @Response<BookClubClassError>(404, 'Essay not found', {
+    name: 'ESSAY_NOT_FOUND',
+    message: 'Essay with id {some class id} not found'
+  })
+  async revertReserveClassForVolunteer(@Path() classId: number) {
+    const book = await this.bccRepository.getBookClubClassById(classId);
+    if (!book) {
+      throw new ApiError(
+        404,
+        new BookClubClassError({
+          name: 'ESSAY_NOT_FOUND',
+          message: `Essay with id ${classId} not found`
+        })
+      );
+    }
+
+    const revertReservedEssay =
+      await this.bccRepository.revertReserveClassForVolunteer(classId);
+
+    if (!revertReservedEssay) {
+      throw new ApiError(
+        400,
+        new BookClubClassError({
+          name: 'ESSAY_ALREADY_RESERVED_ERROR',
+          message: 'Essay already revert reserved or already evaluated'
+        })
+      );
+    }
+
+    return revertReservedEssay;
+  }
 
   /**
    * Get all the book club classes starting from the classId in the path

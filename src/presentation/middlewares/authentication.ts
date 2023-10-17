@@ -30,8 +30,9 @@ export const expressAuthentication = async function (
         JWT_SECRET_KEY
       ) as VolunteerJWTPayload;
 
-      const authorized = checkAuthorization(req, decodedPayload, scopes);
+      console.log(decodedPayload);
 
+      const authorized = checkAuthorization(req, decodedPayload, scopes);
       if (!authorized) {
         return Promise.reject(
           new ApiError(
