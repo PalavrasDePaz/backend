@@ -1,7 +1,5 @@
 import { AvailableNotebookRowEntity } from '@src/domain/entities/notebook/available-notebook-row-entity';
-import {
-  ReserveNotebookDataEntity,
-} from '@src/domain/entities/notebook/reserve-notebook-data-entity';
+import { ReserveNotebookDataEntity } from '@src/domain/entities/notebook/reserve-notebook-data-entity';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import { SequelizeNotebookRepository } from '@src/services/repositories/sequelize-notebooks-repository';
 import { inject } from 'inversify';
@@ -304,9 +302,7 @@ export class NotebookAPI extends Controller {
     name: 'NOTEBOOK_NOT_FOUND_ERROR',
     message: 'Notebook with id {some notebook id} not found'
   })
-  async revertReserveNotebookForVolunteer(
-    @Path() notebookId: number
-  ) {
+  async revertReserveNotebookForVolunteer(@Path() notebookId: number) {
     const notebook = await this.notebooksRepository.getNotebookById(notebookId);
     if (!notebook) {
       throw new ApiError(
@@ -329,7 +325,7 @@ export class NotebookAPI extends Controller {
         new NotebookError({
           name: 'NOTEBOOK_ALREADY_RESERVED_ERROR',
           message: 'Notebook already revert reserved or already evaluated'
-          })
+        })
       );
     }
 
@@ -386,7 +382,5 @@ export class NotebookAPI extends Controller {
     }
 
     return updatedNotebook;
-
   }
-
 }

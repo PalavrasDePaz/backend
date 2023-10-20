@@ -14,6 +14,10 @@ export interface BookClubClassRepository {
     idclass: number
   ): Promise<AvailableClassRowEntity | null>;
 
+  revertReserveClassForVolunteer(
+    idclass: number
+  ): Promise<AvailableClassRowEntity | null>;
+
   getBookClubClassById(idclass: number): Promise<AssociatedBCCEntity | null>;
 
   getClassesFromId(classId: number): Promise<AssociatedBCCEntity[]>;
