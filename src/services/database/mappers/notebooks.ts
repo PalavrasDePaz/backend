@@ -94,7 +94,7 @@ export const updateNotebookEntityToUpdateModel = (
     'tema 9': notebook.subject9,
     'tema 10': notebook.subject10,
     'conteúdos relevantes': notebook.relevantContent,
-    aprovado: notebook.approved ? "SIM" : "NÃO",
+    aprovado: notebook.approved ? 'SIM' : 'NÃO',
     a1: notebook.a1,
     a2: notebook.a2,
     a3: notebook.a3,

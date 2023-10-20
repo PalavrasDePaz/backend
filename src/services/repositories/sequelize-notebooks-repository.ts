@@ -57,6 +57,24 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     )[0];
     return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
   }
+  async revertReserveNotebookForVolunteer(
+    notebookId: number
+  ): Promise<NotebookEntity | null> {
+    const updatedNotebooks = (
+      await Notebook.update(
+        { idvol: null, datareserva: null },
+        {
+          where: {
+            idcad: notebookId,
+            datareserva: { [Op.not]: null },
+            idvol: { [Op.not]: null }
+          }
+        }
+      )
+    )[0];
+
+    return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
+  }
   async getReservedNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]> {
     const notebooks = await Notebook.findAll({
       include: { association: Notebook.associations.pep },
