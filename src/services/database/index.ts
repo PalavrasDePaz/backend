@@ -30,7 +30,10 @@ const initModels = () => {
   Place.hasMany(BookClubClass, { foreignKey: 'Place' });
   BookClubClass.belongsTo(Place, { foreignKey: 'Place', as: 'place' });
 
-  BookClubClass.hasMany(BookEvaluation, { foreignKey: 'IDturma' });
+  BookClubClass.hasMany(BookEvaluation, {
+    foreignKey: 'Nturma',
+    as: 'bookEvaluations'
+  });
   BookEvaluation.belongsTo(BookClubClass, { foreignKey: 'Nturma' });
 };
 

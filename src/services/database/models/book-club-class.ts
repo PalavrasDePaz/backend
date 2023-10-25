@@ -4,9 +4,11 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
   Sequelize
 } from 'sequelize';
 import { Place } from './place';
+import { BookEvaluation } from './book-evaluation';
 
 export class BookClubClass extends Model<
   InferAttributes<BookClubClass>,
@@ -31,8 +33,12 @@ export class BookClubClass extends Model<
   idvol?: number | null;
   linkpasta?: string;
   place?: Place;
+  bookEvaluations!: NonAttribute<BookEvaluation[]>;
 
-  public static associations: { place: Association<BookClubClass, Place> };
+  public static associations: {
+    place: Association<BookClubClass, Place>;
+    evals: Association<BookClubClass, BookEvaluation>;
+  };
 
   public static initialize(sequelize: Sequelize) {
     this.init(
