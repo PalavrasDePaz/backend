@@ -1,7 +1,9 @@
 export default interface AvailableClassRowEntity {
   idclass: number;
-  place: string | undefined;
-  dateReserved: Date | null | undefined;
-  dateConcluded: Date | null | undefined;
-  folderLink: string | undefined;
+  place?: string;
+  dateReserved?: Date | null;
+  dateConcluded?: Date | null;
+  folderLink?: string;
+  numEvaluations: number;
+  totalEssays: number;
 }
