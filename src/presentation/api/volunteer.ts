@@ -181,16 +181,14 @@ export class VolunteerAPI extends Controller {
       volunteer,
       email
     );
-
-    if (!updatedVolunteer) {
+    if (!updatedVolunteer)
       throw new ApiError(
         400,
         new VolunteerError({
-          name: 'VOLUNTEER_NOT_UPDATED',
-          message: `Volunteer with email ${email} not updated`
+          name: 'VOLUNTEER_NOT_FOUND',
+          message: `Volunteer with email ${email} not found`
         })
       );
-    }
 
     return updatedVolunteer;
   }
