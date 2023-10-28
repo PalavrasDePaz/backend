@@ -93,7 +93,7 @@ export class VolunteerAPI extends Controller {
 
   /**
    * Update the volunteer. TODO: Add password and email field to change,
-   * add idvol to path param
+   * add idvol to path param. Test github integration
    *
    * (The logged volunteer can only use the operation on it's own email, unless admin)
    */
