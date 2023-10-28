@@ -15,7 +15,7 @@ export class Notebook extends Model<
   InferCreationAttributes<Notebook>
 > {
   idcad!: number;
-  idvol!: number;
+  idvol!: number | null;
   'nome do(a) aluno(a)'!: string;
   'número de matrícula do(a) aluno(a)'?: string;
   'unidade prisional do(a) aluno(a)'?: string;
@@ -70,7 +70,7 @@ export class Notebook extends Model<
         },
         idvol: {
           type: DataTypes.INTEGER,
-          allowNull: false
+          allowNull: true
         },
         'nome do(a) aluno(a)': {
           type: DataTypes.STRING,

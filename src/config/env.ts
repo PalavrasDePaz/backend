@@ -15,7 +15,8 @@ const envSchema = z.object({
   RESET_PASSWORD_FRONTED_ROUTE: z.string(),
   RESET_PASSWORD_FRONTEND_HOST: z.string(),
   GOOGLE_CLOUD_KEY: z.string(),
-  STORAGE_DOWNLOAD_FOLDER: z.string()
+  STORAGE_DOWNLOAD_FOLDER: z.string(),
+  NODE_ENV: z.string().default('development')
 });
 
 export const ENV = envSchema.parse(process.env);

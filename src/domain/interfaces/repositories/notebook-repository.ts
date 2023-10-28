@@ -19,6 +19,10 @@ export interface NotebookRepository {
     notebookId: number
   ): Promise<NotebookEntity | null>;
 
+  revertReserveNotebookForVolunteer(
+    notebookId: number
+  ): Promise<NotebookEntity | null>;
+
   getNotebookById(notebookId: number): Promise<NotebookEntity | null>;
 
   updatedNotebook(

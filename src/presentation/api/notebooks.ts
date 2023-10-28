@@ -293,6 +293,46 @@ export class NotebookAPI extends Controller {
   }
 
   /**
+   * Revert reserve notebook for the volunteer.
+   */
+  @Put('/revert-reservation/{notebookId}')
+  @Security('jwt', ['readPermission'])
+  @SuccessResponse(200, 'Successfully revert reserved notebook for volunteer')
+  @Response<NotebookError>(404, 'Notebook not found', {
+    name: 'NOTEBOOK_NOT_FOUND_ERROR',
+    message: 'Notebook with id {some notebook id} not found'
+  })
+  async revertReserveNotebookForVolunteer(@Path() notebookId: number) {
+    const notebook = await this.notebooksRepository.getNotebookById(notebookId);
+    if (!notebook) {
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_FOUND_ERROR',
+          message: `Notebook with id ${notebookId} not found`
+        })
+      );
+    }
+
+    const revertReservedNotebook =
+      await this.notebooksRepository.revertReserveNotebookForVolunteer(
+        notebookId
+      );
+
+    if (!revertReservedNotebook) {
+      throw new ApiError(
+        400,
+        new NotebookError({
+          name: 'NOTEBOOK_ALREADY_RESERVED_ERROR',
+          message: 'Notebook already revert reserved or already evaluated'
+        })
+      );
+    }
+
+    return formatAvailableNotebookToTableRow(revertReservedNotebook);
+  }
+
+  /**
    * Update notebook values available at UpdateNotebookEntity from notebook with notebookId
    *
    *

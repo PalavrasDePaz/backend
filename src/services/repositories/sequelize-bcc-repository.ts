@@ -65,6 +65,26 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
       ? formatAvailableBCClass(updatedClass)
       : null;
   }
+  async revertReserveClassForVolunteer(
+    idclass: number
+  ): Promise<AvailableClassRowEntity | null> {
+    const updatedEssay = (
+      await BookClubClass.update(
+        { idvol: null, datainvioparec: null },
+        {
+          where: {
+            idturma: idclass,
+            datainvioparec: { [Op.not]: null }
+          }
+        }
+      )
+    )[0];
+
+    const updatedClass = await this.getBookClubClassById(idclass);
+    return updatedEssay && updatedClass
+      ? formatAvailableBCClass(updatedClass)
+      : null;
+  }
 
   async getBookClubClassById(
     idclass: number

@@ -28,7 +28,7 @@ export class BookClubClass extends Model<
   pressedex2?: string;
   datafimaval?: Date | null;
   parec?: string;
-  idvol?: number;
+  idvol?: number | null;
   linkpasta?: string;
   place?: Place;
 
