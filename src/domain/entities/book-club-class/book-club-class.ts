@@ -38,7 +38,7 @@ interface BookClubClass {
   presSedex2: string | undefined;
   endEvaluationDate: Date | null | undefined;
   parec: string | undefined;
-  idvol: number | undefined;
+  idvol?: number | null;
   folderLink: string | undefined;
 }
 
