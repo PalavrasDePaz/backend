@@ -46,7 +46,7 @@ export class AttendanceAPI extends Controller {
 
   /**
    * Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)
-   * Test integration
+   *
    * (The volunteer must have attendanceModulePermission, which is checked using JWT)
    *
    * @example date "2023-09-12"
