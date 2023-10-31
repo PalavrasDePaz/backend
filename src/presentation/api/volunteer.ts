@@ -49,6 +49,7 @@ export class VolunteerAPI extends Controller {
    *
    * (The volunteer must have determineVolunteerModulePermission, which is checked using JWT)
    *
+   *
    * @example date "2023-09-12"
    */
   @Get('from/{date}')
