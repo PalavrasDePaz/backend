@@ -1,3 +1,4 @@
+import { BookEvaluationEntity } from '../book-evaluation/book-evaluation-entity';
 import { PlaceEntity } from '../place-entity';
 
 /**
@@ -25,21 +26,21 @@ import { PlaceEntity } from '../place-entity';
 interface BookClubClass {
   idclass: number;
   reportReceiveDate: Date;
-  loanDate: Date | undefined;
-  returnDate: Date | undefined;
-  reportElaborationDate: Date | undefined;
-  received: string | undefined;
-  yesList: string | undefined;
-  presenceList: number | undefined;
+  loanDate?: Date;
+  returnDate?: Date;
+  reportElaborationDate?: Date;
+  received?: string;
+  yesList?: string;
+  presenceList?: number;
   qrl: number;
-  sendDateParec: Date | null | undefined;
-  presSedex: string | undefined;
-  sendDateFunap: Date | undefined;
-  presSedex2: string | undefined;
-  endEvaluationDate: Date | null | undefined;
-  parec: string | undefined;
+  sendDateParec?: Date | null;
+  presSedex?: string;
+  sendDateFunap?: Date;
+  presSedex2?: string;
+  endEvaluationDate?: Date | null;
+  parec?: string;
   idvol?: number | null;
-  folderLink: string | undefined;
+  folderLink?: string;
 }
 
 export default interface BookClubClassEntity extends BookClubClass {
@@ -48,4 +49,5 @@ export default interface BookClubClassEntity extends BookClubClass {
 
 export interface AssociatedBCCEntity extends BookClubClass {
   place: PlaceEntity | undefined;
+  bookEvaluations: BookEvaluationEntity[];
 }
