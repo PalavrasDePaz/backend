@@ -4,6 +4,7 @@ import BookClubClassEntity, {
 import { BookClubClass } from '../models/book-club-class';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
 import UpdateModel from './helpers/update-model-type';
+import { bookEvaluationModelToEntity } from './book-evaluation';
 
 export const BCCModelToEntity = (
   bookClubClass: BookClubClass
@@ -47,8 +48,11 @@ export const AssociatedBCCModelToEntity = (
   presSedex2: bookClubClass.pressedex2,
   endEvaluationDate: bookClubClass.datafimaval,
   parec: bookClubClass.parec,
-  idvol: bookClubClass.idvol,
-  folderLink: bookClubClass.linkpasta
+  folderLink: bookClubClass.linkpasta,
+  bookEvaluations: bookClubClass.bookEvaluations.map((evaluation) =>
+    bookEvaluationModelToEntity(evaluation)
+  ),
+  idvol: bookClubClass.idvol
 });
 
 export const updateBCClassEntityToUpdateModel = (

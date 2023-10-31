@@ -10,6 +10,8 @@ import AvailableClassRowEntity from '@src/domain/entities/book-club-class/availa
 import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
 import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
+import { Place } from '../database/models/place';
+import { BookEvaluation } from '../database/models/book-evaluation';
 
 @provideSingleton(SequelizeBCCRepository)
 export class SequelizeBCCRepository implements BookClubClassRepository {
@@ -24,7 +26,10 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
 
   async getAvailableClasses(): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await BookClubClass.findAll({
-      include: BookClubClass.associations.place,
+      include: [
+        { model: Place, as: 'place' },
+        { model: BookEvaluation, as: 'bookEvaluations' }
+      ],
       where: {
         [Op.and]: {
           datainvioparec: { [Op.is]: null },
@@ -32,6 +37,7 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
         }
       }
     });
+
     return availableEssays
       .map(AssociatedBCCModelToEntity)
       .map(formatAvailableBCClass);
