@@ -1,5 +1,6 @@
-import { AttendanceEntity } from '@src/domain/entities/attendance-entity';
-import { SubmitAttendanceEntity } from '@src/domain/entities/submit-attendance-entity';
+import { AttendanceEntity } from '@src/domain/entities/attendance/attendance-entity';
+import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
+import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-attendance-entity';
 
 export interface AttendanceRepository {
   getAllAttendancesByIdVol(idvol: number): Promise<AttendanceEntity[]>;
@@ -10,5 +11,5 @@ export interface AttendanceRepository {
 
   getVolunteersAttendanceMetrics(): Promise<unknown>;
 
-  getAttendancesFromDate(date: Date): Promise<AttendanceEntity[]>;
+  getAttendancesFromDate(date: Date): Promise<AttendanceInfoEntity[]>;
 }
