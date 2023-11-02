@@ -1,6 +1,7 @@
 import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
+import { VolunteerAuthDataEntity } from './volunteer-auth-entity';
 
-export type UpdateVolunteerEntity = Omit<
-  VolunteerEntity,
-  'email' | 'pep' | 'idvol' | 'createdAt'
+export type UpdateVolunteerEntity = Partial<
+  Omit<VolunteerEntity, 'pep' | 'idvol' | 'createdAt'> &
+    Pick<VolunteerAuthDataEntity, 'password'>
 >;
