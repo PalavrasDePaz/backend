@@ -9,7 +9,6 @@ import {
   Get,
   Patch,
   Path,
-  Put,
   Response,
   Route,
   Security,
@@ -97,7 +96,7 @@ export class VolunteerAPI extends Controller {
    *
    * (The logged volunteer can only use the operation on it's own email, unless admin)
    */
-  @Put('{email}')
+  @Patch('{email}')
   @SuccessResponse(200, 'Volunteer successfully updated')
   @Response<VolunteerError>(400, 'Could not update volunteer', {
     name: 'VOLUNTEER_NOT_UPDATED',
