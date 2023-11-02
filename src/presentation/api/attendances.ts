@@ -1,4 +1,4 @@
-import { AttendanceEntity } from '@src/domain/entities/attendance-entity';
+import { AttendanceEntity } from '@src/domain/entities/attendance/attendance-entity';
 import { AttendanceRepository } from '@src/domain/interfaces/repositories/attendance-repository';
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { inject } from 'inversify';
@@ -20,10 +20,11 @@ import { ApiError } from '../types/api-error';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { AttendanceError } from '@src/domain/errors/attendance';
 import { SequelizeAttendanceRepository } from '@src/services/repositories/sequelize-attendance-repository';
-import { WorkshopAttendanceRowEntity } from '@src/domain/entities/workshop-attendance-row-entity';
-import { SubmitAttendanceEntity } from '@src/domain/entities/submit-attendance-entity';
+import { WorkshopAttendanceRowEntity } from '@src/domain/entities/attendance/workshop-attendance-row-entity';
+import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-attendance-entity';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
+import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
 
 @Route('attendances')
 @Tags('Attendance')
@@ -56,7 +57,7 @@ export class AttendanceAPI extends Controller {
   @SuccessResponse(200, 'Successfully got attendances')
   public async getAttendancesFromDate(
     @Path() date: string
-  ): Promise<AttendanceEntity[]> {
+  ): Promise<AttendanceInfoEntity[]> {
     const dateFormated = new Date(date);
     return await this.attendanceRepository.getAttendancesFromDate(dateFormated);
   }

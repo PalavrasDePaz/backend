@@ -1,28 +1,42 @@
-import { AttendanceEntity } from '@src/domain/entities/attendance-entity';
+import { AttendanceEntity } from '@src/domain/entities/attendance/attendance-entity';
 import { AttendanceRepository } from '@src/domain/interfaces/repositories/attendance-repository';
 import {
   submitAttendanceEntityToCreationModel,
-  attendanceModelToEntity
+  attendanceModelToEntity,
+  attendanceModelToEntityFromDate
 } from '../database/mappers/attendance';
 import { Attendance } from '../database/models/attendance';
 import { provideSingleton } from '@src/helpers/provide-singleton';
-import { SubmitAttendanceEntity } from '@src/domain/entities/submit-attendance-entity';
+import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-attendance-entity';
 import { AttendanceError } from '@src/domain/errors/attendance';
 import sequelize from '../database/sequelize';
 import { Op, QueryTypes } from 'sequelize';
 import attendanceThemeMap from '@src/helpers/attendance/attendance-theme-map';
+import { Volunteer } from '../database/models/volunteer';
+import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
 
 @provideSingleton(SequelizeAttendanceRepository)
 export class SequelizeAttendanceRepository implements AttendanceRepository {
-  async getAttendancesFromDate(date: Date): Promise<AttendanceEntity[]> {
-    const attendances = await Attendance.findAll({
+  async getAttendancesFromDate(date: Date): Promise<AttendanceInfoEntity[]> {
+    const attendances = await Attendance.findAll<
+      Attendance & { 'Volunteer.nome'?: string }
+    >({
       where: {
         createdAt: { [Op.gte]: date }
       },
+      raw: true,
+      include: [
+        {
+          model: Volunteer,
+          as: 'Volunteer',
+          attributes: ['nome'],
+          required: true
+        }
+      ],
+
       order: [['createdAt', 'DESC']]
     });
-
-    return attendances.map(attendanceModelToEntity);
+    return attendances.map(attendanceModelToEntityFromDate);
   }
 
   async getAllAttendancesByIdVol(idvol: number): Promise<AttendanceEntity[]> {
