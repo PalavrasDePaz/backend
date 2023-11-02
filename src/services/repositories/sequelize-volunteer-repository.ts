@@ -61,13 +61,18 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     volunteer: UpdateVolunteerEntity,
     email: string
   ): Promise<VolunteerEntity | null> {
+    const updatedVolunteer = updateVolunteerEntityToUpdateModel(volunteer);
     const updatedRows = (
-      await Volunteer.update(updateVolunteerEntityToUpdateModel(volunteer), {
+      await Volunteer.update(updatedVolunteer, {
         where: { 'e-mail': email }
       })
     )[0];
 
-    return updatedRows ? await this.getVolunteerByEmail(email) : null;
+    const emailUpdated = updatedVolunteer?.['e-mail']
+      ? updatedVolunteer['e-mail']
+      : email;
+
+    return updatedRows ? await this.getVolunteerByEmail(emailUpdated) : null;
   }
 
   async getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
