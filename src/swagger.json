@@ -1,0 +1,4796 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"FieldErrors": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"properties": {
+						"value": {},
+						"message": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"message"
+					],
+					"type": "object"
+				}
+			},
+			"AttendanceEntity": {
+				"properties": {
+					"submissionDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"expressYourself": {
+						"type": "string"
+					},
+					"whatChallengedYou": {
+						"type": "string"
+					},
+					"differentKnowledgeLearned": {
+						"type": "string"
+					},
+					"applicableKnowledge": {
+						"type": "string"
+					},
+					"howCanWeImprove": {
+						"type": "string"
+					},
+					"studyRetention": {
+						"type": "string"
+					},
+					"enoughTime": {
+						"type": "string"
+					},
+					"workshopSubject": {
+						"type": "string"
+					},
+					"idAttend": {
+						"type": "number",
+						"format": "double"
+					},
+					"idvol": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"submissionDate",
+					"studyRetention",
+					"enoughTime",
+					"workshopSubject",
+					"idAttend",
+					"idvol"
+				],
+				"type": "object"
+			},
+			"Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_": {
+				"properties": {
+					"idAttend": {
+						"type": "number",
+						"format": "double"
+					},
+					"workshopSubject": {
+						"type": "string"
+					},
+					"submissionDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"idAttend",
+					"workshopSubject",
+					"submissionDate"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"WorkshopAttendanceRowEntity": {
+				"$ref": "#/components/schemas/Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_"
+			},
+			"ErrorName": {
+				"type": "string",
+				"enum": [
+					"VOLUNTEER_NOT_FOUND",
+					"VOLUNTEER_ALREADY_EXISTS",
+					"VOLUNTEER_NOT_UPDATED",
+					"EMAIL_OR_PASSWORD_WRONG_ERROR",
+					"VOLUNTEER_NOT_DELETED"
+				]
+			},
+			"VolunteerError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AttendanceError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_AttendanceEntity.Exclude_keyofAttendanceEntity.idAttend-or-submissionDate__": {
+				"properties": {
+					"workshopSubject": {
+						"type": "string"
+					},
+					"idvol": {
+						"type": "number",
+						"format": "double"
+					},
+					"enoughTime": {
+						"type": "string"
+					},
+					"studyRetention": {
+						"type": "string"
+					},
+					"howCanWeImprove": {
+						"type": "string"
+					},
+					"applicableKnowledge": {
+						"type": "string"
+					},
+					"differentKnowledgeLearned": {
+						"type": "string"
+					},
+					"whatChallengedYou": {
+						"type": "string"
+					},
+					"expressYourself": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"workshopSubject",
+					"idvol",
+					"enoughTime",
+					"studyRetention"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_AttendanceEntity.idAttend-or-submissionDate_": {
+				"$ref": "#/components/schemas/Pick_AttendanceEntity.Exclude_keyofAttendanceEntity.idAttend-or-submissionDate__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"SubmitAttendanceEntity": {
+				"$ref": "#/components/schemas/Omit_AttendanceEntity.idAttend-or-submissionDate_"
+			},
+			"BookClubClassError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AvailableClassRowEntity": {
+				"properties": {
+					"idclass": {
+						"type": "number",
+						"format": "double"
+					},
+					"place": {
+						"type": "string"
+					},
+					"dateReserved": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"dateConcluded": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"folderLink": {
+						"type": "string"
+					},
+					"numEvaluations": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalEssays": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"idclass",
+					"numEvaluations",
+					"totalEssays"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_VolunteerEntity.idvol_": {
+				"properties": {
+					"idvol": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"idvol"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Pick_BookClubClassEntity.idclass_": {
+				"properties": {
+					"idclass": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"idclass"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReserveClassDataEntity": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Pick_VolunteerEntity.idvol_"
+					},
+					{
+						"$ref": "#/components/schemas/Pick_BookClubClassEntity.idclass_"
+					}
+				]
+			},
+			"PlaceEntity": {
+				"properties": {
+					"closed": {
+						"type": "number",
+						"format": "double"
+					},
+					"sex": {
+						"type": "string"
+					},
+					"addr": {
+						"type": "string"
+					},
+					"mode": {
+						"type": "string"
+					},
+					"coord": {
+						"type": "string"
+					},
+					"fullName": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"closed",
+					"fullName",
+					"id"
+				],
+				"type": "object"
+			},
+			"BookEvaluationEntity": {
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"observedHistories": {
+						"type": "string"
+					},
+					"readHistories": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"relevantPhrases": {
+						"type": "string"
+					},
+					"concept": {
+						"type": "string"
+					},
+					"observations": {
+						"type": "string"
+					},
+					"syntheticAvaliation": {
+						"type": "string"
+					},
+					"grammarAvaliation": {
+						"type": "string"
+					},
+					"societyCriticalAnalysisAvaliation": {
+						"type": "string"
+					},
+					"bookCriticalAnalysisAvaliation": {
+						"type": "string"
+					},
+					"textClarityAvaliation": {
+						"type": "string"
+					},
+					"textReliabilityAvaliation": {
+						"type": "string"
+					},
+					"textAestheticsAvaliation": {
+						"type": "string"
+					},
+					"isAppropriation": {
+						"type": "boolean"
+					},
+					"isParcialPlagiarism": {
+						"type": "boolean"
+					},
+					"evaluatorId": {
+						"type": "number",
+						"format": "double"
+					},
+					"classId": {
+						"type": "number",
+						"format": "double"
+					},
+					"readerRegistration": {
+						"type": "number",
+						"format": "double"
+					},
+					"readerName": {
+						"type": "string"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"createdAt",
+					"readHistories",
+					"concept",
+					"observations",
+					"syntheticAvaliation",
+					"grammarAvaliation",
+					"societyCriticalAnalysisAvaliation",
+					"bookCriticalAnalysisAvaliation",
+					"textClarityAvaliation",
+					"textReliabilityAvaliation",
+					"textAestheticsAvaliation",
+					"isAppropriation",
+					"isParcialPlagiarism",
+					"evaluatorId",
+					"classId",
+					"readerRegistration",
+					"readerName",
+					"id"
+				],
+				"type": "object"
+			},
+			"AssociatedBCCEntity": {
+				"properties": {
+					"idclass": {
+						"type": "number",
+						"format": "double"
+					},
+					"reportReceiveDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"loanDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"returnDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"reportElaborationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"received": {
+						"type": "string"
+					},
+					"yesList": {
+						"type": "string"
+					},
+					"presenceList": {
+						"type": "number",
+						"format": "double"
+					},
+					"qrl": {
+						"type": "number",
+						"format": "double"
+					},
+					"sendDateParec": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"presSedex": {
+						"type": "string"
+					},
+					"sendDateFunap": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"presSedex2": {
+						"type": "string"
+					},
+					"endEvaluationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"parec": {
+						"type": "string"
+					},
+					"idvol": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"folderLink": {
+						"type": "string"
+					},
+					"place": {
+						"$ref": "#/components/schemas/PlaceEntity"
+					},
+					"bookEvaluations": {
+						"items": {
+							"$ref": "#/components/schemas/BookEvaluationEntity"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"idclass",
+					"reportReceiveDate",
+					"qrl",
+					"bookEvaluations"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_AssociatedBCCEntity.Exclude_keyofAssociatedBCCEntity.idclass-or-idvol-or-place__": {
+				"properties": {
+					"reportReceiveDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"loanDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"returnDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"reportElaborationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"received": {
+						"type": "string"
+					},
+					"yesList": {
+						"type": "string"
+					},
+					"presenceList": {
+						"type": "number",
+						"format": "double"
+					},
+					"qrl": {
+						"type": "number",
+						"format": "double"
+					},
+					"sendDateParec": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"presSedex": {
+						"type": "string"
+					},
+					"sendDateFunap": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"presSedex2": {
+						"type": "string"
+					},
+					"endEvaluationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"parec": {
+						"type": "string"
+					},
+					"folderLink": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reportReceiveDate",
+					"qrl"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_": {
+				"$ref": "#/components/schemas/Pick_AssociatedBCCEntity.Exclude_keyofAssociatedBCCEntity.idclass-or-idvol-or-place__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"UpdateBCClassEntity": {
+				"$ref": "#/components/schemas/Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_"
+			},
+			"Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-createdAt__": {
+				"properties": {
+					"readerName": {
+						"type": "string"
+					},
+					"readerRegistration": {
+						"type": "number",
+						"format": "double"
+					},
+					"classId": {
+						"type": "number",
+						"format": "double"
+					},
+					"evaluatorId": {
+						"type": "number",
+						"format": "double"
+					},
+					"isParcialPlagiarism": {
+						"type": "boolean"
+					},
+					"isAppropriation": {
+						"type": "boolean"
+					},
+					"textAestheticsAvaliation": {
+						"type": "string"
+					},
+					"textReliabilityAvaliation": {
+						"type": "string"
+					},
+					"textClarityAvaliation": {
+						"type": "string"
+					},
+					"bookCriticalAnalysisAvaliation": {
+						"type": "string"
+					},
+					"societyCriticalAnalysisAvaliation": {
+						"type": "string"
+					},
+					"grammarAvaliation": {
+						"type": "string"
+					},
+					"syntheticAvaliation": {
+						"type": "string"
+					},
+					"observations": {
+						"type": "string"
+					},
+					"concept": {
+						"type": "string"
+					},
+					"relevantPhrases": {
+						"type": "string"
+					},
+					"readHistories": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"observedHistories": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"readerName",
+					"readerRegistration",
+					"classId",
+					"evaluatorId",
+					"isParcialPlagiarism",
+					"isAppropriation",
+					"textAestheticsAvaliation",
+					"textReliabilityAvaliation",
+					"textClarityAvaliation",
+					"bookCriticalAnalysisAvaliation",
+					"societyCriticalAnalysisAvaliation",
+					"grammarAvaliation",
+					"syntheticAvaliation",
+					"observations",
+					"concept",
+					"readHistories"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_BookEvaluationEntity.id-or-createdAt_": {
+				"$ref": "#/components/schemas/Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-createdAt__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CreateBookEvaluationEntity": {
+				"$ref": "#/components/schemas/Omit_BookEvaluationEntity.id-or-createdAt_"
+			},
+			"BookEvaluationError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration__": {
+				"properties": {
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"readerName": {
+						"type": "string"
+					},
+					"isParcialPlagiarism": {
+						"type": "boolean"
+					},
+					"isAppropriation": {
+						"type": "boolean"
+					},
+					"textAestheticsAvaliation": {
+						"type": "string"
+					},
+					"textReliabilityAvaliation": {
+						"type": "string"
+					},
+					"textClarityAvaliation": {
+						"type": "string"
+					},
+					"bookCriticalAnalysisAvaliation": {
+						"type": "string"
+					},
+					"societyCriticalAnalysisAvaliation": {
+						"type": "string"
+					},
+					"grammarAvaliation": {
+						"type": "string"
+					},
+					"syntheticAvaliation": {
+						"type": "string"
+					},
+					"observations": {
+						"type": "string"
+					},
+					"concept": {
+						"type": "string"
+					},
+					"relevantPhrases": {
+						"type": "string"
+					},
+					"readHistories": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"observedHistories": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"createdAt",
+					"readerName",
+					"isParcialPlagiarism",
+					"isAppropriation",
+					"textAestheticsAvaliation",
+					"textReliabilityAvaliation",
+					"textClarityAvaliation",
+					"bookCriticalAnalysisAvaliation",
+					"societyCriticalAnalysisAvaliation",
+					"grammarAvaliation",
+					"syntheticAvaliation",
+					"observations",
+					"concept",
+					"readHistories"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration_": {
+				"$ref": "#/components/schemas/Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"UpdateBookEvaluationEntity": {
+				"$ref": "#/components/schemas/Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration_"
+			},
+			"NotebookError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AvailableNotebookRowEntity": {
+				"properties": {
+					"notebookPath": {
+						"type": "string",
+						"nullable": true
+					},
+					"reservationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"studentName": {
+						"type": "string"
+					},
+					"classId": {
+						"type": "number",
+						"format": "double"
+					},
+					"studentId": {
+						"type": "number",
+						"format": "double"
+					},
+					"notebookId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"studentName",
+					"classId",
+					"studentId",
+					"notebookId"
+				],
+				"type": "object",
+				"example": {
+					"notebookId": 1,
+					"studentId": 1,
+					"classId": 1,
+					"studentName": "Test Name",
+					"reservationDate": "2023-06-22",
+					"notebookPath": "path-to-notebok/Test Name.pdf"
+				}
+			},
+			"Pick_PepClassEntity.notebookDirectory_": {
+				"properties": {
+					"notebookDirectory": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"NotebookEntity": {
+				"allOf": [
+					{
+						"properties": {
+							"reservationDate": {
+								"type": "string",
+								"format": "date-time",
+								"nullable": true
+							},
+							"evaluatedDate": {
+								"type": "string",
+								"format": "date-time",
+								"nullable": true
+							},
+							"archivesExclusion": {
+								"type": "boolean"
+							},
+							"approved": {
+								"type": "boolean"
+							},
+							"conclusion": {
+								"type": "string"
+							},
+							"a13": {
+								"type": "string"
+							},
+							"a12": {
+								"type": "string"
+							},
+							"a11": {
+								"type": "string"
+							},
+							"a10": {
+								"type": "string"
+							},
+							"a9": {
+								"type": "string"
+							},
+							"a8": {
+								"type": "string"
+							},
+							"a7": {
+								"type": "string"
+							},
+							"a6": {
+								"type": "string"
+							},
+							"a5": {
+								"type": "string"
+							},
+							"a4": {
+								"type": "string"
+							},
+							"a3": {
+								"type": "string"
+							},
+							"a2": {
+								"type": "string"
+							},
+							"a1": {
+								"type": "string"
+							},
+							"relevantContent": {
+								"type": "string"
+							},
+							"subject10": {
+								"type": "string"
+							},
+							"subject9": {
+								"type": "string"
+							},
+							"subject8": {
+								"type": "string"
+							},
+							"subject7": {
+								"type": "string"
+							},
+							"subject6": {
+								"type": "string"
+							},
+							"subject5": {
+								"type": "string"
+							},
+							"subject4": {
+								"type": "string"
+							},
+							"subject3": {
+								"type": "string"
+							},
+							"subject2": {
+								"type": "string"
+							},
+							"subject1": {
+								"type": "string"
+							},
+							"evaluatorEmail": {
+								"type": "string"
+							},
+							"evaluatorName": {
+								"type": "string"
+							},
+							"studentPrisonUnit": {
+								"type": "string"
+							},
+							"studentRegistration": {
+								"type": "number",
+								"format": "double"
+							},
+							"studentName": {
+								"type": "string"
+							},
+							"idpep": {
+								"type": "number",
+								"format": "double"
+							},
+							"idvol": {
+								"type": "number",
+								"format": "double",
+								"nullable": true
+							},
+							"idcad": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"archivesExclusion",
+							"approved",
+							"conclusion",
+							"evaluatorName",
+							"studentRegistration",
+							"studentName",
+							"idvol",
+							"idcad"
+						],
+						"type": "object"
+					},
+					{
+						"$ref": "#/components/schemas/Pick_PepClassEntity.notebookDirectory_"
+					}
+				]
+			},
+			"Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
+				"properties": {
+					"idvol": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"studentPrisonUnit": {
+						"type": "string"
+					},
+					"evaluatorName": {
+						"type": "string"
+					},
+					"evaluatorEmail": {
+						"type": "string"
+					},
+					"subject1": {
+						"type": "string"
+					},
+					"subject2": {
+						"type": "string"
+					},
+					"subject3": {
+						"type": "string"
+					},
+					"subject4": {
+						"type": "string"
+					},
+					"subject5": {
+						"type": "string"
+					},
+					"subject6": {
+						"type": "string"
+					},
+					"subject7": {
+						"type": "string"
+					},
+					"subject8": {
+						"type": "string"
+					},
+					"subject9": {
+						"type": "string"
+					},
+					"subject10": {
+						"type": "string"
+					},
+					"relevantContent": {
+						"type": "string"
+					},
+					"a1": {
+						"type": "string"
+					},
+					"a2": {
+						"type": "string"
+					},
+					"a3": {
+						"type": "string"
+					},
+					"a4": {
+						"type": "string"
+					},
+					"a5": {
+						"type": "string"
+					},
+					"a6": {
+						"type": "string"
+					},
+					"a7": {
+						"type": "string"
+					},
+					"a8": {
+						"type": "string"
+					},
+					"a9": {
+						"type": "string"
+					},
+					"a10": {
+						"type": "string"
+					},
+					"a11": {
+						"type": "string"
+					},
+					"a12": {
+						"type": "string"
+					},
+					"a13": {
+						"type": "string"
+					},
+					"conclusion": {
+						"type": "string"
+					},
+					"approved": {
+						"type": "boolean"
+					},
+					"archivesExclusion": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"idvol",
+					"evaluatorName",
+					"conclusion",
+					"approved",
+					"archivesExclusion"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_NotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_": {
+				"$ref": "#/components/schemas/Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"EvaluateNotebookEntity": {
+				"$ref": "#/components/schemas/Omit_NotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_"
+			},
+			"Pick_AvailableNotebookRowEntity.notebookId_": {
+				"properties": {
+					"notebookId": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"notebookId"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"ReserveNotebookDataEntity": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/Pick_VolunteerEntity.idvol_"
+					},
+					{
+						"$ref": "#/components/schemas/Pick_AvailableNotebookRowEntity.notebookId_"
+					}
+				]
+			},
+			"Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__": {
+				"properties": {
+					"reservationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"evaluatedDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"subject1": {
+						"type": "string"
+					},
+					"subject2": {
+						"type": "string"
+					},
+					"subject3": {
+						"type": "string"
+					},
+					"subject4": {
+						"type": "string"
+					},
+					"subject5": {
+						"type": "string"
+					},
+					"subject6": {
+						"type": "string"
+					},
+					"subject7": {
+						"type": "string"
+					},
+					"subject8": {
+						"type": "string"
+					},
+					"subject9": {
+						"type": "string"
+					},
+					"subject10": {
+						"type": "string"
+					},
+					"relevantContent": {
+						"type": "string"
+					},
+					"a1": {
+						"type": "string"
+					},
+					"a2": {
+						"type": "string"
+					},
+					"a3": {
+						"type": "string"
+					},
+					"a4": {
+						"type": "string"
+					},
+					"a5": {
+						"type": "string"
+					},
+					"a6": {
+						"type": "string"
+					},
+					"a7": {
+						"type": "string"
+					},
+					"a8": {
+						"type": "string"
+					},
+					"a9": {
+						"type": "string"
+					},
+					"a10": {
+						"type": "string"
+					},
+					"a11": {
+						"type": "string"
+					},
+					"a12": {
+						"type": "string"
+					},
+					"a13": {
+						"type": "string"
+					},
+					"conclusion": {
+						"type": "string"
+					},
+					"approved": {
+						"type": "boolean"
+					},
+					"archivesExclusion": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"conclusion",
+					"approved",
+					"archivesExclusion"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_NotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_": {
+				"$ref": "#/components/schemas/Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"UpdateNotebookEntity": {
+				"$ref": "#/components/schemas/Omit_NotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_"
+			},
+			"PepClassEntity": {
+				"properties": {
+					"notebookDirectory": {
+						"type": "string"
+					},
+					"numEnrolledGotCertificate": {
+						"type": "number",
+						"format": "double"
+					},
+					"numEnrolled": {
+						"type": "number",
+						"format": "double"
+					},
+					"classTenDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"classOneDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"facilitatorName": {
+						"type": "string"
+					},
+					"releasedDay": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"receivedDay": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"report": {
+						"type": "boolean"
+					},
+					"groupName": {
+						"type": "string"
+					},
+					"placeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"placeId",
+					"id"
+				],
+				"type": "object"
+			},
+			"PepClassError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_PepClassEntity.Exclude_keyofPepClassEntity.id-or-placeId__": {
+				"properties": {
+					"notebookDirectory": {
+						"type": "string"
+					},
+					"groupName": {
+						"type": "string"
+					},
+					"report": {
+						"type": "boolean"
+					},
+					"receivedDay": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"releasedDay": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"facilitatorName": {
+						"type": "string"
+					},
+					"classOneDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"classTenDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"numEnrolled": {
+						"type": "number",
+						"format": "double"
+					},
+					"numEnrolledGotCertificate": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_PepClassEntity.id-or-placeId_": {
+				"$ref": "#/components/schemas/Pick_PepClassEntity.Exclude_keyofPepClassEntity.id-or-placeId__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"UpdatePepClassEntity": {
+				"$ref": "#/components/schemas/Omit_PepClassEntity.id-or-placeId_"
+			},
+			"VolunteerEntity": {
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@gmail.com",
+						"pattern": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+					},
+					"name": {
+						"type": "string"
+					},
+					"pep": {
+						"type": "number",
+						"format": "double"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"state": {
+						"type": "string"
+					},
+					"city": {
+						"type": "string"
+					},
+					"disability": {
+						"type": "string"
+					},
+					"howFoundPep": {
+						"type": "string"
+					},
+					"knowledgePep": {
+						"type": "string"
+					},
+					"schooling": {
+						"type": "string"
+					},
+					"bachelor": {
+						"type": "string"
+					},
+					"studiesKnowledge": {
+						"type": "string"
+					},
+					"lifeExperience": {
+						"type": "string"
+					},
+					"desires": {
+						"type": "string"
+					},
+					"rolesPep": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"interestFutureRoles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"needDeclaration": {
+						"type": "boolean"
+					},
+					"idvol": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"email",
+					"name",
+					"birthDate",
+					"phoneNumber",
+					"country",
+					"state",
+					"city",
+					"howFoundPep",
+					"knowledgePep",
+					"schooling",
+					"studiesKnowledge",
+					"lifeExperience",
+					"desires",
+					"rolesPep",
+					"interestFutureRoles",
+					"needDeclaration",
+					"idvol",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_VolunteerAuthDataEntity.password-or-email_": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string",
+						"example": "test@gmail.com",
+						"pattern": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+					}
+				},
+				"required": [
+					"password",
+					"email"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Pick_VolunteerWithAuthEntity.Exclude_keyofVolunteerWithAuthEntity.idvol-or-createdAt__": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string",
+						"example": "test@gmail.com",
+						"pattern": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+					},
+					"name": {
+						"type": "string"
+					},
+					"pep": {
+						"type": "number",
+						"format": "double"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"state": {
+						"type": "string"
+					},
+					"city": {
+						"type": "string"
+					},
+					"disability": {
+						"type": "string"
+					},
+					"howFoundPep": {
+						"type": "string"
+					},
+					"knowledgePep": {
+						"type": "string"
+					},
+					"schooling": {
+						"type": "string"
+					},
+					"bachelor": {
+						"type": "string"
+					},
+					"studiesKnowledge": {
+						"type": "string"
+					},
+					"lifeExperience": {
+						"type": "string"
+					},
+					"desires": {
+						"type": "string"
+					},
+					"rolesPep": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"interestFutureRoles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"needDeclaration": {
+						"type": "boolean"
+					},
+					"authorPermission": {
+						"type": "string"
+					},
+					"readPermission": {
+						"type": "boolean"
+					},
+					"bookPermission": {
+						"type": "boolean"
+					},
+					"certificationPermission": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"password",
+					"email",
+					"name",
+					"birthDate",
+					"phoneNumber",
+					"country",
+					"state",
+					"city",
+					"howFoundPep",
+					"knowledgePep",
+					"schooling",
+					"studiesKnowledge",
+					"lifeExperience",
+					"desires",
+					"rolesPep",
+					"interestFutureRoles",
+					"needDeclaration"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_VolunteerWithAuthEntity.idvol-or-createdAt_": {
+				"$ref": "#/components/schemas/Pick_VolunteerWithAuthEntity.Exclude_keyofVolunteerWithAuthEntity.idvol-or-createdAt__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CreateVolunteerEntity": {
+				"$ref": "#/components/schemas/Omit_VolunteerWithAuthEntity.idvol-or-createdAt_"
+			},
+			"SendEmailError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SupportEmailSendData": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"subject": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string",
+						"example": "test@gmail.com",
+						"pattern": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"subject",
+					"email",
+					"name"
+				],
+				"type": "object",
+				"example": {
+					"email": "test@gmail.com",
+					"name": "Name",
+					"subject": "Subject",
+					"message": "Message"
+				}
+			},
+			"Pick_VolunteerAuthDataEntity.email_": {
+				"properties": {
+					"email": {
+						"type": "string",
+						"example": "test@gmail.com",
+						"pattern": "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Pick_VolunteerAuthDataEntity.password_": {
+				"properties": {
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Pick_VolunteerEntity.Exclude_keyofVolunteerEntity.email-or-pep-or-idvol-or-createdAt__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"birthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"state": {
+						"type": "string"
+					},
+					"city": {
+						"type": "string"
+					},
+					"disability": {
+						"type": "string"
+					},
+					"howFoundPep": {
+						"type": "string"
+					},
+					"knowledgePep": {
+						"type": "string"
+					},
+					"schooling": {
+						"type": "string"
+					},
+					"bachelor": {
+						"type": "string"
+					},
+					"studiesKnowledge": {
+						"type": "string"
+					},
+					"lifeExperience": {
+						"type": "string"
+					},
+					"desires": {
+						"type": "string"
+					},
+					"rolesPep": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"interestFutureRoles": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"needDeclaration": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name",
+					"birthDate",
+					"phoneNumber",
+					"country",
+					"state",
+					"city",
+					"howFoundPep",
+					"knowledgePep",
+					"schooling",
+					"studiesKnowledge",
+					"lifeExperience",
+					"desires",
+					"rolesPep",
+					"interestFutureRoles",
+					"needDeclaration"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_VolunteerEntity.email-or-pep-or-idvol-or-createdAt_": {
+				"$ref": "#/components/schemas/Pick_VolunteerEntity.Exclude_keyofVolunteerEntity.email-or-pep-or-idvol-or-createdAt__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"UpdateVolunteerEntity": {
+				"$ref": "#/components/schemas/Omit_VolunteerEntity.email-or-pep-or-idvol-or-createdAt_"
+			}
+		},
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "palavrasdepaz",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/attendances/from/{date}": {
+			"get": {
+				"operationId": "GetAttendancesFromDate",
+				"responses": {
+					"200": {
+						"description": "Successfully got attendances",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AttendanceEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\n\n(The volunteer must have attendanceModulePermission, which is checked using JWT)",
+				"tags": [
+					"Attendance"
+				],
+				"security": [
+					{
+						"jwt": [
+							"attendanceModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"example": "2023-09-12"
+					}
+				]
+			}
+		},
+		"/attendances/metrics": {
+			"get": {
+				"operationId": "GetVolunteersAttendanceMetrics",
+				"responses": {
+					"200": {
+						"description": "Successfully generated the metrics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"metrics": {}
+									},
+									"required": [
+										"metrics"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"metrics": [
+												{
+													"field1": "something1"
+												},
+												{
+													"field1": "something2"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get volunteer attendance metrics such as course attendances, number of evaluations and others.\nThe objects returned in this route has field names in portuguese as the use of the route is only to\nconvert those objects to a view such as a table for the volunteers of the project\n\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)",
+				"tags": [
+					"Attendance"
+				],
+				"security": [
+					{
+						"jwt": [
+							"manageVolunteerModulePermission"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/attendances/volunteer/{idvol}": {
+			"get": {
+				"operationId": "GetAttencesByIdVol",
+				"responses": {
+					"200": {
+						"description": "Successfully got attendances",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/WorkshopAttendanceRowEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all the workshop attendances that the volunteer with idvol attended",
+				"tags": [
+					"Attendance"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idvol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/attendances": {
+			"post": {
+				"operationId": "SubmitAttendance",
+				"responses": {
+					"200": {
+						"description": "Successfully created attendance",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttendanceEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Attendance error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AttendanceError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "UNSPECIFIED_ERROR",
+											"message": "Unknown error",
+											"details": "Error details"
+										}
+									}
+								}
+							}
+						}
+					},
+					"412": {
+						"description": "Volunteer not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "VOLUNTEER_NOT_FOUND",
+											"message": "Volunteer with id {some idvol} not found"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Submit attendance for the volunteer specified body",
+				"tags": [
+					"Attendance"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubmitAttendanceEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/book-club-class/download/{idclass}": {
+			"get": {
+				"operationId": "DownloadClassReport",
+				"responses": {
+					"200": {
+						"description": "Successfully downloaded the files",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Essay not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ESSAY_NOT_FOUND",
+											"message": "Essay with id {some class id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Download files of the book club class as a zip\nThe return of this route is a stream (content type: application/octet-stream)\nand the response header include the file as an attachement\n\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idclass",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/book-club-class/count/{idvol}": {
+			"get": {
+				"operationId": "CountEvaluatedBookClubClassByIdVol",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get total count of book club classes by a volunteer.",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idvol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/book-club-class/available/{idvol}": {
+			"get": {
+				"operationId": "GetAvailableClasses",
+				"responses": {
+					"200": {
+						"description": "Successfully fetched the essays",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AvailableClassRowEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get available essays for evaluation for the volunteer,\nthose essays includes the ones which does not have a reservation date\nor the reservations of the volunteer.\n\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idvol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/book-club-class/reservation": {
+			"put": {
+				"operationId": "ReserveClassForVolunteer",
+				"responses": {
+					"200": {
+						"description": "Successfully reserved essay for volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AvailableClassRowEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Essay already reserved or evaluated",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ESSAY_ALREADY_RESERVED_ERROR",
+											"message": "Essay already reserved or already evaluated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Essay not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ESSAY_NOT_FOUND",
+											"message": "Essay with id {some class id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"412": {
+						"description": "Volunteer not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "VOLUNTEER_NOT_FOUND",
+											"message": "Volunteer with id {some volunteer id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Reserve essay for the volunteer. If the essay is already reserved or evaluated\nstatus 400 is returned.\n\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReserveClassDataEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/book-club-class/revert-reservation/{classId}": {
+			"put": {
+				"operationId": "RevertReserveClassForVolunteer",
+				"responses": {
+					"200": {
+						"description": "Successfully reserved essay for volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AvailableClassRowEntity"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Essay not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ESSAY_NOT_FOUND",
+											"message": "Essay with id {some class id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Reserve essay for the volunteer.",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "classId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/book-club-class/from-id/{classId}": {
+			"get": {
+				"operationId": "GetClassesFromId",
+				"responses": {
+					"200": {
+						"description": "Successfully fetched the classes",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AssociatedBCCEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all the book club classes starting from the classId in the path\n\n\n(The volunteer must have essayModulePermission, which is checked using JWT)",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"essayModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "classId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/book-club-class/{classId}": {
+			"put": {
+				"operationId": "UpdateClass",
+				"responses": {
+					"200": {
+						"description": "Successfully updated the class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AssociatedBCCEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not update class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ClASS_NOT_UPDATED_ERROR",
+											"message": "Class with ID {classId} not updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Could not find class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ESSAY_NOT_FOUND",
+											"message": "Essay with id {classId} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Update class values available at UpdateBCClassEntity from class with classId\n\n\n(The volunteer must have essayModulePermission, which is checked using JWT)",
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"essayModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "classId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateBCClassEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/book-evaluations": {
+			"post": {
+				"operationId": "CreateBookEvaluations",
+				"responses": {
+					"201": {
+						"description": "Successfully Created Evaluations"
+					}
+				},
+				"description": "Create multiple multiple evaluations\n\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"tags": [
+					"Book evaluation"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/CreateBookEvaluationEntity"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/book-evaluations/{evaluationId}": {
+			"put": {
+				"operationId": "UpdateBookEvaluation",
+				"responses": {
+					"200": {
+						"description": "Successfully Upadated the evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookEvaluationEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not update evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookEvaluationError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "EVALUATION_NOT_UPDATED_ERROR",
+											"message": "Evaluation with ID {evaluationId} not updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Could not find evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookEvaluationError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "EVALUATION_NOT_FOUND_ERROR",
+											"message": "Evaluation with id {evaluationId} not found"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Update class values available at UpdateBookEvaluationEntity from class with evaluationId\n\n\n(The volunteer must have essayModulePermission, which is checked using JWT)",
+				"tags": [
+					"Book evaluation"
+				],
+				"security": [
+					{
+						"jwt": [
+							"essayModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "evaluationId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateBookEvaluationEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/notebooks/count/{idvol}": {
+			"get": {
+				"operationId": "CountEvaluatedNotebooksByIdVol",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"count": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"count"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get total count of notebooks by a volunteer.",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idvol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/notebooks/download/{notebookId}": {
+			"get": {
+				"operationId": "DownloadNotebookFromId",
+				"responses": {
+					"200": {
+						"description": "Successfully downloaded the files",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Essay not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_NOT_FOUND_ERROR",
+											"message": "Notebook with id {some Id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Download the notebook with specified id as a pdf file\nThe return of this route is a stream (content type: application/octet-stream)\nand the response header include the file as an attachement\n\n(The volunteer must have readPermission, which is checked using JWT)",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "notebookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/notebooks/available/{idvol}": {
+			"get": {
+				"operationId": "GetAvailableNotebooksForEvalForIdVol",
+				"responses": {
+					"200": {
+						"description": "Successfully fetched the notebooks",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AvailableNotebookRowEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get available notebooks for evaluation for the volunteer,\nthose notebooks includes the ones which does not have a reservation date\nor the reservations of the volunteer.\n\n(The volunteer must have readPermission, which is checked using JWT)",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idvol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/notebooks/evaluation/{notebookId}": {
+			"put": {
+				"operationId": "SaveNotebookEvaluation",
+				"responses": {
+					"200": {
+						"description": "Successfully Evaluated notebook",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Notebook already evaluated",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_ALREADY_RESERVED_ERROR",
+											"message": "Notebook with id {some notebook id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Notebook not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_NOT_FOUND_ERROR",
+											"message": "Notebook with id {some notebook id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Evaluate a notebook\n\n(The volunteer must have readPermission, which is checked using JWT)",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "notebookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EvaluateNotebookEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/notebooks/reservation": {
+			"put": {
+				"operationId": "ReserveNotebookForVolunteer",
+				"responses": {
+					"200": {
+						"description": "Successfully reserved notebook for volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AvailableNotebookRowEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Notebook already reserved or evaluated",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_ALREADY_RESERVED_ERROR",
+											"message": "Notebook already reserved or already evaluated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Notebook not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_NOT_FOUND_ERROR",
+											"message": "Notebook with id {some notebook id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"412": {
+						"description": "Volunteer not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "VOLUNTEER_NOT_FOUND",
+											"message": "Volunteer with id {some volunteer id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Reserve notebook for the volunteer. If the notebook is already reserve or evaluated\nstatus 400 is returned.\n\n(The volunteer must have readPermission, which is checked using JWT)",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReserveNotebookDataEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/notebooks/revert-reservation/{notebookId}": {
+			"put": {
+				"operationId": "RevertReserveNotebookForVolunteer",
+				"responses": {
+					"200": {
+						"description": "Successfully revert reserved notebook for volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AvailableNotebookRowEntity"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Notebook not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_NOT_FOUND_ERROR",
+											"message": "Notebook with id {some notebook id} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Revert reserve notebook for the volunteer.",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "notebookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/notebooks/{notebookId}": {
+			"put": {
+				"operationId": "UpdateNotebook",
+				"responses": {
+					"200": {
+						"description": "Successfully updated the class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not update notebook",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_NOT_UPDATED_ERROR",
+											"message": "Notebook with ID {notebookId} not updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Could not find notebook",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotebookError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "NOTEBOOK_NOT_FOUND_ERROR",
+											"message": "Notebook with id {notebookId} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Update notebook values available at UpdateNotebookEntity from notebook with notebookId\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"notebookModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "notebookId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateNotebookEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/pep-class/from-id/{classId}": {
+			"get": {
+				"operationId": "GetClassesFromId",
+				"responses": {
+					"200": {
+						"description": "Successfully fetched the classes",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/PepClassEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all the pep classes starting from the classId in the path\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"tags": [
+					"Pep Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"notebookModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "classId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/pep-class/{classId}": {
+			"put": {
+				"operationId": "UpdateClass",
+				"responses": {
+					"200": {
+						"description": "Successfully updated the class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PepClassEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not update class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PepClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "PEP_ClASS_NOT_UPDATED_ERROR",
+											"message": "Class with ID {classId} not updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Could not find class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PepClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "PEP_CLASS_NOT_FOUND",
+											"message": "Class with id {classId} not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Update class values available at UpdatePepClassEntity from class with classId\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"tags": [
+					"Pep Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"notebookModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "classId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePepClassEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/{email}": {
+			"head": {
+				"operationId": "CheckExistingEmail",
+				"responses": {
+					"200": {
+						"description": "The email exists"
+					},
+					"404": {
+						"description": "Could not find the email",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Check if the email already exists on the system.",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "email",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "UpdateVolunteer",
+				"responses": {
+					"200": {
+						"description": "Volunteer successfully updated",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not update volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "VOLUNTEER_NOT_UPDATED",
+											"message": "Volunteer with email {some email} not updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the volunteer.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "email",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateVolunteerEntity"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetVolunteerByEmail",
+				"responses": {
+					"200": {
+						"description": "Get volunteer by specified email",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not find volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get the volunteer by email.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "email",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteVolunteer",
+				"responses": {
+					"204": {
+						"description": "Successfully deleted volunteer"
+					},
+					"400": {
+						"description": "Could not delete volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "VOLUNTEER_NOT_DELETED",
+											"message": "Volunteer with email {some email} not deleted"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the volunteer.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "email",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/volunteers/password": {
+			"patch": {
+				"operationId": "CreateOrUpdatePasswordForHashEmail",
+				"responses": {
+					"204": {
+						"description": "Password Successfully created or updated"
+					},
+					"400": {
+						"description": "Could not find volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Create the volunteer password if it does not exist or udpdate it.\n\nIMPORTANT: That route differently from the PUT /{email}/password\nreceives a hashed email, that email should only be retrieved from the POST /password-email\nlink send to the volunteer email. Furthermore, this route does not have authentication\nas the email is hashed.",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"hashEmail": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"hashEmail",
+									"password"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Success Login",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"volunteer": {
+											"$ref": "#/components/schemas/VolunteerEntity"
+										},
+										"token": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"volunteer",
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Wrong email or password",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "EMAIL_OR_PASSWORD_WRONG_ERROR",
+											"message": "Email or Password wrong"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Generate an access token for the volunteer if his login data is correct\n\nExample of token with all permissions:\n\n{\n\n  \"email\": \"test@gmail.com\",\n\n  \"idvol\": 1,\n\n  \"bookPermission\": true,\n\n  \"readPermission\": true,\n\n  \"attendanceModulePermission\": true,\n\n  \"manageVolunteerModulePermission\": true,\n\n  \"determineVolunteerModulePermission\": true,\n\n  \"essayModulePermission\": true,\n\n  \"notebookModulePermission\": true,\n\n  \"iat\": 1691699195,\n\n  \"exp\": 1691706395\n\n}",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Pick_VolunteerAuthDataEntity.password-or-email_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers": {
+			"post": {
+				"operationId": "CreateVolunteer",
+				"responses": {
+					"201": {
+						"description": "Volunteer Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerEntity"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Volunteer already exists",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "VOLUNTEER_ALREADY_EXISTS",
+											"message": "Volunteer with email {some email} already exists"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Create the volunteer",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateVolunteerEntity"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/help-email": {
+			"post": {
+				"operationId": "SendHelpEmail",
+				"responses": {
+					"200": {
+						"description": "Successfully sent help email"
+					},
+					"400": {
+						"description": "Could not send email",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SendEmailError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Sends email from volunteer to helpdesk email",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SupportEmailSendData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/contact-email": {
+			"post": {
+				"operationId": "SendContactEmail",
+				"responses": {
+					"200": {
+						"description": "Successfully sent help email"
+					},
+					"400": {
+						"description": "Could not send email",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SendEmailError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Sends email from volunteer to contact email",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SupportEmailSendData"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/password-email": {
+			"post": {
+				"operationId": "SendCreatePasswordEmail",
+				"responses": {
+					"200": {
+						"description": "Successfully sent the email to the volunteer"
+					},
+					"400": {
+						"description": "Could not send email",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SendEmailError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Sends an email to the volunteer with a link for creating or update a forgotten password.\n\nThe link contains the user email hash in the path as the following format:\n\nGET /{reset-password-route}/{email-hash}",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Pick_VolunteerAuthDataEntity.email_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/from/{date}": {
+			"get": {
+				"operationId": "GetVolunteersFromDate",
+				"responses": {
+					"200": {
+						"description": "Successfully got volunteer data",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/VolunteerEntity"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)\n\n(The volunteer must have determineVolunteerModulePermission, which is checked using JWT)",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": [
+							"determineVolunteerModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"example": "2023-09-12"
+					}
+				]
+			}
+		},
+		"/volunteers/{email}/password": {
+			"patch": {
+				"operationId": "CreateOrUpdatePassword",
+				"responses": {
+					"204": {
+						"description": "Password Successfully created or updated"
+					},
+					"400": {
+						"description": "Could not find volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Create the volunteer password if it does not exist or udpdate it.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "email",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Pick_VolunteerAuthDataEntity.password_"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
