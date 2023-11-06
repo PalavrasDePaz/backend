@@ -8,6 +8,8 @@ import {
   pepClassModelToEntity,
   updatePepClassEntityToUpdateModel
 } from '../database/mappers/pep-class';
+import { ApiError } from '@src/presentation/types/api-error';
+import { PepClassError } from '@src/domain/errors/pep-class';
 
 @provideSingleton(SequelizePepClassRepository)
 export class SequelizePepClassRepository implements PepClassRepository {
@@ -30,12 +32,20 @@ export class SequelizePepClassRepository implements PepClassRepository {
     classId: number,
     pepClass: UpdatePepClassEntity
   ): Promise<PepClassEntity | null> {
-    const updatedRows = (
+    try {
       await Pep.update(updatePepClassEntityToUpdateModel(pepClass), {
         where: { id: classId }
-      })
-    )[0];
+      });
 
-    return updatedRows ? await this.getPepClassById(classId) : null;
+      return await this.getPepClassById(classId);
+    } catch (error) {
+      throw new ApiError(
+        404,
+        new PepClassError({
+          name: 'PEP_CLASS_NOT_FOUND',
+          message: `Class with id ${classId} not found`
+        })
+      );
+    }
   }
 }
