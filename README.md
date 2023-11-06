@@ -35,3 +35,8 @@ $ npm run build & npm run start
 
 Contributions are allways appreciated
 Check the [Contribution Guide ](https://github.com/PalavrasDePaz/backend/blob/develop/.github/docs/CONTRIBUTING.md) for more informations.
+
+
+## Development Database
+
+For the development environment, you will need to use [docker](https://docs.docker.com/engine/install/#desktop).
