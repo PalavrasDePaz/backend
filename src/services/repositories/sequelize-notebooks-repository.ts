@@ -12,6 +12,7 @@ import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-n
 import { Volunteer } from '../database/models/volunteer';
 import { Pep } from '../database/models/class';
 import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
+import { NotebookError } from '@src/domain/errors/notebook';
 
 @provideSingleton(SequelizeNotebookRepository)
 export class SequelizeNotebookRepository implements NotebookRepository {
@@ -113,12 +114,16 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     notebookId: number,
     notebook: UpdateNotebookEntity
   ): Promise<NotebookEntity | null> {
-    const updatedRows = (
+    try {
       await Notebook.update(updateNotebookEntityToUpdateModel(notebook), {
         where: { idcad: notebookId }
-      })
-    )[0];
-
-    return updatedRows ? await this.getNotebookById(notebookId) : null;
+      });
+      return await this.getNotebookById(notebookId);
+    } catch (error) {
+      throw new NotebookError({
+        name: 'NOTEBOOK_NOT_UPDATED_ERROR',
+        message: `Notebook with ID ${notebookId} not updated`
+      });
+    }
   }
 }
