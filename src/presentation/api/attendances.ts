@@ -28,7 +28,10 @@ import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-a
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
-import { attendancesFields } from '@src/services/database/mappers/helpers/csv-fields';
+import {
+  attendancesFields,
+  metricsFields
+} from '@src/services/database/mappers/helpers/csv-fields';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
 
@@ -110,6 +113,46 @@ export class AttendanceAPI extends Controller {
   ): Promise<AttendanceInfoEntity[]> {
     const dateFormated = new Date(date);
     return await this.attendanceRepository.getAttendancesFromDate(dateFormated);
+  }
+
+  /**
+   * Get download volunteer attendance metrics such as course attendances, number of evaluations and others.
+   * The objects returned in this route has field names in portuguese as the use of the route is only to
+   * convert those objects to a view such as a table for the volunteers of the project
+   *
+   * (The volunteer must have manageVolunteerModulePermission, which is checked using JWT)
+   */
+  @Get('metrics/download/')
+  @Security('jwt', ['manageVolunteerModulePermission'])
+  @SuccessResponse(200, 'Successfully generated the metrics')
+  @Example({ metrics: [{ field1: 'something1' }, { field1: 'something2' }] })
+  public async getDownloadVolunteersAttendanceMetrics(
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const metrics =
+      await this.attendanceRepository.getVolunteersAttendanceMetrics();
+    const toCsv = new Parser({ fields: metricsFields });
+    const csv = toCsv.parse(metrics as unknown[]);
+    const csvBuffer = Buffer.from(csv, 'utf-8');
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `presenca-matrics.csv`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', csvBuffer.byteLength);
+
+    const stream = Readable.from(csvBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 
   /**
