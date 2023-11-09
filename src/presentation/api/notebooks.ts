@@ -353,16 +353,30 @@ export class NotebookAPI extends Controller {
     @Path() notebookId: number,
     @Body() notebook: UpdateNotebookEntity
   ): Promise<NotebookEntity> {
-    const updatedNotebook = await this.notebooksRepository.updatedNotebook(
-      notebookId,
-      notebook
+    const searchNotebook = await this.notebooksRepository.getNotebookById(
+      notebookId
     );
-    if (!updatedNotebook) {
+    if (!searchNotebook) {
       throw new ApiError(
         404,
         new NotebookError({
           name: 'NOTEBOOK_NOT_FOUND_ERROR',
           message: `Notebook with id ${notebookId} not found`
+        })
+      );
+    }
+
+    const updatedNotebook = await this.notebooksRepository.updatedNotebook(
+      notebookId,
+      notebook
+    );
+
+    if (!updatedNotebook) {
+      throw new ApiError(
+        400,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_UPDATED_ERROR',
+          message: `Notebook with ID ${notebookId} not updated`
         })
       );
     }
