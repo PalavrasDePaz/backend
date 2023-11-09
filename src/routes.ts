@@ -68,6 +68,30 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  AttendanceInfoEntity: {
+    dataType: 'refAlias',
+    type: {
+      dataType: 'intersection',
+      subSchemas: [
+        { ref: 'AttendanceEntity' },
+        {
+          dataType: 'nestedObjectLiteral',
+          nestedProperties: {
+            name: {
+              dataType: 'union',
+              subSchemas: [
+                { dataType: 'string' },
+                { dataType: 'enum', enums: [null] }
+              ],
+              required: true
+            }
+          }
+        }
+      ],
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   'Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_': {
     dataType: 'refAlias',
     type: {
@@ -748,7 +772,7 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__':
+  'Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__':
     {
       dataType: 'refAlias',
       type: {
@@ -800,11 +824,11 @@ const models: TsoaRoute.Models = {
       }
     },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Omit_NotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_':
+  'Omit_NotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_':
     {
       dataType: 'refAlias',
       type: {
-        ref: 'Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__',
+        ref: 'Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__',
         validators: {}
       }
     },
@@ -812,7 +836,7 @@ const models: TsoaRoute.Models = {
   UpdateNotebookEntity: {
     dataType: 'refAlias',
     type: {
-      ref: 'Omit_NotebookEntity.idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_',
+      ref: 'Omit_NotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_',
       validators: {}
     }
   },
@@ -1094,54 +1118,51 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Pick_VolunteerEntity.Exclude_keyofVolunteerEntity.email-or-pep-or-idvol-or-createdAt__':
+  'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__':
     {
       dataType: 'refAlias',
       type: {
         dataType: 'nestedObjectLiteral',
         nestedProperties: {
-          name: { dataType: 'string', required: true },
-          birthDate: { dataType: 'datetime', required: true },
-          phoneNumber: { dataType: 'string', required: true },
-          country: { dataType: 'string', required: true },
-          state: { dataType: 'string', required: true },
-          city: { dataType: 'string', required: true },
-          disability: { dataType: 'string' },
-          howFoundPep: { dataType: 'string', required: true },
-          knowledgePep: { dataType: 'string', required: true },
-          schooling: { dataType: 'string', required: true },
-          bachelor: { dataType: 'string' },
-          studiesKnowledge: { dataType: 'string', required: true },
-          lifeExperience: { dataType: 'string', required: true },
-          desires: { dataType: 'string', required: true },
-          rolesPep: {
-            dataType: 'array',
-            array: { dataType: 'string' },
-            required: true
+          email: {
+            dataType: 'string',
+            validators: {
+              pattern: {
+                errorMsg: 'must be a valid email',
+                value: '^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$'
+              }
+            }
           },
+          name: { dataType: 'string' },
+          birthDate: { dataType: 'datetime' },
+          phoneNumber: { dataType: 'string' },
+          country: { dataType: 'string' },
+          state: { dataType: 'string' },
+          city: { dataType: 'string' },
+          disability: { dataType: 'string' },
+          howFoundPep: { dataType: 'string' },
+          knowledgePep: { dataType: 'string' },
+          schooling: { dataType: 'string' },
+          bachelor: { dataType: 'string' },
+          studiesKnowledge: { dataType: 'string' },
+          lifeExperience: { dataType: 'string' },
+          desires: { dataType: 'string' },
+          rolesPep: { dataType: 'array', array: { dataType: 'string' } },
           interestFutureRoles: {
             dataType: 'array',
-            array: { dataType: 'string' },
-            required: true
+            array: { dataType: 'string' }
           },
-          needDeclaration: { dataType: 'boolean', required: true }
+          needDeclaration: { dataType: 'boolean' },
+          password: { dataType: 'string' }
         },
         validators: {}
       }
     },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Omit_VolunteerEntity.email-or-pep-or-idvol-or-createdAt_': {
-    dataType: 'refAlias',
-    type: {
-      ref: 'Pick_VolunteerEntity.Exclude_keyofVolunteerEntity.email-or-pep-or-idvol-or-createdAt__',
-      validators: {}
-    }
-  },
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   UpdateVolunteerEntity: {
     dataType: 'refAlias',
     type: {
-      ref: 'Omit_VolunteerEntity.email-or-pep-or-idvol-or-createdAt_',
+      ref: 'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__',
       validators: {}
     }
   }
@@ -1156,6 +1177,53 @@ export function RegisterRoutes(app: Router) {
   //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
   //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
   // ###########################################################################################################
+  app.get(
+    '/attendances/download/from/:date',
+    authenticateMiddleware([{ jwt: ['attendanceModulePermission'] }]),
+    ...fetchMiddlewares<RequestHandler>(AttendanceAPI),
+    ...fetchMiddlewares<RequestHandler>(
+      AttendanceAPI.prototype.getAttendancesDownloadFromDate
+    ),
+
+    async function AttendanceAPI_getAttendancesDownloadFromDate(
+      request: any,
+      response: any,
+      next: any
+    ) {
+      const args = {
+        date: { in: 'path', name: 'date', required: true, dataType: 'string' },
+        req: { in: 'request', name: 'req', required: true, dataType: 'object' }
+      };
+
+      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request, response);
+
+        const container: IocContainer =
+          typeof iocContainer === 'function'
+            ? (iocContainer as IocContainerFactory)(request)
+            : iocContainer;
+
+        const controller: any = await container.get<AttendanceAPI>(
+          AttendanceAPI
+        );
+        if (typeof controller['setStatus'] === 'function') {
+          controller.setStatus(undefined);
+        }
+
+        const promise = controller.getAttendancesDownloadFromDate.apply(
+          controller,
+          validatedArgs as any
+        );
+        promiseHandler(controller, promise, response, 200, next);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   app.get(
     '/attendances/from/:date',
     authenticateMiddleware([{ jwt: ['attendanceModulePermission'] }]),
@@ -2690,7 +2758,7 @@ export function RegisterRoutes(app: Router) {
     }
   );
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  app.put(
+  app.patch(
     '/volunteers/:email',
     authenticateMiddleware([{ jwt: [] }]),
     ...fetchMiddlewares<RequestHandler>(VolunteerAPI),
