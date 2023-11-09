@@ -481,6 +481,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/attendances/metrics/download',
+            authenticateMiddleware([{"jwt":["manageVolunteerModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.getDownloadVolunteersAttendanceMetrics)),
+
+            async function AttendanceAPI_getDownloadVolunteersAttendanceMetrics(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getDownloadVolunteersAttendanceMetrics.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/attendances/metrics',
             authenticateMiddleware([{"jwt":["manageVolunteerModulePermission"]}]),
             ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),

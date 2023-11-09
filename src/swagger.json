@@ -1923,6 +1923,50 @@
 				]
 			}
 		},
+		"/attendances/metrics/download": {
+			"get": {
+				"operationId": "GetDownloadVolunteersAttendanceMetrics",
+				"responses": {
+					"200": {
+						"description": "Successfully generated the metrics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"metrics": [
+												{
+													"field1": "something1"
+												},
+												{
+													"field1": "something2"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get download volunteer attendance metrics such as course attendances, number of evaluations and others.\nThe objects returned in this route has field names in portuguese as the use of the route is only to\nconvert those objects to a view such as a table for the volunteers of the project\n\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)",
+				"tags": [
+					"Attendance"
+				],
+				"security": [
+					{
+						"jwt": [
+							"manageVolunteerModulePermission"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/attendances/metrics": {
 			"get": {
 				"operationId": "GetVolunteersAttendanceMetrics",

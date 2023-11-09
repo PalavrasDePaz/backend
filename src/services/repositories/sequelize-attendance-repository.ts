@@ -14,6 +14,7 @@ import { Op, QueryTypes } from 'sequelize';
 import attendanceThemeMap from '@src/helpers/attendance/attendance-theme-map';
 import { Volunteer } from '../database/models/volunteer';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
+import { caseWhenBoolean } from './helpers/caseWhenBoolean';
 
 @provideSingleton(SequelizeAttendanceRepository)
 export class SequelizeAttendanceRepository implements AttendanceRepository {
@@ -77,7 +78,11 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
   async getVolunteersAttendanceMetrics(): Promise<unknown> {
     const formatedThemes = this.formatThemesAsCountString(attendanceThemeMap);
     const result = await sequelize.query(
-      `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, i.cert, i.\`habil-leitura\`, i.\`habil-livro\`, COUNT(Presenca.TEMA) AS Npres, ${formatedThemes}, i.telefone, i.\`e-mail\`, i.\`Submission date\`
+      `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
+      ${caseWhenBoolean('i', 'cert')},
+       ${caseWhenBoolean('i', 'habil-leitura')},
+        ${caseWhenBoolean('i', 'habil-livro')},
+         COUNT(Presenca.TEMA) AS Npres, ${formatedThemes}, i.telefone, i.\`e-mail\`, i.\`Submission date\`
       FROM
       (
         SELECT s.idvol, s.nome, s.countCad, s.cert, s.\`habil-leitura\`, s.\`habil-livro\`, s.telefone, s.\`e-mail\`, s.\`Submission date\`, COUNT(TurmasClubeLivro.IDTurma) AS countLivro
