@@ -2,6 +2,8 @@ import { AttendanceEntity } from '@src/domain/entities/attendance/attendance-ent
 import { AttendanceRepository } from '@src/domain/interfaces/repositories/attendance-repository';
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { inject } from 'inversify';
+import express from 'express';
+import { Parser } from 'json2csv';
 import { provide } from 'inversify-binding-decorators';
 import {
   Body,
@@ -14,7 +16,8 @@ import {
   Response,
   SuccessResponse,
   Tags,
-  Example
+  Example,
+  Request
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
@@ -25,6 +28,9 @@ import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-a
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
+import { attendancesFields } from '@src/services/database/mappers/helpers/csv-fields';
+import { Readable } from 'stream';
+import { logger } from '@src/services/logger/logger';
 
 @Route('attendances')
 @Tags('Attendance')
@@ -43,6 +49,50 @@ export class AttendanceAPI extends Controller {
     super();
     this.attendanceRepository = attendanceRepository;
     this.volunteerRepository = volunteerRepository;
+  }
+
+  /**
+   * Get download all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)
+   * OBS: This route returns the data as a stream with attachment headers
+   *
+   * (The volunteer must have attendanceModulePermission, which is checked using JWT)
+   *
+   * @example date "2023-09-12"
+   */
+  @Get('download/from/{date}')
+  @Security('jwt', ['attendanceModulePermission'])
+  @SuccessResponse(200, 'Successfully got attendances')
+  public async getAttendancesDownloadFromDate(
+    @Path() date: string,
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const dateFormated = new Date(date);
+    const attendances = await this.attendanceRepository.getAttendancesFromDate(
+      dateFormated
+    );
+
+    const toCsv = new Parser({ fields: attendancesFields });
+    const csv = toCsv.parse(attendances);
+    const csvBuffer = Buffer.from(csv, 'utf-8');
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `presenca-${date}.csv`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', csvBuffer.byteLength);
+
+    const stream = Readable.from(csvBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 
   /**
