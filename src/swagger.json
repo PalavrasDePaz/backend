@@ -4710,6 +4710,84 @@
 				}
 			}
 		},
+		"/volunteers/download/from/{date}": {
+			"get": {
+				"operationId": "GetDownloadVolunteersFromDate",
+				"responses": {
+					"200": {
+						"description": "Successfully got volunteer data",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get download all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)\nOBS: This route returns the data as a stream with attachment headers\n\n(The volunteer must have determineVolunteerModulePermission, which is checked using JWT)",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": [
+							"determineVolunteerModulePermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"example": "2023-09-12"
+					}
+				]
+			}
+		},
 		"/volunteers/from/{date}": {
 			"get": {
 				"operationId": "GetVolunteersFromDate",

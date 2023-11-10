@@ -195,3 +195,86 @@ export const metricsFields = [
     value: 'Submission date'
   }
 ];
+
+export const VolunteerFields = [
+  {
+    label: 'idvol',
+    value: 'idvol'
+  },
+  {
+    label: 'e-mail',
+    value: 'email'
+  },
+  {
+    label: 'nome',
+    value: 'name'
+  },
+  {
+    label: 'pep',
+    value: 'pep'
+  },
+  {
+    label: 'nascimento',
+    value: 'birthDate'
+  },
+  {
+    label: 'telefone',
+    value: 'phoneNumber'
+  },
+  {
+    label: 'país',
+    value: 'country'
+  },
+  {
+    label: 'estado',
+    value: 'state'
+  },
+  {
+    label: 'cidade',
+    value: 'city'
+  },
+  {
+    label: 'deficiência',
+    value: 'disability'
+  },
+  {
+    label: 'onde soube',
+    value: 'howFoundPep'
+  },
+  {
+    label: 'conhecimento pep',
+    value: 'knowledgePep'
+  },
+  {
+    label: 'escolaridade',
+    value: 'schooling'
+  },
+  {
+    label: 'estudos',
+    value: 'studiesKnowledge'
+  },
+  {
+    label: 'experiências',
+    value: 'lifeExperience'
+  },
+  {
+    label: 'sonhos',
+    value: 'desires'
+  },
+  {
+    label: 'oportunidades',
+    value: 'rolesPep'
+  },
+  {
+    label: 'ajudar',
+    value: 'interestFutureRoles'
+  },
+  {
+    label: 'declaração',
+    value: 'needDeclaration'
+  },
+  {
+    label: 'criado em',
+    value: 'createdAt'
+  }
+];

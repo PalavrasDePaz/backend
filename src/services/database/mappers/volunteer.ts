@@ -8,6 +8,7 @@ import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-vol
 import UpdateModel from './helpers/update-model-type';
 import { Entries } from '@src/common/types';
 import { updateVolunteerMapperKeys } from './helpers/mappingFields';
+import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
 
 export const volunteerModelToEntity = (
   volunteer: Volunteer
@@ -33,6 +34,34 @@ export const volunteerModelToEntity = (
     rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
     needDeclaration: volunteer.declaração == 'SIM',
+    createdAt: volunteer.createdAt
+  };
+};
+
+export const volunteerModelToDownloadToEntity = (
+  volunteer: Volunteer
+): VolunteerDownloadEntity => {
+  return {
+    email: volunteer['e-mail'],
+    idvol: volunteer.idvol,
+    name: volunteer.nome,
+    pep: volunteer.idpep,
+    birthDate: volunteer.nascimento,
+    phoneNumber: volunteer.telefone,
+    country: volunteer.país,
+    state: volunteer.estado,
+    city: volunteer.cidade,
+    disability: volunteer.defic == 'SIM' ? volunteer.qual : undefined,
+    howFoundPep: volunteer.ondesoube,
+    knowledgePep: volunteer['conhecimento pep'],
+    schooling: volunteer.escolaridade,
+    bachelor: volunteer.curso1,
+    studiesKnowledge: volunteer.estudos,
+    lifeExperience: volunteer.experiências,
+    desires: volunteer.sonhos,
+    rolesPep: volunteer.oportunidades,
+    interestFutureRoles: volunteer.ajudar,
+    needDeclaration: volunteer.declaração,
     createdAt: volunteer.createdAt
   };
 };
