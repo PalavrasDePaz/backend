@@ -5,7 +5,8 @@ import {
   volunteerModelToEntity,
   updateVolunteerEntityToUpdateModel,
   volunteerModelToAuthEntity,
-  createVolunteerEntityToCreationModel
+  createVolunteerEntityToCreationModel,
+  volunteerModelToDownloadToEntity
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
@@ -17,6 +18,7 @@ import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-vol
 import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 import { Authorization } from '../database/models/authorization';
 import { authorizationModelToEntity } from '../database/mappers/authorization';
+import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
@@ -29,6 +31,19 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     });
 
     return attendances.map(volunteerModelToEntity);
+  }
+
+  async getVolunteersDownloadFromDate(
+    date: Date
+  ): Promise<VolunteerDownloadEntity[]> {
+    const attendances = await Volunteer.findAll({
+      where: {
+        createdAt: { [Op.gte]: date }
+      },
+      order: [['createdAt', 'DESC']]
+    });
+
+    return attendances.map(volunteerModelToDownloadToEntity);
   }
   async getPermissionByAuthName(
     name: string
