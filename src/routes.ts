@@ -1109,6 +1109,31 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  'PaginationResult_VolunteerEntity-Array_': {
+    dataType: 'refAlias',
+    type: {
+      dataType: 'nestedObjectLiteral',
+      nestedProperties: {
+        totalCount: { dataType: 'double', required: true },
+        pageInfo: {
+          dataType: 'nestedObjectLiteral',
+          nestedProperties: {
+            hasPreviousPage: { dataType: 'boolean', required: true },
+            hasNextPage: { dataType: 'boolean', required: true },
+            page: { dataType: 'double', required: true }
+          },
+          required: true
+        },
+        nodes: {
+          dataType: 'array',
+          array: { dataType: 'refObject', ref: 'VolunteerEntity' },
+          required: true
+        }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   'Pick_VolunteerAuthDataEntity.password_': {
     dataType: 'refAlias',
     type: {
@@ -2764,7 +2789,8 @@ export function RegisterRoutes(app: Router) {
       next: any
     ) {
       const args = {
-        date: { in: 'path', name: 'date', required: true, dataType: 'string' }
+        date: { in: 'path', name: 'date', required: true, dataType: 'string' },
+        req: { in: 'request', name: 'req', required: true, dataType: 'object' }
       };
 
       // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
