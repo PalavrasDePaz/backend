@@ -255,41 +255,34 @@ export class VolunteerAPI extends Controller {
   public async postVolunteerHours(
     @Body() hoursVolunteer: PostVolunteerHoursEntity
   ): Promise<void> {
-    try {
-      const currentDate = new Date();
-      const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth();
-      const fifthDayOfMonth = new Date(currentYear, currentMonth, 14);
-      if (currentDate > fifthDayOfMonth) {
-        throw new ApiError(
-          400,
-          new VolunteerError({
-            name: 'INVALID_DATE_REGISTER',
-            message: `Not permitted to register hours after the 5th`
-          })
-        );
-      }
-
-      const existingRegister = await this.volunteerRepository.findHoursByMonth(
-        hoursVolunteer.idVol,
-        currentMonth,
-        currentYear
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const fifthDayOfMonth = new Date(currentYear, currentMonth, 5);
+    if (currentDate > fifthDayOfMonth) {
+      throw new ApiError(
+        400,
+        new VolunteerError({
+          name: 'INVALID_DATE_REGISTER',
+          message: `Not permitted to register hours after the 5th`
+        })
       );
-      if (existingRegister) {
-        throw new ApiError(
-          400,
-          new VolunteerError({
-            name: 'HOURS_ALREADY_REGISTERED',
-            message: `Hours already registered this month`
-          })
-        );
-      }
-      await this.volunteerRepository.postVolunteerHours({
-        ...hoursVolunteer,
-        submissionDate: currentDate
-      });
-    } catch (error) {
-      console.log(error);
     }
+
+    const existingRegister = await this.volunteerRepository.findHoursByMonth(
+      hoursVolunteer.idVol,
+      currentMonth,
+      currentYear
+    );
+    if (existingRegister) {
+      throw new ApiError(
+        400,
+        new VolunteerError({
+          name: 'HOURS_ALREADY_REGISTERED',
+          message: `Hours already registered this month`
+        })
+      );
+    }
+    await this.volunteerRepository.postVolunteerHours(hoursVolunteer);
   }
 }

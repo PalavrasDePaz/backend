@@ -418,9 +418,19 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idVol":{"dataType":"double","required":true},"manag":{"dataType":"double","required":true},"comm":{"dataType":"double","required":true},"tec":{"dataType":"double","required":true},"event":{"dataType":"double","required":true},"att":{"dataType":"double","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Omit_VolunteerHoursEntity.idHour-or-createdAt_": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PostVolunteerHoursEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"att":{"dataType":"double","required":true},"event":{"dataType":"double","required":true},"tec":{"dataType":"double","required":true},"comm":{"dataType":"double","required":true},"manag":{"dataType":"double","required":true},"idVol":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"ref":"Omit_VolunteerHoursEntity.idHour-or-createdAt_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };

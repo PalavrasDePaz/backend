@@ -1,8 +1,5 @@
-export type PostVolunteerHoursEntity = {
-  idVol: number;
-  manag: number;
-  comm: number;
-  tec: number;
-  event: number;
-  att: number;
-};
+import { VolunteerHoursEntity } from './volunteer-hours-entity';
+export type PostVolunteerHoursEntity = Omit<
+  VolunteerHoursEntity,
+  'idHour' | 'createdAt'
+>;
