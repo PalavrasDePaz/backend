@@ -3,7 +3,7 @@
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/presentation/api/*.ts"],
   "spec": {
-    "outputDirectory": "build",
+    "outputDirectory": "src",
     "specVersion": 3,
     "securityDefinitions": {
       "jwt": {
@@ -14,7 +14,7 @@
     } 
   },
   "routes": {
-    "routesDir": "build",
+    "routesDir": "src",
     "authenticationModule": "./src/presentation/middlewares/authentication.ts",
     "iocModule": "src/ioc"
   },

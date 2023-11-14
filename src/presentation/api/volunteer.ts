@@ -9,7 +9,7 @@ import {
   Get,
   Patch,
   Path,
-  Put,
+  Request,
   Response,
   Route,
   Security,
@@ -23,6 +23,11 @@ import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-vol
 import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { ApiError } from '../types/api-error';
 import { validationExample } from '@src/documentation/validation-example';
+import { Parser } from 'json2csv';
+import express from 'express';
+import { VolunteerFields } from '@src/services/database/mappers/helpers/csv-fields';
+import { Readable } from 'stream';
+import { logger } from '@src/services/logger/logger';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -42,6 +47,52 @@ export class VolunteerAPI extends Controller {
   ) {
     super();
     this.volunteerRepository = volunteerRepository;
+  }
+
+  /**
+   * Get download all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)
+   * OBS: This route returns the data as a stream with attachment headers
+   *
+   * (The volunteer must have determineVolunteerModulePermission, which is checked using JWT)
+   *
+   *
+   * @example date "2023-09-12"
+   */
+  @Get('download/from/{date}')
+  @Security('jwt', ['determineVolunteerModulePermission'])
+  @SuccessResponse(200, 'Successfully got volunteer data')
+  public async getDownloadVolunteersFromDate(
+    @Path() date: string,
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const dateFormated = new Date(date);
+    const volunteers =
+      await this.volunteerRepository.getVolunteersDownloadFromDate(
+        dateFormated
+      );
+
+    const toCsv = new Parser({ fields: VolunteerFields });
+    const csv = toCsv.parse(volunteers);
+    const csvBuffer = Buffer.from(csv, 'utf-8');
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `presenca-matrics.csv`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', csvBuffer.byteLength);
+
+    const stream = Readable.from(csvBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 
   /**
@@ -97,7 +148,7 @@ export class VolunteerAPI extends Controller {
    *
    * (The logged volunteer can only use the operation on it's own email, unless admin)
    */
-  @Put('{email}')
+  @Patch('{email}')
   @SuccessResponse(200, 'Volunteer successfully updated')
   @Response<VolunteerError>(400, 'Could not update volunteer', {
     name: 'VOLUNTEER_NOT_UPDATED',
