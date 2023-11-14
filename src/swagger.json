@@ -90,6 +90,46 @@
 					}
 				]
 			},
+			"PaginationResult_AttendanceInfoEntity-Array_": {
+				"properties": {
+					"totalCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"pageInfo": {
+						"properties": {
+							"hasPreviousPage": {
+								"type": "boolean"
+							},
+							"hasNextPage": {
+								"type": "boolean"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"hasPreviousPage",
+							"hasNextPage",
+							"page"
+						],
+						"type": "object"
+					},
+					"nodes": {
+						"items": {
+							"$ref": "#/components/schemas/AttendanceInfoEntity"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"totalCount",
+					"pageInfo",
+					"nodes"
+				],
+				"type": "object"
+			},
 			"Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_": {
 				"properties": {
 					"idAttend": {
@@ -1930,16 +1970,13 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/AttendanceInfoEntity"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/PaginationResult_AttendanceInfoEntity-Array_"
 								}
 							}
 						}
 					}
 				},
-				"description": "Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\n\n(The volunteer must have attendanceModulePermission, which is checked using JWT)",
+				"description": "Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\n\n(The volunteer must have attendanceModulePermission, which is checked using JWT)\n\n * Pagination\n Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)\n Filter: ?field=value& (obs: field according database column)",
 				"tags": [
 					"Attendance"
 				],

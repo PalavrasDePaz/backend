@@ -15,10 +15,14 @@ import attendanceThemeMap from '@src/helpers/attendance/attendance-theme-map';
 import { Volunteer } from '../database/models/volunteer';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
 import { caseWhenBoolean } from './helpers/caseWhenBoolean';
+import { wrapPagination } from './helpers/wrapPagination';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
 
 @provideSingleton(SequelizeAttendanceRepository)
 export class SequelizeAttendanceRepository implements AttendanceRepository {
-  async getAttendancesFromDate(date: Date): Promise<AttendanceInfoEntity[]> {
+  async getAttendancesDownloadFromDate(
+    date: Date
+  ): Promise<AttendanceInfoEntity[]> {
     const attendances = await Attendance.findAll<
       Attendance & { 'Volunteer.nome'?: string }
     >({
@@ -39,6 +43,43 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
     });
     return attendances.map(attendanceModelToEntityFromDate);
   }
+
+  getAttendancesFromDate = wrapPagination(
+    async (
+      pagination: PaginationParams,
+      date: Date
+    ): Promise<[AttendanceInfoEntity[], number]> => {
+      const { filter, ...paginationRest } = pagination;
+      const attendances = await Attendance.findAll<
+        Attendance & { 'Volunteer.nome'?: string }
+      >({
+        where: {
+          createdAt: { [Op.gte]: date },
+          ...filter
+        },
+        raw: true,
+        include: [
+          {
+            model: Volunteer,
+            as: 'Volunteer',
+            attributes: ['nome'],
+            required: true
+          }
+        ],
+
+        ...paginationRest
+      });
+
+      const totalCount = await Attendance.count({
+        where: {
+          createdAt: { [Op.gte]: date },
+          ...filter
+        }
+      });
+
+      return [attendances.map(attendanceModelToEntityFromDate), totalCount];
+    }
+  );
 
   async getAllAttendancesByIdVol(idvol: number): Promise<AttendanceEntity[]> {
     const attendances = await Attendance.findAll({
