@@ -92,6 +92,31 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  'PaginationResult_AttendanceInfoEntity-Array_': {
+    dataType: 'refAlias',
+    type: {
+      dataType: 'nestedObjectLiteral',
+      nestedProperties: {
+        totalCount: { dataType: 'double', required: true },
+        pageInfo: {
+          dataType: 'nestedObjectLiteral',
+          nestedProperties: {
+            hasPreviousPage: { dataType: 'boolean', required: true },
+            hasNextPage: { dataType: 'boolean', required: true },
+            page: { dataType: 'double', required: true }
+          },
+          required: true
+        },
+        nodes: {
+          dataType: 'array',
+          array: { dataType: 'refAlias', ref: 'AttendanceInfoEntity' },
+          required: true
+        }
+      },
+      validators: {}
+    }
+  },
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
   'Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_': {
     dataType: 'refAlias',
     type: {
@@ -1263,7 +1288,8 @@ export function RegisterRoutes(app: Router) {
       next: any
     ) {
       const args = {
-        date: { in: 'path', name: 'date', required: true, dataType: 'string' }
+        date: { in: 'path', name: 'date', required: true, dataType: 'string' },
+        req: { in: 'request', name: 'req', required: true, dataType: 'object' }
       };
 
       // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
