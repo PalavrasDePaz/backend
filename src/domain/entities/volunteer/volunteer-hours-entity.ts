@@ -1,9 +1,10 @@
 export type VolunteerHoursEntity = {
-  submissionDate: Date;
+  idHour: number;
   idVol: number;
   manag: number;
   comm: number;
   tec: number;
   event: number;
   att: number;
+  createdAt: Date;
 };

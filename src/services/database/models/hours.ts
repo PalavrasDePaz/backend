@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -10,20 +11,22 @@ export class VolunteerHours extends Model<
   InferAttributes<VolunteerHours>,
   InferCreationAttributes<VolunteerHours>
 > {
-  submissionDate!: Date;
+  idHour!: number;
   idVol!: number;
   manag!: number;
   comm!: number;
   tec!: number;
   event!: number;
   att!: number;
+  createdAt!: CreationOptional<Date>;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
       {
-        submissionDate: {
-          type: DataTypes.DATE,
-          allowNull: false
+        idHour: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true
         },
         idVol: {
           type: DataTypes.NUMBER,
@@ -33,7 +36,11 @@ export class VolunteerHours extends Model<
         comm: { type: DataTypes.NUMBER, allowNull: false },
         tec: { type: DataTypes.NUMBER, allowNull: false },
         event: { type: DataTypes.NUMBER, allowNull: false },
-        att: { type: DataTypes.NUMBER, allowNull: false }
+        att: { type: DataTypes.NUMBER, allowNull: false },
+        createdAt: {
+          type: DataTypes.DATE,
+          field: 'Submission Date'
+        }
       },
       {
         sequelize,

@@ -10,7 +10,7 @@ import {
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
-import { Op, UniqueConstraintError } from 'sequelize';
+import { CreationAttributes, Op, UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { hashString } from '@src/helpers/message-hashing';
@@ -160,7 +160,9 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     return deletedVolunteers ? true : false;
   }
 
-  async postVolunteerHours(data: VolunteerHoursEntity): Promise<void> {
+  async postVolunteerHours(
+    data: CreationAttributes<VolunteerHours>
+  ): Promise<void> {
     await VolunteerHours.create(data);
   }
 
@@ -173,7 +175,7 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     return VolunteerHours.findOne({
       where: {
         idVol,
-        submissionDate: {
+        createdAt: {
           [Op.gt]: currentDate
         }
       }

@@ -7,6 +7,7 @@ import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/voluntee
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 import { VolunteerHoursEntity } from '@src/domain/entities/volunteer/volunteer-hours-entity';
+import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-volunteer-hours-entity';
 
 export interface VolunteerRepository {
   updateVolunteer(
@@ -42,7 +43,7 @@ export interface VolunteerRepository {
     password: string
   ): Promise<boolean>;
 
-  postVolunteerHours(data: VolunteerHoursEntity): Promise<void>;
+  postVolunteerHours(data: PostVolunteerHoursEntity): Promise<void>;
   findHoursByMonth(
     idVol: number,
     month: number,
