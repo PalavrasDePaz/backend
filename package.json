@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "jest --projects ./src/test/",
-    "start:dev": "concurrently \"docker-compose up -d\" \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
+    "start:dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
     "generate:routes": "tsoa spec-and-routes",
     "build": "rm -rf build && tsoa spec-and-routes && tsc && tsc-alias",
     "start": "node build/index.js",
