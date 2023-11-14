@@ -60,7 +60,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ErrorName": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["VOLUNTEER_NOT_FOUND"]},{"dataType":"enum","enums":["VOLUNTEER_ALREADY_EXISTS"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_UPDATED"]},{"dataType":"enum","enums":["VOLUNTEER_UNREGISTERED"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["PASSWORD_WRONG_ERROR"]}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["VOLUNTEER_NOT_FOUND"]},{"dataType":"enum","enums":["VOLUNTEER_ALREADY_EXISTS"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_UPDATED"]},{"dataType":"enum","enums":["VOLUNTEER_UNREGISTERED"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["PASSWORD_WRONG_ERROR"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["INVALID_DATE_REGISTER"]},{"dataType":"enum","enums":["HOURS_ALREADY_REGISTERED"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "VolunteerError": {
@@ -416,6 +416,11 @@ const models: TsoaRoute.Models = {
     "UpdateVolunteerEntity": {
         "dataType": "refAlias",
         "type": {"ref":"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostVolunteerHoursEntity": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"att":{"dataType":"double","required":true},"event":{"dataType":"double","required":true},"tec":{"dataType":"double","required":true},"comm":{"dataType":"double","required":true},"manag":{"dataType":"double","required":true},"idVol":{"dataType":"double","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
@@ -1575,6 +1580,37 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.deleteVolunteer.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers/hours',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.postVolunteerHours)),
+
+            async function VolunteerAPI_postVolunteerHours(request: any, response: any, next: any) {
+            const args = {
+                    hoursVolunteer: {"in":"body","name":"hoursVolunteer","required":true,"ref":"PostVolunteerHoursEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.postVolunteerHours.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);
             }

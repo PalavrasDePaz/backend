@@ -21,6 +21,8 @@ import { authorizationModelToEntity } from '../database/mappers/authorization';
 import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import { wrapPagination } from './helpers/wrapPagination';
+import { VolunteerHours } from '../database/models/hours';
+import { VolunteerHoursEntity } from '@src/domain/entities/volunteer/volunteer-hours-entity';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
@@ -156,5 +158,25 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     });
 
     return deletedVolunteers ? true : false;
+  }
+
+  async postVolunteerHours(data: VolunteerHoursEntity): Promise<void> {
+    await VolunteerHours.create(data);
+  }
+
+  async findHoursByMonth(
+    idVol: number,
+    month: number,
+    year: number
+  ): Promise<VolunteerHoursEntity | null> {
+    const currentDate = new Date(year, month);
+    return VolunteerHours.findOne({
+      where: {
+        idVol,
+        submissionDate: {
+          [Op.gt]: currentDate
+        }
+      }
+    });
   }
 }
