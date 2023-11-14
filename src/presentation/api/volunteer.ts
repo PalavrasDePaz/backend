@@ -7,6 +7,7 @@ import {
   Delete,
   FieldErrors,
   Get,
+  Middlewares,
   Patch,
   Path,
   Request,
@@ -28,6 +29,8 @@ import express from 'express';
 import { VolunteerFields } from '@src/services/database/mappers/helpers/csv-fields';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -97,20 +100,36 @@ export class VolunteerAPI extends Controller {
 
   /**
    * Get all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)
+   * Pagination
+   *  Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)
+   *  Page: ?page=number& (page number)
+   *  Limit: ?limit=number& (data quantity - max=30)
+   *  Filter: ?field=value& (obs: field according database column)
    *
    * (The volunteer must have determineVolunteerModulePermission, which is checked using JWT)
    *
    *
    * @example date "2023-09-12"
+   * @example page "page=3"
+   * @example sort "sort=nascimento-DESC"
+   * @example limit "limit=20"
+   * @example filter "e-mail=user@email.com"
    */
   @Get('from/{date}')
   @Security('jwt', ['determineVolunteerModulePermission'])
+  @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully got volunteer data')
   public async getVolunteersFromDate(
-    @Path() date: string
-  ): Promise<VolunteerEntity[]> {
+    @Path() date: string,
+    @Request() req: express.Request
+  ): Promise<PaginationResult<VolunteerEntity[]>> {
     const dateFormated = new Date(date);
-    return await this.volunteerRepository.getVolunteersFromDate(dateFormated);
+    const { pagination } = req;
+    if (!pagination) throw Error();
+    return await this.volunteerRepository.getVolunteersFromDate(
+      pagination,
+      dateFormated
+    );
   }
 
   /**

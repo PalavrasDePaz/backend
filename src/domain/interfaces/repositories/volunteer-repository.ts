@@ -5,13 +5,19 @@ import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-vol
 import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
 
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+
 export interface VolunteerRepository {
   updateVolunteer(
     volunteer: UpdateVolunteerEntity,
     email: string
   ): Promise<VolunteerEntity | null>;
 
-  getVolunteersFromDate(date: Date): Promise<VolunteerEntity[]>;
+  getVolunteersFromDate(
+    pagination: PaginationParams,
+    date: Date
+  ): Promise<PaginationResult<VolunteerEntity[]>>;
 
   getVolunteersDownloadFromDate(date: Date): Promise<VolunteerDownloadEntity[]>;
 
