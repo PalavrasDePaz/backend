@@ -11,6 +11,7 @@ import {
   Patch,
   Path,
   Request,
+  Post,
   Response,
   Route,
   Security,
@@ -31,6 +32,7 @@ import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-volunteer-hours-entity';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -239,5 +241,55 @@ export class VolunteerAPI extends Controller {
           message: `Volunteer with email ${email} not deleted`
         })
       );
+  }
+
+  /**
+   * Post volunteer hours
+   *
+   */
+
+  @Post('hours')
+  // @Security('jwt', ['bookPermission'])
+  @SuccessResponse(201, 'Successfully posting hours')
+  // @Response<VolunteerError>(400, 'Could not find volunteer') // como colocar o erro e qual status ?
+  public async postVolunteerHours(
+    @Body() hoursVolunteer: PostVolunteerHoursEntity
+  ): Promise<void> {
+    try {
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth();
+      const fifthDayOfMonth = new Date(currentYear, currentMonth, 14);
+      if (currentDate > fifthDayOfMonth) {
+        throw new ApiError(
+          400,
+          new VolunteerError({
+            name: 'INVALID_DATE_REGISTER',
+            message: `Not permitted to register hours after the 5th`
+          })
+        );
+      }
+
+      const existingRegister = await this.volunteerRepository.findHoursByMonth(
+        hoursVolunteer.idVol,
+        currentMonth,
+        currentYear
+      );
+      if (existingRegister) {
+        throw new ApiError(
+          400,
+          new VolunteerError({
+            name: 'HOURS_ALREADY_REGISTERED',
+            message: `Hours already registered this month`
+          })
+        );
+      }
+      await this.volunteerRepository.postVolunteerHours({
+        ...hoursVolunteer,
+        submissionDate: currentDate
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

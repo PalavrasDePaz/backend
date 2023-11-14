@@ -163,7 +163,9 @@
 					"VOLUNTEER_NOT_UPDATED",
 					"VOLUNTEER_UNREGISTERED",
 					"VOLUNTEER_NOT_DELETED",
-					"PASSWORD_WRONG_ERROR"
+					"PASSWORD_WRONG_ERROR",
+					"INVALID_DATE_REGISTER",
+					"HOURS_ALREADY_REGISTERED"
 				]
 			},
 			"VolunteerError": {
@@ -1902,6 +1904,43 @@
 			},
 			"UpdateVolunteerEntity": {
 				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__"
+			},
+			"PostVolunteerHoursEntity": {
+				"properties": {
+					"att": {
+						"type": "number",
+						"format": "double"
+					},
+					"event": {
+						"type": "number",
+						"format": "double"
+					},
+					"tec": {
+						"type": "number",
+						"format": "double"
+					},
+					"comm": {
+						"type": "number",
+						"format": "double"
+					},
+					"manag": {
+						"type": "number",
+						"format": "double"
+					},
+					"idVol": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"att",
+					"event",
+					"tec",
+					"comm",
+					"manag",
+					"idVol"
+				],
+				"type": "object"
 			}
 		},
 		"securitySchemes": {
@@ -5024,6 +5063,74 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/Pick_VolunteerAuthDataEntity.password_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/volunteers/hours": {
+			"post": {
+				"operationId": "PostVolunteerHours",
+				"responses": {
+					"201": {
+						"description": "Successfully posting hours"
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Post volunteer hours",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PostVolunteerHoursEntity"
 							}
 						}
 					}
