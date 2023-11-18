@@ -161,8 +161,9 @@
 					"VOLUNTEER_NOT_FOUND",
 					"VOLUNTEER_ALREADY_EXISTS",
 					"VOLUNTEER_NOT_UPDATED",
-					"EMAIL_OR_PASSWORD_WRONG_ERROR",
-					"VOLUNTEER_NOT_DELETED"
+					"VOLUNTEER_UNREGISTERED",
+					"VOLUNTEER_NOT_DELETED",
+					"PASSWORD_WRONG_ERROR"
 				]
 			},
 			"VolunteerError": {
@@ -4411,8 +4412,8 @@
 								"examples": {
 									"Example 1": {
 										"value": {
-											"name": "EMAIL_OR_PASSWORD_WRONG_ERROR",
-											"message": "Email or Password wrong"
+											"name": "VOLUNTEER_UNREGISTERED",
+											"message": "Volunteer unregistered"
 										}
 									}
 								}
