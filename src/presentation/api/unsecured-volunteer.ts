@@ -140,8 +140,12 @@ export class UnsecuredVolunteerAPI extends Controller {
   @Post('login')
   @SuccessResponse(200, 'Success Login')
   @Response<VolunteerError>(400, 'Wrong email or password', {
-    name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
-    message: 'Email or Password wrong'
+    name: 'PASSWORD_WRONG_ERROR',
+    message: 'Password wrong'
+  })
+  @Response<VolunteerError>(400, 'Wrong email or password', {
+    name: 'VOLUNTEER_UNREGISTERED',
+    message: 'Volunteer unregistered'
   })
   async login(
     @Body() loginData: Pick<VolunteerAuthDataEntity, 'password' | 'email'>
@@ -150,7 +154,6 @@ export class UnsecuredVolunteerAPI extends Controller {
       await this.volunteerRepository.getVolunteerWithAuthDataByEmail(
         loginData.email
       );
-
     if (
       volunteerWithAuth &&
       checkPlainWithHash(loginData.password, volunteerWithAuth.password)
@@ -162,7 +165,6 @@ export class UnsecuredVolunteerAPI extends Controller {
           volunteerWithAuth.authorPermission
         );
       }
-
       const {
         bookPermission,
         certificationPermission,
@@ -181,12 +183,21 @@ export class UnsecuredVolunteerAPI extends Controller {
 
       const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
       return { token: token, volunteer };
+    }
+    if (volunteerWithAuth) {
+      throw new ApiError(
+        400,
+        new VolunteerError({
+          name: 'PASSWORD_WRONG_ERROR',
+          message: 'Password wrong'
+        })
+      );
     } else {
       throw new ApiError(
         400,
         new VolunteerError({
-          name: 'EMAIL_OR_PASSWORD_WRONG_ERROR',
-          message: 'Email or Password wrong'
+          name: 'VOLUNTEER_UNREGISTERED',
+          message: 'Volunteer unregistered'
         })
       );
     }
