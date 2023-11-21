@@ -17,7 +17,8 @@ import {
   SuccessResponse,
   Tags,
   Example,
-  Request
+  Request,
+  Middlewares
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
@@ -34,6 +35,8 @@ import {
 } from '@src/services/database/mappers/helpers/csv-fields';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 @Route('attendances')
 @Tags('Attendance')
@@ -70,9 +73,10 @@ export class AttendanceAPI extends Controller {
     @Request() req: express.Request
   ): Promise<Readable> {
     const dateFormated = new Date(date);
-    const attendances = await this.attendanceRepository.getAttendancesFromDate(
-      dateFormated
-    );
+    const attendances =
+      await this.attendanceRepository.getAttendancesDownloadFromDate(
+        dateFormated
+      );
 
     const toCsv = new Parser({ fields: attendancesFields });
     const csv = toCsv.parse(attendances);
@@ -103,16 +107,34 @@ export class AttendanceAPI extends Controller {
    *
    * (The volunteer must have attendanceModulePermission, which is checked using JWT)
    *
+   *  * Pagination
+   *  Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)
+   *  Page: ?page=number& (page number)
+   *  Limit: ?limit=number& (data quantity - max=30)
+   *  Filter: ?field=value& (obs: field according database column)
+   *
+   *
    * @example date "2023-09-12"
+   *  @example page "page=3"
+   * @example sort "sort=nascimento-DESC"
+   * @example limit "limit=20"
+   * @example filter "e-mail=user@email.com"
    */
   @Get('from/{date}')
   @Security('jwt', ['attendanceModulePermission'])
+  @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully got attendances')
   public async getAttendancesFromDate(
-    @Path() date: string
-  ): Promise<AttendanceInfoEntity[]> {
+    @Path() date: string,
+    @Request() req: express.Request
+  ): Promise<PaginationResult<AttendanceInfoEntity[]>> {
     const dateFormated = new Date(date);
-    return await this.attendanceRepository.getAttendancesFromDate(dateFormated);
+    const { pagination } = req;
+    if (!pagination) throw Error();
+    return await this.attendanceRepository.getAttendancesFromDate(
+      pagination,
+      dateFormated
+    );
   }
 
   /**

@@ -19,19 +19,35 @@ import { PermissionEntity } from '@src/domain/entities/volunteer/permission-enti
 import { Authorization } from '../database/models/authorization';
 import { authorizationModelToEntity } from '../database/mappers/authorization';
 import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { wrapPagination } from './helpers/wrapPagination';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
-  async getVolunteersFromDate(date: Date): Promise<VolunteerEntity[]> {
-    const attendances = await Volunteer.findAll({
-      where: {
-        createdAt: { [Op.gte]: date }
-      },
-      order: [['createdAt', 'DESC']]
-    });
+  getVolunteersFromDate = wrapPagination(
+    async (
+      pagination: PaginationParams,
+      date: Date
+    ): Promise<[VolunteerEntity[], number]> => {
+      const { filter, ...paginationRest } = pagination;
+      const attendances = await Volunteer.findAll({
+        where: {
+          createdAt: { [Op.gte]: date },
+          ...filter
+        },
+        ...paginationRest
+      });
 
-    return attendances.map(volunteerModelToEntity);
-  }
+      const totalCount = await Volunteer.count({
+        where: {
+          createdAt: { [Op.gte]: date },
+          ...filter
+        }
+      });
+
+      return [attendances.map(volunteerModelToEntity), totalCount];
+    }
+  );
 
   async getVolunteersDownloadFromDate(
     date: Date
