@@ -18,6 +18,27 @@ import { caseWhenBoolean } from './helpers/caseWhenBoolean';
 import { wrapPagination } from './helpers/wrapPagination';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 
+const getAllMetricsQuery = `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
+${caseWhenBoolean('i', 'cert')},
+ ${caseWhenBoolean('i', 'habil-leitura')},
+  ${caseWhenBoolean('i', 'habil-livro')},
+   COUNT(Presenca.TEMA) AS Npres, $1, i.telefone, i.\`e-mail\`, i.\`Submission date\`
+FROM
+(
+  SELECT s.idvol, s.nome, s.countCad, s.cert, s.\`habil-leitura\`, s.\`habil-livro\`, s.telefone, s.\`e-mail\`, s.\`Submission date\`, COUNT(TurmasClubeLivro.IDTurma) AS countLivro
+  FROM
+  (
+    SELECT Volunteers.idvol, Volunteers.nome, Volunteers.cert, Volunteers.\`habil-leitura\`, Volunteers.\`habil-livro\`, Volunteers.telefone, Volunteers.\`e-mail\`, Volunteers.\`Submission date\`, COUNT(Cadernos.IDCAD) AS countCad
+    FROM
+    Volunteers LEFT JOIN Cadernos ON Cadernos.IDVOL = Volunteers.idvol
+    WHERE Volunteers.idpep = 0
+    GROUP BY Volunteers.idvol
+  ) s LEFT JOIN TurmasClubeLivro ON TurmasClubeLivro.IDVOL = s.idvol
+  GROUP BY s.IDVOL
+) i LEFT JOIN Presenca ON Presenca.IDVOL = i.idvol
+GROUP BY i.idvol
+ORDER BY i.nome`;
+
 @provideSingleton(SequelizeAttendanceRepository)
 export class SequelizeAttendanceRepository implements AttendanceRepository {
   async getAttendancesDownloadFromDate(
@@ -49,7 +70,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
       pagination: PaginationParams,
       date: Date
     ): Promise<[AttendanceInfoEntity[], number]> => {
-      const { filter, ...paginationRest } = pagination;
+      const { filter, page: _, ...paginationRest } = pagination;
       const attendances = await Attendance.findAll<
         Attendance & { 'Volunteer.nome'?: string }
       >({
@@ -116,34 +137,31 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
     return formatedThemesList.join(', ');
   }
 
-  async getVolunteersAttendanceMetrics(): Promise<unknown> {
+  async getVolunteersAttendanceDownloadMetrics(): Promise<unknown> {
     const formatedThemes = this.formatThemesAsCountString(attendanceThemeMap);
-    const result = await sequelize.query(
-      `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
-      ${caseWhenBoolean('i', 'cert')},
-       ${caseWhenBoolean('i', 'habil-leitura')},
-        ${caseWhenBoolean('i', 'habil-livro')},
-         COUNT(Presenca.TEMA) AS Npres, ${formatedThemes}, i.telefone, i.\`e-mail\`, i.\`Submission date\`
-      FROM
-      (
-        SELECT s.idvol, s.nome, s.countCad, s.cert, s.\`habil-leitura\`, s.\`habil-livro\`, s.telefone, s.\`e-mail\`, s.\`Submission date\`, COUNT(TurmasClubeLivro.IDTurma) AS countLivro
-        FROM
-        (
-          SELECT Volunteers.idvol, Volunteers.nome, Volunteers.cert, Volunteers.\`habil-leitura\`, Volunteers.\`habil-livro\`, Volunteers.telefone, Volunteers.\`e-mail\`, Volunteers.\`Submission date\`, COUNT(Cadernos.IDCAD) AS countCad
-          FROM
-          Volunteers LEFT JOIN Cadernos ON Cadernos.IDVOL = Volunteers.idvol
-          WHERE Volunteers.idpep = 0
-          GROUP BY Volunteers.idvol
-        ) s LEFT JOIN TurmasClubeLivro ON TurmasClubeLivro.IDVOL = s.idvol
-        GROUP BY s.IDVOL
-      ) i LEFT JOIN Presenca ON Presenca.IDVOL = i.idvol
-      GROUP BY i.idvol
-      ORDER BY i.nome;`,
-      {
-        type: QueryTypes.SELECT
-      }
-    );
+    const result = await sequelize.query(getAllMetricsQuery, {
+      bind: [formatedThemes],
+      type: QueryTypes.SELECT
+    });
 
     return result;
   }
+
+  getVolunteersAttendanceMetrics = wrapPagination(
+    async (pagination: PaginationParams): Promise<[unknown, number]> => {
+      const { offset, limit } = pagination;
+      const formatedThemes = this.formatThemesAsCountString(attendanceThemeMap);
+      const result = await sequelize.query(
+        `${getAllMetricsQuery} LIMIT $2 OFFSET $3;`,
+        {
+          bind: [formatedThemes, limit, offset],
+          type: QueryTypes.SELECT
+        }
+      );
+
+      const totalCount = await Volunteer.count({ where: { idpep: 0 } });
+
+      return [result, totalCount];
+    }
+  );
 }

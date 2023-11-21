@@ -130,6 +130,41 @@
 				],
 				"type": "object"
 			},
+			"PaginationResult_unknown_": {
+				"properties": {
+					"totalCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"pageInfo": {
+						"properties": {
+							"hasPreviousPage": {
+								"type": "boolean"
+							},
+							"hasNextPage": {
+								"type": "boolean"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"hasPreviousPage",
+							"hasNextPage",
+							"page"
+						],
+						"type": "object"
+					},
+					"nodes": {}
+				},
+				"required": [
+					"totalCount",
+					"pageInfo",
+					"nodes"
+				],
+				"type": "object"
+			},
 			"Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_": {
 				"properties": {
 					"idAttend": {
@@ -2054,13 +2089,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"metrics": {}
-									},
-									"required": [
-										"metrics"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/PaginationResult_unknown_"
 								},
 								"examples": {
 									"Example 1": {
@@ -2080,7 +2109,7 @@
 						}
 					}
 				},
-				"description": "Get volunteer attendance metrics such as course attendances, number of evaluations and others.\nThe objects returned in this route has field names in portuguese as the use of the route is only to\nconvert those objects to a view such as a table for the volunteers of the project\n\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)",
+				"description": "Get volunteer attendance metrics such as course attendances, number of evaluations and others.\nThe objects returned in this route has field names in portuguese as the use of the route is only to\nconvert those objects to a view such as a table for the volunteers of the project\n\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)\n Pagination\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)",
 				"tags": [
 					"Attendance"
 				],
