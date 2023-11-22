@@ -249,9 +249,16 @@ export class VolunteerAPI extends Controller {
    */
 
   @Post('hours')
-  // @Security('jwt', ['bookPermission'])
+  @Security('jwt')
   @SuccessResponse(201, 'Successfully posting hours')
-  // @Response<VolunteerError>(400, 'Could not find volunteer') // como colocar o erro e qual status ?
+  @Response<VolunteerError>(400, 'Could not delete volunteer', {
+    name: 'INVALID_DATE_REGISTER',
+    message: 'Not permitted to register hours after the 5th'
+  })
+  @Response<VolunteerError>(409, 'Could not delete volunteer', {
+    name: 'HOURS_ALREADY_REGISTERED',
+    message: 'Hours already registered this month'
+  })
   public async postVolunteerHours(
     @Body() hoursVolunteer: PostVolunteerHoursEntity
   ): Promise<void> {
@@ -276,7 +283,7 @@ export class VolunteerAPI extends Controller {
     );
     if (existingRegister) {
       throw new ApiError(
-        400,
+        409,
         new VolunteerError({
           name: 'HOURS_ALREADY_REGISTERED',
           message: `Hours already registered this month`
