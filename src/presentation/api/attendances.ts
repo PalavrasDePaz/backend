@@ -152,7 +152,7 @@ export class AttendanceAPI extends Controller {
     @Request() req: express.Request
   ): Promise<Readable> {
     const metrics =
-      await this.attendanceRepository.getVolunteersAttendanceMetrics();
+      await this.attendanceRepository.getVolunteersAttendanceDownloadMetrics();
     const toCsv = new Parser({ fields: metricsFields });
     const csv = toCsv.parse(metrics as unknown[]);
     const csvBuffer = Buffer.from(csv, 'utf-8');
@@ -183,15 +183,29 @@ export class AttendanceAPI extends Controller {
    * convert those objects to a view such as a table for the volunteers of the project
    *
    * (The volunteer must have manageVolunteerModulePermission, which is checked using JWT)
+   *  Pagination
+   *  Page: ?page=number& (page number)
+   *  Limit: ?limit=number& (data quantity - max=30)
+   *
+   * @example page "page=3"
+   * @example limit "limit=20"
    */
+
   @Get('metrics/')
   @Security('jwt', ['manageVolunteerModulePermission'])
+  @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully generated the metrics')
   @Example({ metrics: [{ field1: 'something1' }, { field1: 'something2' }] })
-  public async getVolunteersAttendanceMetrics(): Promise<{ metrics: unknown }> {
+  public async getVolunteersAttendanceMetrics(
+    @Request() req: express.Request
+  ): Promise<PaginationResult<unknown>> {
+    const { pagination } = req;
+    if (!pagination) throw Error();
     const metrics =
-      await this.attendanceRepository.getVolunteersAttendanceMetrics();
-    return { metrics: metrics };
+      await this.attendanceRepository.getVolunteersAttendanceMetrics(
+        pagination
+      );
+    return metrics;
   }
 
   /**
