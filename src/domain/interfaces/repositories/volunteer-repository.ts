@@ -4,9 +4,10 @@ import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/voluntee
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
 import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
-
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { VolunteerHoursEntity } from '@src/domain/entities/volunteer/volunteer-hours-entity';
+import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-volunteer-hours-entity';
 
 export interface VolunteerRepository {
   updateVolunteer(
@@ -41,4 +42,11 @@ export interface VolunteerRepository {
     email: string,
     password: string
   ): Promise<boolean>;
+
+  postVolunteerHours(data: PostVolunteerHoursEntity): Promise<void>;
+  findHoursByMonth(
+    idVol: number,
+    month: number,
+    year: number
+  ): Promise<VolunteerHoursEntity | null>;
 }

@@ -74,10 +74,11 @@ export class PepAPI extends Controller {
     @Path() classId: number,
     @Body() pepClass: UpdatePepClassEntity
   ): Promise<PepClassEntity> {
-    const searchPepClass = await this.pepClassRepository.getPepClassById(
-      classId
+    const updatedPepClass = await this.pepClassRepository.updatedClass(
+      classId,
+      pepClass
     );
-    if (!searchPepClass) {
+    if (!updatedPepClass) {
       throw new ApiError(
         404,
         new PepClassError({
@@ -86,22 +87,6 @@ export class PepAPI extends Controller {
         })
       );
     }
-
-    const updatedPepClass = await this.pepClassRepository.updatedClass(
-      classId,
-      pepClass
-    );
-
-    if (!updatedPepClass) {
-      throw new ApiError(
-        400,
-        new PepClassError({
-          name: 'PEP_ClASS_NOT_UPDATED_ERROR',
-          message: `Class with ID ${classId} not updated`
-        })
-      );
-    }
-
     return updatedPepClass;
   }
 }

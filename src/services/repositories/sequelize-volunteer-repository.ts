@@ -10,7 +10,7 @@ import {
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
-import { Op, UniqueConstraintError } from 'sequelize';
+import { CreationAttributes, Op, UniqueConstraintError } from 'sequelize';
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { hashString } from '@src/helpers/message-hashing';
@@ -21,6 +21,8 @@ import { authorizationModelToEntity } from '../database/mappers/authorization';
 import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import { wrapPagination } from './helpers/wrapPagination';
+import { VolunteerHours } from '../database/models/hours';
+import { VolunteerHoursEntity } from '@src/domain/entities/volunteer/volunteer-hours-entity';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
@@ -92,18 +94,24 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     volunteer: UpdateVolunteerEntity,
     email: string
   ): Promise<VolunteerEntity | null> {
-    const updatedVolunteer = updateVolunteerEntityToUpdateModel(volunteer);
-    const updatedRows = (
+    try {
+      const updatedVolunteer = updateVolunteerEntityToUpdateModel(volunteer);
+
       await Volunteer.update(updatedVolunteer, {
         where: { 'e-mail': email }
-      })
-    )[0];
+      });
 
-    const emailUpdated = updatedVolunteer?.['e-mail']
-      ? updatedVolunteer['e-mail']
-      : email;
+      const emailUpdated = updatedVolunteer?.['e-mail']
+        ? updatedVolunteer['e-mail']
+        : email;
 
-    return updatedRows ? await this.getVolunteerByEmail(emailUpdated) : null;
+      return this.getVolunteerByEmail(emailUpdated);
+    } catch (error) {
+      throw new VolunteerError({
+        name: 'VOLUNTEER_NOT_UPDATED',
+        message: `Volunteer with email ${email} not updated`
+      });
+    }
   }
 
   async getVolunteerByEmail(email: string): Promise<VolunteerEntity | null> {
@@ -150,5 +158,27 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     });
 
     return deletedVolunteers ? true : false;
+  }
+
+  async postVolunteerHours(
+    data: CreationAttributes<VolunteerHours>
+  ): Promise<void> {
+    await VolunteerHours.create(data);
+  }
+
+  async findHoursByMonth(
+    idVol: number,
+    month: number,
+    year: number
+  ): Promise<VolunteerHoursEntity | null> {
+    const currentDate = new Date(year, month);
+    return VolunteerHours.findOne({
+      where: {
+        idVol,
+        createdAt: {
+          [Op.gt]: currentDate
+        }
+      }
+    });
   }
 }

@@ -11,7 +11,11 @@ export interface AttendanceRepository {
     attendance: SubmitAttendanceEntity
   ): Promise<AttendanceEntity>;
 
-  getVolunteersAttendanceMetrics(): Promise<unknown>;
+  getVolunteersAttendanceDownloadMetrics(): Promise<unknown>;
+
+  getVolunteersAttendanceMetrics(
+    pagination: PaginationParams
+  ): Promise<PaginationResult<unknown>>;
 
   getAttendancesDownloadFromDate(date: Date): Promise<AttendanceInfoEntity[]>;
 

@@ -19,14 +19,12 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     notebookId: number,
     notebookData: EvaluateNotebookEntity
   ): Promise<NotebookEntity | null> {
-    const numUpdates = (
-      await Notebook.update(
-        evaluateNotebookEntityToEvaluateNotebookModel(notebookData),
-        { where: { idcad: notebookId, 'Carimbo de data/hora': null } }
-      )
-    )[0];
+    await Notebook.update(
+      evaluateNotebookEntityToEvaluateNotebookModel(notebookData),
+      { where: { idcad: notebookId, 'Carimbo de data/hora': null } }
+    );
 
-    return numUpdates ? await this.getNotebookById(notebookId) : null;
+    return this.getNotebookById(notebookId);
   }
   async getNotebookById(notebookId: number): Promise<NotebookEntity | null> {
     const notebook = await Notebook.findOne({
@@ -42,38 +40,34 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     idvol: number,
     notebookId: number
   ): Promise<NotebookEntity | null> {
-    const updatedNotebooks = (
-      await Notebook.update(
-        { idvol, datareserva: new Date() },
-        {
-          where: {
-            idcad: notebookId,
-            datareserva: null,
-            'Carimbo de data/hora': null,
-            aprovado: 'SIM'
-          }
+    await Notebook.update(
+      { idvol, datareserva: new Date() },
+      {
+        where: {
+          idcad: notebookId,
+          datareserva: null,
+          'Carimbo de data/hora': null,
+          aprovado: 'SIM'
         }
-      )
-    )[0];
-    return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
+      }
+    );
+
+    return this.getNotebookById(notebookId);
   }
   async revertReserveNotebookForVolunteer(
     notebookId: number
   ): Promise<NotebookEntity | null> {
-    const updatedNotebooks = (
-      await Notebook.update(
-        { idvol: null, datareserva: null },
-        {
-          where: {
-            idcad: notebookId,
-            datareserva: { [Op.not]: null },
-            idvol: { [Op.not]: null }
-          }
+    await Notebook.update(
+      { idvol: null, datareserva: null },
+      {
+        where: {
+          idcad: notebookId,
+          datareserva: { [Op.not]: null },
+          idvol: { [Op.not]: null }
         }
-      )
-    )[0];
-
-    return updatedNotebooks ? await this.getNotebookById(notebookId) : null;
+      }
+    );
+    return await this.getNotebookById(notebookId);
   }
   async getReservedNotebooksByIdVol(idvol: number): Promise<NotebookEntity[]> {
     const notebooks = await Notebook.findAll({
@@ -113,12 +107,9 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     notebookId: number,
     notebook: UpdateNotebookEntity
   ): Promise<NotebookEntity | null> {
-    const updatedRows = (
-      await Notebook.update(updateNotebookEntityToUpdateModel(notebook), {
-        where: { idcad: notebookId }
-      })
-    )[0];
-
-    return updatedRows ? await this.getNotebookById(notebookId) : null;
+    await Notebook.update(updateNotebookEntityToUpdateModel(notebook), {
+      where: { idcad: notebookId }
+    });
+    return await this.getNotebookById(notebookId);
   }
 }
