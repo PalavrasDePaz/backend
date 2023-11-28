@@ -17,12 +17,15 @@ import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence
 import { caseWhenBoolean } from './helpers/caseWhenBoolean';
 import { wrapPagination } from './helpers/wrapPagination';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { AttendanceDownloadInfoEntity } from '@src/domain/entities/attendance/attendence-dowload-info-entity';
 
-const getAllMetricsQuery = `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
+const getAllMetricsQuery = (
+  formatedThemes: string
+) => `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
 ${caseWhenBoolean('i', 'cert')},
  ${caseWhenBoolean('i', 'habil-leitura')},
   ${caseWhenBoolean('i', 'habil-livro')},
-   COUNT(Presenca.TEMA) AS Npres, $1, i.telefone, i.\`e-mail\`, i.\`Submission date\`
+   COUNT(Presenca.TEMA) AS Npres, ${formatedThemes}, i.telefone, i.\`e-mail\`, i.\`Submission date\`
 FROM
 (
   SELECT s.idvol, s.nome, s.countCad, s.cert, s.\`habil-leitura\`, s.\`habil-livro\`, s.telefone, s.\`e-mail\`, s.\`Submission date\`, COUNT(TurmasClubeLivro.IDTurma) AS countLivro
@@ -43,7 +46,7 @@ ORDER BY i.nome`;
 export class SequelizeAttendanceRepository implements AttendanceRepository {
   async getAttendancesDownloadFromDate(
     date: Date
-  ): Promise<AttendanceInfoEntity[]> {
+  ): Promise<AttendanceDownloadInfoEntity[]> {
     const attendances = await Attendance.findAll<
       Attendance & { 'Volunteer.nome'?: string }
     >({
@@ -62,7 +65,8 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
 
       order: [['createdAt', 'DESC']]
     });
-    return attendances.map(attendanceModelToEntityFromDate);
+
+    return attendances;
   }
 
   getAttendancesFromDate = wrapPagination(
@@ -139,7 +143,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
 
   async getVolunteersAttendanceDownloadMetrics(): Promise<unknown> {
     const formatedThemes = this.formatThemesAsCountString(attendanceThemeMap);
-    const result = await sequelize.query(getAllMetricsQuery, {
+    const result = await sequelize.query(getAllMetricsQuery(formatedThemes), {
       bind: [formatedThemes],
       type: QueryTypes.SELECT
     });
@@ -152,7 +156,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
       const { offset, limit } = pagination;
       const formatedThemes = this.formatThemesAsCountString(attendanceThemeMap);
       const result = await sequelize.query(
-        `${getAllMetricsQuery} LIMIT $2 OFFSET $3;`,
+        `${getAllMetricsQuery(formatedThemes)} LIMIT $2 OFFSET $3;`,
         {
           bind: [formatedThemes, limit, offset],
           type: QueryTypes.SELECT
