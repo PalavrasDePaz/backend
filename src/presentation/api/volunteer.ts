@@ -25,14 +25,13 @@ import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-vol
 import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { ApiError } from '../types/api-error';
 import { validationExample } from '@src/documentation/validation-example';
-import { Parser } from 'json2csv';
 import express from 'express';
-import { VolunteerFields } from '@src/services/database/mappers/helpers/csv-fields';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-volunteer-hours-entity';
+import xlsx from 'xlsx';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -76,18 +75,22 @@ export class VolunteerAPI extends Controller {
         dateFormated
       );
 
-    const toCsv = new Parser({ fields: VolunteerFields });
-    const csv = toCsv.parse(volunteers);
-    const csvBuffer = Buffer.from(csv, 'utf-8');
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(volunteers);
+    xlsx.utils.book_append_sheet(wb, ws, `volunteers-${date}.xlsx`);
+    const xlsxBuffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
     req.res?.setHeader(
       'Content-Disposition',
-      'attachment; filename=' + `presenca-matrics.csv`
+      'attachment; filename=' + `volunteers.xlsx`
     );
-    req.res?.setHeader('Content-Type', 'application/octet-stream');
-    req.res?.setHeader('Content-Length', csvBuffer.byteLength);
+    req.res?.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
 
-    const stream = Readable.from(csvBuffer);
+    const stream = Readable.from(xlsxBuffer);
 
     stream.on('error', (error) => {
       logger.error(error);

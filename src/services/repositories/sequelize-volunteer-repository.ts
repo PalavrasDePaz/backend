@@ -58,10 +58,11 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
       where: {
         createdAt: { [Op.gte]: date }
       },
-      order: [['createdAt', 'DESC']]
+      order: [['createdAt', 'DESC']],
+      raw: true
     });
 
-    return attendances.map(volunteerModelToDownloadToEntity);
+    return attendances;
   }
   async getPermissionByAuthName(
     name: string
