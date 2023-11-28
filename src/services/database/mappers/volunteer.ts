@@ -38,34 +38,6 @@ export const volunteerModelToEntity = (
   };
 };
 
-export const volunteerModelToDownloadToEntity = (
-  volunteer: Volunteer
-): VolunteerDownloadEntity => {
-  return {
-    email: volunteer['e-mail'],
-    idvol: volunteer.idvol,
-    name: volunteer.nome,
-    pep: volunteer.idpep,
-    birthDate: volunteer.nascimento,
-    phoneNumber: volunteer.telefone,
-    country: volunteer.país,
-    state: volunteer.estado,
-    city: volunteer.cidade,
-    disability: volunteer.defic == 'SIM' ? volunteer.qual : undefined,
-    howFoundPep: volunteer.ondesoube,
-    knowledgePep: volunteer['conhecimento pep'],
-    schooling: volunteer.escolaridade,
-    bachelor: volunteer.curso1,
-    studiesKnowledge: volunteer.estudos,
-    lifeExperience: volunteer.experiências,
-    desires: volunteer.sonhos,
-    rolesPep: volunteer.oportunidades,
-    interestFutureRoles: volunteer.ajudar,
-    needDeclaration: volunteer.declaração,
-    createdAt: volunteer.createdAt
-  };
-};
-
 export const volunteerModelToAuthEntity = (
   volunteer: Volunteer
 ): VolunteerWithAuthEntity => {
