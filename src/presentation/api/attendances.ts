@@ -29,14 +29,12 @@ import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-a
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
-import {
-  attendancesFields,
-  metricsFields
-} from '@src/services/database/mappers/helpers/csv-fields';
+import { metricsFields } from '@src/services/database/mappers/helpers/csv-fields';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import xlsx from 'xlsx';
 
 @Route('attendances')
 @Tags('Attendance')
@@ -78,18 +76,19 @@ export class AttendanceAPI extends Controller {
         dateFormated
       );
 
-    const toCsv = new Parser({ fields: attendancesFields });
-    const csv = toCsv.parse(attendances);
-    const csvBuffer = Buffer.from(csv, 'utf-8');
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(attendances);
+    xlsx.utils.book_append_sheet(wb, ws, `volunteers-${date}.xlsx`);
+    const xlsxBuffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
     req.res?.setHeader(
       'Content-Disposition',
-      'attachment; filename=' + `presenca-${date}.csv`
+      'attachment; filename=' + `presenca-${date}.`
     );
     req.res?.setHeader('Content-Type', 'application/octet-stream');
-    req.res?.setHeader('Content-Length', csvBuffer.byteLength);
+    req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
 
-    const stream = Readable.from(csvBuffer);
+    const stream = Readable.from(xlsxBuffer);
 
     stream.on('error', (error) => {
       logger.error(error);

@@ -17,6 +17,7 @@ import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence
 import { caseWhenBoolean } from './helpers/caseWhenBoolean';
 import { wrapPagination } from './helpers/wrapPagination';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { AttendanceDownloadInfoEntity } from '@src/domain/entities/attendance/attendence-dowload-info-entity';
 
 const getAllMetricsQuery = `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
 ${caseWhenBoolean('i', 'cert')},
@@ -43,7 +44,7 @@ ORDER BY i.nome`;
 export class SequelizeAttendanceRepository implements AttendanceRepository {
   async getAttendancesDownloadFromDate(
     date: Date
-  ): Promise<AttendanceInfoEntity[]> {
+  ): Promise<AttendanceDownloadInfoEntity[]> {
     const attendances = await Attendance.findAll<
       Attendance & { 'Volunteer.nome'?: string }
     >({
@@ -62,7 +63,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
 
       order: [['createdAt', 'DESC']]
     });
-    return attendances.map(attendanceModelToEntityFromDate);
+    return attendances;
   }
 
   getAttendancesFromDate = wrapPagination(
