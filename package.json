@@ -44,6 +44,7 @@
     "url-join-ts": "^1.0.5",
     "uuid": "^9.0.0",
     "winston": "^3.10.0",
+    "xlsx": "^0.18.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {

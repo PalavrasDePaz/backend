@@ -1,4 +1,5 @@
 import { AttendanceEntity } from '@src/domain/entities/attendance/attendance-entity';
+import { AttendanceDownloadInfoEntity } from '@src/domain/entities/attendance/attendence-dowload-info-entity';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
 import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-attendance-entity';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
@@ -17,7 +18,9 @@ export interface AttendanceRepository {
     pagination: PaginationParams
   ): Promise<PaginationResult<unknown>>;
 
-  getAttendancesDownloadFromDate(date: Date): Promise<AttendanceInfoEntity[]>;
+  getAttendancesDownloadFromDate(
+    date: Date
+  ): Promise<AttendanceDownloadInfoEntity[]>;
 
   getAttendancesFromDate(
     pagination: PaginationParams,

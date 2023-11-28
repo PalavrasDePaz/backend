@@ -5113,6 +5113,42 @@
 					"201": {
 						"description": "Successfully posting hours"
 					},
+					"400": {
+						"description": "Could not delete volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "INVALID_DATE_REGISTER",
+											"message": "Not permitted to register hours after the 5th"
+										}
+									}
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Could not delete volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "HOURS_ALREADY_REGISTERED",
+											"message": "Hours already registered this month"
+										}
+									}
+								}
+							}
+						}
+					},
 					"422": {
 						"description": "Validation Error",
 						"content": {
