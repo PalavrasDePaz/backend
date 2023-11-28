@@ -3,7 +3,6 @@ import { AttendanceRepository } from '@src/domain/interfaces/repositories/attend
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
 import { inject } from 'inversify';
 import express from 'express';
-import { Parser } from 'json2csv';
 import { provide } from 'inversify-binding-decorators';
 import {
   Body,
@@ -29,7 +28,6 @@ import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-a
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
 import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
-import { metricsFields } from '@src/services/database/mappers/helpers/csv-fields';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
@@ -83,7 +81,7 @@ export class AttendanceAPI extends Controller {
 
     req.res?.setHeader(
       'Content-Disposition',
-      'attachment; filename=' + `presenca-${date}.`
+      'attachment; filename=' + `presenca-${date}.xlsx`
     );
     req.res?.setHeader('Content-Type', 'application/octet-stream');
     req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
@@ -152,18 +150,20 @@ export class AttendanceAPI extends Controller {
   ): Promise<Readable> {
     const metrics =
       await this.attendanceRepository.getVolunteersAttendanceDownloadMetrics();
-    const toCsv = new Parser({ fields: metricsFields });
-    const csv = toCsv.parse(metrics as unknown[]);
-    const csvBuffer = Buffer.from(csv, 'utf-8');
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(metrics as unknown[]);
+    xlsx.utils.book_append_sheet(wb, ws, `presenca-matrics.csv.xlsx`);
+    const xlsxBuffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
 
     req.res?.setHeader(
       'Content-Disposition',
-      'attachment; filename=' + `presenca-matrics.csv`
+      'attachment; filename=' + `presenca-matrics.xlsx`
     );
     req.res?.setHeader('Content-Type', 'application/octet-stream');
-    req.res?.setHeader('Content-Length', csvBuffer.byteLength);
+    req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
 
-    const stream = Readable.from(csvBuffer);
+    const stream = Readable.from(xlsxBuffer);
 
     stream.on('error', (error) => {
       logger.error(error);

@@ -5,8 +5,7 @@ import {
   volunteerModelToEntity,
   updateVolunteerEntityToUpdateModel,
   volunteerModelToAuthEntity,
-  createVolunteerEntityToCreationModel,
-  volunteerModelToDownloadToEntity
+  createVolunteerEntityToCreationModel
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
