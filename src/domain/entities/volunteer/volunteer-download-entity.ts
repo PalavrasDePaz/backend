@@ -1,3 +1,22 @@
-import { Volunteer } from '@src/services/database/models/volunteer';
-
-export type VolunteerDownloadEntity = Volunteer;
+export type VolunteerDownloadEntity = {
+  'Data de Submissão': Date;
+  'ID Voluntário': number;
+  Nome: string;
+  'Data de Nascimento': Date;
+  'E-mail': string;
+  Telefone: string;
+  País: string;
+  Estado: string;
+  Cidade: string;
+  PcD: string;
+  'PcD(Qual)': string;
+  'Como nos achou ?': string;
+  'Experiencia em workshops': string;
+  Escolaridade: string;
+  Conhecimentos: string;
+  'Experiencia de vida': string;
+  Desejos: string;
+  Oportunidades: string;
+  'Interesse em Posições Futuras': string;
+  Declaração: string;
+};

@@ -5,7 +5,8 @@ import {
   volunteerModelToEntity,
   updateVolunteerEntityToUpdateModel,
   volunteerModelToAuthEntity,
-  createVolunteerEntityToCreationModel
+  createVolunteerEntityToCreationModel,
+  volunteerDownloadMappers
 } from '@src/services/database/mappers/volunteer';
 import { VolunteerError } from '@src/domain/errors/volunteer';
 import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
@@ -31,7 +32,7 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
       date: Date
     ): Promise<[VolunteerEntity[], number]> => {
       const { filter, ...paginationRest } = pagination;
-      const attendances = await Volunteer.findAll({
+      const volunteers = await Volunteer.findAll({
         where: {
           createdAt: { [Op.gte]: date },
           ...filter
@@ -46,14 +47,14 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
         }
       });
 
-      return [attendances.map(volunteerModelToEntity), totalCount];
+      return [volunteers.map(volunteerModelToEntity), totalCount];
     }
   );
 
   async getVolunteersDownloadFromDate(
     date: Date
   ): Promise<VolunteerDownloadEntity[]> {
-    const attendances = await Volunteer.findAll({
+    const volunteers = await Volunteer.findAll({
       where: {
         createdAt: { [Op.gte]: date }
       },
@@ -61,7 +62,7 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
       raw: true
     });
 
-    return attendances;
+    return volunteers.map(volunteerDownloadMappers);
   }
   async getPermissionByAuthName(
     name: string

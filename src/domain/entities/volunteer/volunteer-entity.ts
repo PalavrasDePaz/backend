@@ -34,6 +34,7 @@ export interface VolunteerEntity {
   country: string;
   state: string;
   city: string;
+  isDisability: string;
   disability?: string;
   howFoundPep: string;
   knowledgePep: string;
@@ -42,6 +43,7 @@ export interface VolunteerEntity {
   studiesKnowledge: string;
   lifeExperience: string;
   desires: string;
+  opportunities: string;
   rolesPep: string[];
   interestFutureRoles: string[];
   needDeclaration: boolean;

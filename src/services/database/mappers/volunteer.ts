@@ -23,6 +23,7 @@ export const volunteerModelToEntity = (
     country: volunteer.país,
     state: volunteer.estado,
     city: volunteer.cidade,
+    isDisability: volunteer.defic,
     disability: volunteer.defic == 'SIM' ? volunteer.qual : undefined,
     howFoundPep: volunteer.ondesoube,
     knowledgePep: volunteer['conhecimento pep'],
@@ -31,6 +32,7 @@ export const volunteerModelToEntity = (
     studiesKnowledge: volunteer.estudos,
     lifeExperience: volunteer.experiências,
     desires: volunteer.sonhos,
+    opportunities: volunteer.oportunidades,
     rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
     needDeclaration: volunteer.declaração == 'SIM',
@@ -56,6 +58,7 @@ export const volunteerModelToAuthEntity = (
     country: volunteer.país,
     state: volunteer.estado,
     city: volunteer.cidade,
+    isDisability: volunteer.defic,
     disability: volunteer.defic == 'SIM' ? volunteer.qual : undefined,
     howFoundPep: volunteer.ondesoube,
     knowledgePep: volunteer['conhecimento pep'],
@@ -64,6 +67,7 @@ export const volunteerModelToAuthEntity = (
     studiesKnowledge: volunteer.estudos,
     lifeExperience: volunteer.experiências,
     desires: volunteer.sonhos,
+    opportunities: volunteer.oportunidades,
     rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
     needDeclaration: volunteer.declaração == 'SIM',
@@ -141,3 +145,28 @@ export const updateVolunteerEntityToUpdateModel = (
     return { ...mapped, [updateVolunteerMapperKeys[crrKey]]: value };
   }, {});
 };
+
+export const volunteerDownloadMappers = (
+  volunteer: Volunteer
+): VolunteerDownloadEntity => ({
+  'Data de Submissão': volunteer.createdAt,
+  'ID Voluntário': volunteer.idvol,
+  Nome: volunteer.nome,
+  'Data de Nascimento': volunteer.nascimento,
+  'E-mail': volunteer['e-mail'],
+  Telefone: volunteer.telefone,
+  País: volunteer.país,
+  Estado: volunteer.estado,
+  Cidade: volunteer.cidade,
+  PcD: volunteer.defic,
+  'PcD(Qual)': volunteer.qual ?? '',
+  'Como nos achou ?': volunteer.ondesoube,
+  'Experiencia em workshops': volunteer['conhecimento pep'],
+  Escolaridade: volunteer.escolaridade,
+  Conhecimentos: volunteer.estudos,
+  'Experiencia de vida': volunteer.experiências,
+  Desejos: volunteer.sonhos,
+  Oportunidades: volunteer.oportunidades,
+  'Interesse em Posições Futuras': volunteer.ajudar ?? '',
+  Declaração: volunteer.declaração
+});
