@@ -3,7 +3,8 @@ import { AttendanceRepository } from '@src/domain/interfaces/repositories/attend
 import {
   submitAttendanceEntityToCreationModel,
   attendanceModelToEntity,
-  attendanceModelToEntityFromDate
+  attendanceModelToEntityFromDate,
+  attendancesDownloadMapper
 } from '../database/mappers/attendance';
 import { Attendance } from '../database/models/attendance';
 import { provideSingleton } from '@src/helpers/provide-singleton';
@@ -66,7 +67,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
       order: [['createdAt', 'DESC']]
     });
 
-    return attendances;
+    return attendances.map(attendancesDownloadMapper);
   }
 
   getAttendancesFromDate = wrapPagination(
