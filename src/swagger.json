@@ -1535,6 +1535,9 @@
 					"city": {
 						"type": "string"
 					},
+					"isDisability": {
+						"type": "string"
+					},
 					"disability": {
 						"type": "string"
 					},
@@ -1553,10 +1556,19 @@
 					"studiesKnowledge": {
 						"type": "string"
 					},
+					"courseOne": {
+						"type": "string"
+					},
+					"courseTwo": {
+						"type": "string"
+					},
 					"lifeExperience": {
 						"type": "string"
 					},
 					"desires": {
+						"type": "string"
+					},
+					"opportunities": {
 						"type": "string"
 					},
 					"rolesPep": {
@@ -1581,6 +1593,18 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"readSkill": {
+						"type": "boolean"
+					},
+					"bookSkill": {
+						"type": "boolean"
+					},
+					"certificate": {
+						"type": "boolean"
+					},
+					"authorization": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -1591,12 +1615,14 @@
 					"country",
 					"state",
 					"city",
+					"isDisability",
 					"howFoundPep",
 					"knowledgePep",
 					"schooling",
 					"studiesKnowledge",
 					"lifeExperience",
 					"desires",
+					"opportunities",
 					"rolesPep",
 					"interestFutureRoles",
 					"needDeclaration",
@@ -1657,6 +1683,9 @@
 					"city": {
 						"type": "string"
 					},
+					"isDisability": {
+						"type": "string"
+					},
 					"disability": {
 						"type": "string"
 					},
@@ -1675,10 +1704,19 @@
 					"studiesKnowledge": {
 						"type": "string"
 					},
+					"courseOne": {
+						"type": "string"
+					},
+					"courseTwo": {
+						"type": "string"
+					},
 					"lifeExperience": {
 						"type": "string"
 					},
 					"desires": {
+						"type": "string"
+					},
+					"opportunities": {
 						"type": "string"
 					},
 					"rolesPep": {
@@ -1695,6 +1733,18 @@
 					},
 					"needDeclaration": {
 						"type": "boolean"
+					},
+					"readSkill": {
+						"type": "boolean"
+					},
+					"bookSkill": {
+						"type": "boolean"
+					},
+					"certificate": {
+						"type": "boolean"
+					},
+					"authorization": {
+						"type": "string"
 					},
 					"authorPermission": {
 						"type": "string"
@@ -1718,12 +1768,14 @@
 					"country",
 					"state",
 					"city",
+					"isDisability",
 					"howFoundPep",
 					"knowledgePep",
 					"schooling",
 					"studiesKnowledge",
 					"lifeExperience",
 					"desires",
+					"opportunities",
 					"rolesPep",
 					"interestFutureRoles",
 					"needDeclaration"
@@ -1865,7 +1917,7 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__": {
+			"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__": {
 				"properties": {
 					"email": {
 						"type": "string",
@@ -1909,6 +1961,12 @@
 					"studiesKnowledge": {
 						"type": "string"
 					},
+					"courseOne": {
+						"type": "string"
+					},
+					"courseTwo": {
+						"type": "string"
+					},
 					"lifeExperience": {
 						"type": "string"
 					},
@@ -1930,6 +1988,18 @@
 					"needDeclaration": {
 						"type": "boolean"
 					},
+					"readSkill": {
+						"type": "boolean"
+					},
+					"bookSkill": {
+						"type": "boolean"
+					},
+					"certificate": {
+						"type": "boolean"
+					},
+					"authorization": {
+						"type": "string"
+					},
 					"password": {
 						"type": "string"
 					}
@@ -1938,7 +2008,7 @@
 				"description": "Make all properties in T optional"
 			},
 			"UpdateVolunteerEntity": {
-				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__"
+				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__"
 			},
 			"Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__": {
 				"properties": {

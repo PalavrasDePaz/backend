@@ -30,13 +30,19 @@ export const volunteerModelToEntity = (
     schooling: volunteer.escolaridade,
     bachelor: volunteer.curso1,
     studiesKnowledge: volunteer.estudos,
+    courseOne: volunteer.curso1,
+    courseTwo: volunteer.curso2,
     lifeExperience: volunteer.experiências,
     desires: volunteer.sonhos,
     opportunities: volunteer.oportunidades,
     rolesPep: volunteer.oportunidades?.split(' ') ?? [''],
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
     needDeclaration: volunteer.declaração == 'SIM',
-    createdAt: volunteer.createdAt
+    createdAt: volunteer.createdAt,
+    readSkill: volunteer['habil-leitura'],
+    bookSkill: volunteer['habil-livro'],
+    certificate: volunteer.cert,
+    authorization: volunteer.author
   };
 };
 
@@ -163,10 +169,22 @@ export const volunteerDownloadMappers = (
   'Como nos achou ?': volunteer.ondesoube,
   'Experiencia em workshops': volunteer['conhecimento pep'],
   Escolaridade: volunteer.escolaridade,
+  Curso1: volunteer.curso1 ?? '',
+  Curso2: volunteer.curso2 ?? '',
   Conhecimentos: volunteer.estudos,
   'Experiencia de vida': volunteer.experiências,
   Desejos: volunteer.sonhos,
   Oportunidades: volunteer.oportunidades,
   'Interesse em Posições Futuras': volunteer.ajudar ?? '',
-  Declaração: volunteer.declaração
+  Declaração: volunteer.declaração,
+  'Habilidade de leitura':
+    typeof volunteer['habil-leitura'] === 'boolean'
+      ? volunteer['habil-leitura']
+      : '',
+  'Habilidade com livro':
+    typeof volunteer['habil-livro'] === 'boolean'
+      ? volunteer['habil-livro']
+      : '',
+  certificado: typeof volunteer.cert === 'boolean' ? volunteer.cert : '',
+  autorização: volunteer.author ?? ''
 });
