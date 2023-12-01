@@ -41,6 +41,8 @@ export interface VolunteerEntity {
   schooling: string;
   bachelor?: string;
   studiesKnowledge: string;
+  courseOne?: string;
+  courseTwo?: string;
   lifeExperience: string;
   desires: string;
   opportunities: string;
@@ -49,4 +51,8 @@ export interface VolunteerEntity {
   needDeclaration: boolean;
   idvol: number;
   createdAt: Date;
+  readSkill?: boolean;
+  bookSkill?: boolean;
+  certificate?: boolean;
+  authorization?: string;
 }

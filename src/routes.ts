@@ -984,14 +984,18 @@ const models: TsoaRoute.Models = {
       country: { dataType: 'string', required: true },
       state: { dataType: 'string', required: true },
       city: { dataType: 'string', required: true },
+      isDisability: { dataType: 'string', required: true },
       disability: { dataType: 'string' },
       howFoundPep: { dataType: 'string', required: true },
       knowledgePep: { dataType: 'string', required: true },
       schooling: { dataType: 'string', required: true },
       bachelor: { dataType: 'string' },
       studiesKnowledge: { dataType: 'string', required: true },
+      courseOne: { dataType: 'string' },
+      courseTwo: { dataType: 'string' },
       lifeExperience: { dataType: 'string', required: true },
       desires: { dataType: 'string', required: true },
+      opportunities: { dataType: 'string', required: true },
       rolesPep: {
         dataType: 'array',
         array: { dataType: 'string' },
@@ -1004,7 +1008,11 @@ const models: TsoaRoute.Models = {
       },
       needDeclaration: { dataType: 'boolean', required: true },
       idvol: { dataType: 'double', required: true },
-      createdAt: { dataType: 'datetime', required: true }
+      createdAt: { dataType: 'datetime', required: true },
+      readSkill: { dataType: 'boolean' },
+      bookSkill: { dataType: 'boolean' },
+      certificate: { dataType: 'boolean' },
+      authorization: { dataType: 'string' }
     },
     additionalProperties: false
   },
@@ -1054,14 +1062,18 @@ const models: TsoaRoute.Models = {
           country: { dataType: 'string', required: true },
           state: { dataType: 'string', required: true },
           city: { dataType: 'string', required: true },
+          isDisability: { dataType: 'string', required: true },
           disability: { dataType: 'string' },
           howFoundPep: { dataType: 'string', required: true },
           knowledgePep: { dataType: 'string', required: true },
           schooling: { dataType: 'string', required: true },
           bachelor: { dataType: 'string' },
           studiesKnowledge: { dataType: 'string', required: true },
+          courseOne: { dataType: 'string' },
+          courseTwo: { dataType: 'string' },
           lifeExperience: { dataType: 'string', required: true },
           desires: { dataType: 'string', required: true },
+          opportunities: { dataType: 'string', required: true },
           rolesPep: {
             dataType: 'array',
             array: { dataType: 'string' },
@@ -1073,6 +1085,10 @@ const models: TsoaRoute.Models = {
             required: true
           },
           needDeclaration: { dataType: 'boolean', required: true },
+          readSkill: { dataType: 'boolean' },
+          bookSkill: { dataType: 'boolean' },
+          certificate: { dataType: 'boolean' },
+          authorization: { dataType: 'string' },
           authorPermission: { dataType: 'string' },
           readPermission: { dataType: 'boolean' },
           bookPermission: { dataType: 'boolean' },
@@ -1193,7 +1209,7 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__':
+  'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__':
     {
       dataType: 'refAlias',
       type: {
@@ -1220,6 +1236,8 @@ const models: TsoaRoute.Models = {
           schooling: { dataType: 'string' },
           bachelor: { dataType: 'string' },
           studiesKnowledge: { dataType: 'string' },
+          courseOne: { dataType: 'string' },
+          courseTwo: { dataType: 'string' },
           lifeExperience: { dataType: 'string' },
           desires: { dataType: 'string' },
           rolesPep: { dataType: 'array', array: { dataType: 'string' } },
@@ -1228,6 +1246,10 @@ const models: TsoaRoute.Models = {
             array: { dataType: 'string' }
           },
           needDeclaration: { dataType: 'boolean' },
+          readSkill: { dataType: 'boolean' },
+          bookSkill: { dataType: 'boolean' },
+          certificate: { dataType: 'boolean' },
+          authorization: { dataType: 'string' },
           password: { dataType: 'string' }
         },
         validators: {}
@@ -1237,7 +1259,7 @@ const models: TsoaRoute.Models = {
   UpdateVolunteerEntity: {
     dataType: 'refAlias',
     type: {
-      ref: 'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt_-and-Pick_VolunteerAuthDataEntity.password__',
+      ref: 'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__',
       validators: {}
     }
   },

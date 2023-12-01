@@ -13,10 +13,16 @@ export type VolunteerDownloadEntity = {
   'Como nos achou ?': string;
   'Experiencia em workshops': string;
   Escolaridade: string;
+  Curso1: string;
+  Curso2: string;
   Conhecimentos: string;
   'Experiencia de vida': string;
   Desejos: string;
   Oportunidades: string;
   'Interesse em Posições Futuras': string;
   Declaração: string;
+  'Habilidade de leitura': boolean | string;
+  'Habilidade com livro': boolean | string;
+  certificado: boolean | string;
+  autorização: string;
 };
