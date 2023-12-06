@@ -107,30 +107,51 @@ const models: TsoaRoute.Models = {
           },
           required: true
         },
-        nodes: {
-          dataType: 'array',
-          array: { dataType: 'refAlias', ref: 'AttendanceInfoEntity' },
-          required: true
-        }
-      },
-      validators: {}
-    }
-  },
-  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  PaginationResult_unknown_: {
-    dataType: 'refAlias',
-    type: {
-      dataType: 'nestedObjectLiteral',
-      nestedProperties: {
-        totalCount: { dataType: 'double', required: true },
-        pageInfo: {
-          dataType: 'nestedObjectLiteral',
-          nestedProperties: {
-            hasPreviousPage: { dataType: 'boolean', required: true },
-            hasNextPage: { dataType: 'boolean', required: true },
-            page: { dataType: 'double', required: true }
-          },
-          required: true
+        "additionalProperties": {"dataType":"nestedObjectLiteral","nestedProperties":{"value":{"dataType":"any"},"message":{"dataType":"string","required":true}}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AttendanceEntity": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idvol":{"dataType":"double","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AttendanceInfoEntity": {
+        "dataType": "refAlias",
+        "type": {"dataType":"intersection","subSchemas":[{"ref":"AttendanceEntity"},{"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true}}}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginationResult_AttendanceInfoEntity-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"totalCount":{"dataType":"double","required":true},"pageInfo":{"dataType":"nestedObjectLiteral","nestedProperties":{"hasPreviousPage":{"dataType":"boolean","required":true},"hasNextPage":{"dataType":"boolean","required":true},"page":{"dataType":"double","required":true}},"required":true},"nodes":{"dataType":"array","array":{"dataType":"refAlias","ref":"AttendanceInfoEntity"},"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginationResult_unknown_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"totalCount":{"dataType":"double","required":true},"pageInfo":{"dataType":"nestedObjectLiteral","nestedProperties":{"hasPreviousPage":{"dataType":"boolean","required":true},"hasNextPage":{"dataType":"boolean","required":true},"page":{"dataType":"double","required":true}},"required":true},"nodes":{"dataType":"any","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idAttend":{"dataType":"double","required":true},"workshopSubject":{"dataType":"string","required":true},"submissionDate":{"dataType":"datetime","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WorkshopAttendanceRowEntity": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_AttendanceEntity.idAttend-or-workshopSubject-or-submissionDate_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ErrorName": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["VOLUNTEER_NOT_FOUND"]},{"dataType":"enum","enums":["VOLUNTEER_ALREADY_EXISTS"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_UPDATED"]},{"dataType":"enum","enums":["VOLUNTEER_UNREGISTERED"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["PASSWORD_WRONG_ERROR"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["INVALID_DATE_REGISTER"]},{"dataType":"enum","enums":["HOURS_ALREADY_REGISTERED"]},{"dataType":"enum","enums":["HOURS_NOT_FOUND"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VolunteerError": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"union","subSchemas":[{"ref":"ErrorName"},{"dataType":"enum","enums":["UNSPECIFIED_ERROR"]}],"required":true},
+            "message": {"dataType":"string","required":true},
+            "stack": {"dataType":"string"},
+            "details": {"dataType":"any"},
         },
         nodes: { dataType: 'any', required: true }
       },
@@ -1303,44 +1324,1285 @@ const validationService = new ValidationService(models);
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 export function RegisterRoutes(app: Router) {
-  // ###########################################################################################################
-  //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
-  //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
-  // ###########################################################################################################
-  app.get(
-    '/attendances/download/from/:date',
-    authenticateMiddleware([{ jwt: ['attendanceModulePermission'] }]),
-    ...fetchMiddlewares<RequestHandler>(AttendanceAPI),
-    ...fetchMiddlewares<RequestHandler>(
-      AttendanceAPI.prototype.getAttendancesDownloadFromDate
-    ),
+    // ###########################################################################################################
+    //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
+    //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
+    // ###########################################################################################################
+        app.get('/attendances/download/from/:date',
+            authenticateMiddleware([{"jwt":["attendanceModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.getAttendancesDownloadFromDate)),
 
-    async function AttendanceAPI_getAttendancesDownloadFromDate(
-      request: any,
-      response: any,
-      next: any
-    ) {
-      const args = {
-        date: { in: 'path', name: 'date', required: true, dataType: 'string' },
-        req: { in: 'request', name: 'req', required: true, dataType: 'object' }
-      };
+            async function AttendanceAPI_getAttendancesDownloadFromDate(request: any, response: any, next: any) {
+            const args = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
 
-      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-      let validatedArgs: any[] = [];
-      try {
-        validatedArgs = getValidatedArgs(args, request, response);
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
 
-        const container: IocContainer =
-          typeof iocContainer === 'function'
-            ? (iocContainer as IocContainerFactory)(request)
-            : iocContainer;
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
-        const controller: any = await container.get<AttendanceAPI>(
-          AttendanceAPI
-        );
-        if (typeof controller['setStatus'] === 'function') {
-          controller.setStatus(undefined);
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getAttendancesDownloadFromDate.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/attendances/from/:date',
+            authenticateMiddleware([{"jwt":["attendanceModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.getAttendancesFromDate)),
+
+            async function AttendanceAPI_getAttendancesFromDate(request: any, response: any, next: any) {
+            const args = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getAttendancesFromDate.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/attendances/metrics/download',
+            authenticateMiddleware([{"jwt":["manageVolunteerModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.getDownloadVolunteersAttendanceMetrics)),
+
+            async function AttendanceAPI_getDownloadVolunteersAttendanceMetrics(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getDownloadVolunteersAttendanceMetrics.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/attendances/metrics',
+            authenticateMiddleware([{"jwt":["manageVolunteerModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.getVolunteersAttendanceMetrics)),
+
+            async function AttendanceAPI_getVolunteersAttendanceMetrics(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getVolunteersAttendanceMetrics.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/attendances/volunteer/:idvol',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.getAttencesByIdVol)),
+
+            async function AttendanceAPI_getAttencesByIdVol(request: any, response: any, next: any) {
+            const args = {
+                    idvol: {"in":"path","name":"idvol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getAttencesByIdVol.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/attendances',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI)),
+            ...(fetchMiddlewares<RequestHandler>(AttendanceAPI.prototype.submitAttendance)),
+
+            async function AttendanceAPI_submitAttendance(request: any, response: any, next: any) {
+            const args = {
+                    attendance: {"in":"body","name":"attendance","required":true,"ref":"SubmitAttendanceEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<AttendanceAPI>(AttendanceAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.submitAttendance.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-club-class/download/:idclass',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.downloadClassReport)),
+
+            async function BookClubClassAPI_downloadClassReport(request: any, response: any, next: any) {
+            const args = {
+                    idclass: {"in":"path","name":"idclass","required":true,"dataType":"double"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.downloadClassReport.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-club-class/count/:idvol',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.countEvaluatedBookClubClassByIdVol)),
+
+            async function BookClubClassAPI_countEvaluatedBookClubClassByIdVol(request: any, response: any, next: any) {
+            const args = {
+                    idvol: {"in":"path","name":"idvol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.countEvaluatedBookClubClassByIdVol.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-club-class/available/:idvol',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.getAvailableClasses)),
+
+            async function BookClubClassAPI_getAvailableClasses(request: any, response: any, next: any) {
+            const args = {
+                    idvol: {"in":"path","name":"idvol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getAvailableClasses.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/book-club-class/reservation',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.reserveClassForVolunteer)),
+
+            async function BookClubClassAPI_reserveClassForVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    reserveData: {"in":"body","name":"reserveData","required":true,"ref":"ReserveClassDataEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.reserveClassForVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/book-club-class/revert-reservation/:classId',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.revertReserveClassForVolunteer)),
+
+            async function BookClubClassAPI_revertReserveClassForVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.revertReserveClassForVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-club-class/from-id/:classId',
+            authenticateMiddleware([{"jwt":["essayModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.getClassesFromId)),
+
+            async function BookClubClassAPI_getClassesFromId(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getClassesFromId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/book-club-class/:classId',
+            authenticateMiddleware([{"jwt":["essayModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.updateClass)),
+
+            async function BookClubClassAPI_updateClass(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+                    bookClubClass: {"in":"body","name":"bookClubClass","required":true,"ref":"UpdateBCClassEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateClass.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/book-evaluations',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.createBookEvaluations)),
+
+            async function BookEvaluationAPI_createBookEvaluations(request: any, response: any, next: any) {
+            const args = {
+                    bookEvaluations: {"in":"body","name":"bookEvaluations","required":true,"dataType":"array","array":{"dataType":"refAlias","ref":"CreateBookEvaluationEntity"}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookEvaluationAPI>(BookEvaluationAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.createBookEvaluations.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/book-evaluations/:evaluationId',
+            authenticateMiddleware([{"jwt":["essayModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.updateBookEvaluation)),
+
+            async function BookEvaluationAPI_updateBookEvaluation(request: any, response: any, next: any) {
+            const args = {
+                    evaluationId: {"in":"path","name":"evaluationId","required":true,"dataType":"double"},
+                    evaluation: {"in":"body","name":"evaluation","required":true,"ref":"UpdateBookEvaluationEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookEvaluationAPI>(BookEvaluationAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateBookEvaluation.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/notebooks/count/:idvol',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.countEvaluatedNotebooksByIdVol)),
+
+            async function NotebookAPI_countEvaluatedNotebooksByIdVol(request: any, response: any, next: any) {
+            const args = {
+                    idvol: {"in":"path","name":"idvol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.countEvaluatedNotebooksByIdVol.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/notebooks/download/:notebookId',
+            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.downloadNotebookFromId)),
+
+            async function NotebookAPI_downloadNotebookFromId(request: any, response: any, next: any) {
+            const args = {
+                    notebookId: {"in":"path","name":"notebookId","required":true,"dataType":"double"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.downloadNotebookFromId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/notebooks/available/:idvol',
+            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.getAvailableNotebooksForEvalForIdVol)),
+
+            async function NotebookAPI_getAvailableNotebooksForEvalForIdVol(request: any, response: any, next: any) {
+            const args = {
+                    idvol: {"in":"path","name":"idvol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getAvailableNotebooksForEvalForIdVol.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/notebooks/evaluation/:notebookId',
+            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.saveNotebookEvaluation)),
+
+            async function NotebookAPI_saveNotebookEvaluation(request: any, response: any, next: any) {
+            const args = {
+                    notebookId: {"in":"path","name":"notebookId","required":true,"dataType":"double"},
+                    notebookData: {"in":"body","name":"notebookData","required":true,"ref":"EvaluateNotebookEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.saveNotebookEvaluation.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/notebooks/reservation',
+            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.reserveNotebookForVolunteer)),
+
+            async function NotebookAPI_reserveNotebookForVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    reserveData: {"in":"body","name":"reserveData","required":true,"ref":"ReserveNotebookDataEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.reserveNotebookForVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/notebooks/revert-reservation/:notebookId',
+            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.revertReserveNotebookForVolunteer)),
+
+            async function NotebookAPI_revertReserveNotebookForVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    notebookId: {"in":"path","name":"notebookId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.revertReserveNotebookForVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/notebooks/:notebookId',
+            authenticateMiddleware([{"jwt":["notebookModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.updateNotebook)),
+
+            async function NotebookAPI_updateNotebook(request: any, response: any, next: any) {
+            const args = {
+                    notebookId: {"in":"path","name":"notebookId","required":true,"dataType":"double"},
+                    notebook: {"in":"body","name":"notebook","required":true,"ref":"UpdateNotebookEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateNotebook.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/pep-class/from-id/:classId',
+            authenticateMiddleware([{"jwt":["notebookModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(PepAPI)),
+            ...(fetchMiddlewares<RequestHandler>(PepAPI.prototype.getClassesFromId)),
+
+            async function PepAPI_getClassesFromId(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PepAPI>(PepAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getClassesFromId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/pep-class/:classId',
+            authenticateMiddleware([{"jwt":["notebookModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(PepAPI)),
+            ...(fetchMiddlewares<RequestHandler>(PepAPI.prototype.updateClass)),
+
+            async function PepAPI_updateClass(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+                    pepClass: {"in":"body","name":"pepClass","required":true,"ref":"UpdatePepClassEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PepAPI>(PepAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateClass.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.head('/volunteers/:email',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.checkExistingEmail)),
+
+            async function UnsecuredVolunteerAPI_checkExistingEmail(request: any, response: any, next: any) {
+            const args = {
+                    email: {"in":"path","name":"email","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.checkExistingEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/volunteers/password',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.createOrUpdatePasswordForHashEmail)),
+
+            async function UnsecuredVolunteerAPI_createOrUpdatePasswordForHashEmail(request: any, response: any, next: any) {
+            const args = {
+                    createOrUpatePassData: {"in":"body","name":"createOrUpatePassData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"hashEmail":{"dataType":"string","required":true},"password":{"dataType":"string","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.createOrUpdatePasswordForHashEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers/login',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.login)),
+
+            async function UnsecuredVolunteerAPI_login(request: any, response: any, next: any) {
+            const args = {
+                    loginData: {"in":"body","name":"loginData","required":true,"ref":"Pick_VolunteerAuthDataEntity.password-or-email_"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.login.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.createVolunteer)),
+
+            async function UnsecuredVolunteerAPI_createVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    volunteer: {"in":"body","name":"volunteer","required":true,"ref":"CreateVolunteerEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.createVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers/help-email',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.sendHelpEmail)),
+
+            async function UnsecuredVolunteerAPI_sendHelpEmail(request: any, response: any, next: any) {
+            const args = {
+                    helpEmailData: {"in":"body","name":"helpEmailData","required":true,"ref":"SupportEmailSendData"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.sendHelpEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers/contact-email',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.sendContactEmail)),
+
+            async function UnsecuredVolunteerAPI_sendContactEmail(request: any, response: any, next: any) {
+            const args = {
+                    contactEmailData: {"in":"body","name":"contactEmailData","required":true,"ref":"SupportEmailSendData"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.sendContactEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers/password-email',
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(UnsecuredVolunteerAPI.prototype.sendCreatePasswordEmail)),
+
+            async function UnsecuredVolunteerAPI_sendCreatePasswordEmail(request: any, response: any, next: any) {
+            const args = {
+                    emailWrapper: {"in":"body","name":"emailWrapper","required":true,"ref":"Pick_VolunteerAuthDataEntity.email_"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UnsecuredVolunteerAPI>(UnsecuredVolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.sendCreatePasswordEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/volunteers/download/from/:date',
+            authenticateMiddleware([{"jwt":["determineVolunteerModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.getDownloadVolunteersFromDate)),
+
+            async function VolunteerAPI_getDownloadVolunteersFromDate(request: any, response: any, next: any) {
+            const args = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getDownloadVolunteersFromDate.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/volunteers/from/:date',
+            authenticateMiddleware([{"jwt":["determineVolunteerModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.getVolunteersFromDate)),
+
+            async function VolunteerAPI_getVolunteersFromDate(request: any, response: any, next: any) {
+            const args = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getVolunteersFromDate.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/volunteers/:email/password',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.createOrUpdatePassword)),
+
+            async function VolunteerAPI_createOrUpdatePassword(request: any, response: any, next: any) {
+            const args = {
+                    email: {"in":"path","name":"email","required":true,"dataType":"string"},
+                    passwordWrapper: {"in":"body","name":"passwordWrapper","required":true,"ref":"Pick_VolunteerAuthDataEntity.password_"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.createOrUpdatePassword.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/volunteers/:email',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.updateVolunteer)),
+
+            async function VolunteerAPI_updateVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    email: {"in":"path","name":"email","required":true,"dataType":"string"},
+                    volunteer: {"in":"body","name":"volunteer","required":true,"ref":"UpdateVolunteerEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/volunteers/:email',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.getVolunteerByEmail)),
+
+            async function VolunteerAPI_getVolunteerByEmail(request: any, response: any, next: any) {
+            const args = {
+                    email: {"in":"path","name":"email","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getVolunteerByEmail.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/volunteers/:email',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.deleteVolunteer)),
+
+            async function VolunteerAPI_deleteVolunteer(request: any, response: any, next: any) {
+            const args = {
+                    email: {"in":"path","name":"email","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.deleteVolunteer.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/volunteers/hours',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.postVolunteerHours)),
+
+            async function VolunteerAPI_postVolunteerHours(request: any, response: any, next: any) {
+            const args = {
+                    hoursVolunteer: {"in":"body","name":"hoursVolunteer","required":true,"ref":"PostVolunteerHoursEntity"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.postVolunteerHours.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.head('/volunteers/hours/:idVol',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.checkVolunteerHoursStatus)),
+
+            async function VolunteerAPI_checkVolunteerHoursStatus(request: any, response: any, next: any) {
+            const args = {
+                    idVol: {"in":"path","name":"idVol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.checkVolunteerHoursStatus.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+    function authenticateMiddleware(security: TsoaRoute.Security[] = []) {
+        return async function runAuthenticationMiddleware(request: any, _response: any, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            // keep track of failed auth attempts so we can hand back the most
+            // recent one.  This behavior was previously existing so preserving it
+            // here
+            const failedAttempts: any[] = [];
+            const pushAndRethrow = (error: any) => {
+                failedAttempts.push(error);
+                throw error;
+            };
+
+            const secMethodOrPromises: Promise<any>[] = [];
+            for (const secMethod of security) {
+                if (Object.keys(secMethod).length > 1) {
+                    const secMethodAndPromises: Promise<any>[] = [];
+
+                    for (const name in secMethod) {
+                        secMethodAndPromises.push(
+                            expressAuthentication(request, name, secMethod[name])
+                                .catch(pushAndRethrow)
+                        );
+                    }
+
+                    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+                    secMethodOrPromises.push(Promise.all(secMethodAndPromises)
+                        .then(users => { return users[0]; }));
+                } else {
+                    for (const name in secMethod) {
+                        secMethodOrPromises.push(
+                            expressAuthentication(request, name, secMethod[name])
+                                .catch(pushAndRethrow)
+                        );
+                    }
+                }
+            }
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            try {
+                request['user'] = await promiseAny.call(Promise, secMethodOrPromises);
+                next();
+            }
+            catch(err) {
+                // Show most recent error as response
+                const error = failedAttempts.pop();
+                error.status = error.status || 401;
+                next(error);
+            }
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         }
 
         const promise = controller.getAttendancesDownloadFromDate.apply(

@@ -9,6 +9,7 @@ type ErrorName =
   | 'PASSWORD_WRONG_ERROR'
   | 'VOLUNTEER_NOT_DELETED'
   | 'INVALID_DATE_REGISTER'
-  | 'HOURS_ALREADY_REGISTERED';
+  | 'HOURS_ALREADY_REGISTERED'
+  | 'HOURS_NOT_FOUND';
 
 export class VolunteerError extends ErrorBase<ErrorName> {}
