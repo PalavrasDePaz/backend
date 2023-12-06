@@ -211,7 +211,8 @@ export class UnsecuredVolunteerAPI extends Controller {
   }
 
   /**
-   * Create the volunteer
+   * Create the volunteer. If the operation is successfully, an email will be
+   * sent to the volunteer attesting that the account was created
    */
   @Post()
   @SuccessResponse(201, 'Volunteer Created')
