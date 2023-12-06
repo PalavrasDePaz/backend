@@ -1,7 +1,6 @@
 /**
  * @example {
  *  "email": "test@gmail.com",
- *  "name": "Name",
  *  "subject": "Subject",
  *  "message": "Message"
  * }
