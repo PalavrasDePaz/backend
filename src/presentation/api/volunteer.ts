@@ -295,4 +295,43 @@ export class VolunteerAPI extends Controller {
     }
     await this.volunteerRepository.postVolunteerHours(hoursVolunteer);
   }
+
+  /**
+   * Get volunteer hours
+   *
+   */
+
+  @Get('hours/{idVol}')
+  @Security('jwt')
+  @SuccessResponse(200, 'Successfully checked volunteer hours status')
+  @Response<VolunteerError>(404, 'volunteer not found')
+  public async checkVolunteerHoursStatus(@Path() idVol: number): Promise<void> {
+    if (!idVol) {
+      throw new ApiError(
+        412,
+        new VolunteerError({
+          name: 'VOLUNTEER_NOT_FOUND',
+          message: `Volunteer with id ${idVol} not found`
+        })
+      );
+    }
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const existingRegister = await this.volunteerRepository.findHoursByMonth(
+      idVol,
+      currentMonth,
+      currentYear
+    );
+    if (!existingRegister) {
+      throw new ApiError(
+        412,
+        new VolunteerError({
+          name: 'VOLUNTEER_NOT_FOUND',
+          message: `Volunteer with id ${idVol} not found`
+        })
+      );
+    }
+  }
 }

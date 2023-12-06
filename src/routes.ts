@@ -1209,7 +1209,7 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__':
+  'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__':
     {
       dataType: 'refAlias',
       type: {
@@ -1236,6 +1236,8 @@ const models: TsoaRoute.Models = {
           schooling: { dataType: 'string' },
           bachelor: { dataType: 'string' },
           studiesKnowledge: { dataType: 'string' },
+          courseOne: { dataType: 'string' },
+          courseTwo: { dataType: 'string' },
           lifeExperience: { dataType: 'string' },
           desires: { dataType: 'string' },
           rolesPep: { dataType: 'array', array: { dataType: 'string' } },
@@ -1244,6 +1246,10 @@ const models: TsoaRoute.Models = {
             array: { dataType: 'string' }
           },
           needDeclaration: { dataType: 'boolean' },
+          readSkill: { dataType: 'boolean' },
+          bookSkill: { dataType: 'boolean' },
+          certificate: { dataType: 'boolean' },
+          authorization: { dataType: 'string' },
           password: { dataType: 'string' }
         },
         validators: {}
@@ -1253,7 +1259,7 @@ const models: TsoaRoute.Models = {
   UpdateVolunteerEntity: {
     dataType: 'refAlias',
     type: {
-      ref: 'Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__',
+      ref: 'Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__',
       validators: {}
     }
   },
@@ -3159,6 +3165,50 @@ export function RegisterRoutes(app: Router) {
           validatedArgs as any
         );
         promiseHandler(controller, promise, response, 201, next);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+  // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+  app.get(
+    '/volunteers/hours/:idVol',
+    authenticateMiddleware([{ jwt: [] }]),
+    ...fetchMiddlewares<RequestHandler>(VolunteerAPI),
+    ...fetchMiddlewares<RequestHandler>(
+      VolunteerAPI.prototype.checkVolunteerHoursStatus
+    ),
+
+    async function VolunteerAPI_checkVolunteerHoursStatus(
+      request: any,
+      response: any,
+      next: any
+    ) {
+      const args = {
+        idVol: { in: 'path', name: 'idVol', required: true, dataType: 'double' }
+      };
+
+      // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request, response);
+
+        const container: IocContainer =
+          typeof iocContainer === 'function'
+            ? (iocContainer as IocContainerFactory)(request)
+            : iocContainer;
+
+        const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+        if (typeof controller['setStatus'] === 'function') {
+          controller.setStatus(undefined);
+        }
+
+        const promise = controller.checkVolunteerHoursStatus.apply(
+          controller,
+          validatedArgs as any
+        );
+        promiseHandler(controller, promise, response, 200, next);
       } catch (err) {
         return next(err);
       }

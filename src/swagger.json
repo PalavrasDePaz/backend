@@ -5260,6 +5260,84 @@
 					}
 				}
 			}
+		},
+		"/volunteers/hours/{idVol}": {
+			"get": {
+				"operationId": "CheckVolunteerHoursStatus",
+				"responses": {
+					"200": {
+						"description": "Successfully checked volunteer hours status"
+					},
+					"404": {
+						"description": "volunteer not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get volunteer hours",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idVol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
 		}
 	},
 	"servers": [
