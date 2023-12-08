@@ -20,7 +20,7 @@ import {
 import { inject } from 'inversify';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import { provide } from 'inversify-binding-decorators';
-import { sendEmailToVolunteer } from '@src/services/email-service/send-password-email';
+import { sendEmailToVolunteer } from '@src/services/email-service/use-cases/send-password-email';
 import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { checkPlainWithHash } from '@src/helpers/message-hashing';
 import { decrypt } from '@src/helpers/message-encryption';
@@ -29,8 +29,11 @@ import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-vol
 import { SendEmailError } from '@src/domain/errors/send-email';
 import { validationExample } from '@src/documentation/validation-example';
 import { SupportEmailSendData } from '@src/services/email-service/types/support-email-send-data';
-import { sendEmailToSupport } from '@src/services/email-service/send-email-to-support';
+import { sendEmailToSupport } from '@src/services/email-service/use-cases/send-email-to-support';
 import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
+import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
+import { EmailManager } from '@src/services/email-service/email-manager';
+import { sendVolunteerCreatedEmail } from '@src/services/email-service/use-cases/send-volunteer-create-email';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -38,17 +41,21 @@ import { PermissionEntity } from '@src/domain/entities/volunteer/permission-enti
   'Validation Error',
   validationExample
 )
-@provide(UnsecuredVolunteerAPI)
 @Tags('Volunteer')
+@provide(UnsecuredVolunteerAPI)
 export class UnsecuredVolunteerAPI extends Controller {
   private volunteerRepository: VolunteerRepository;
+  private emailManager: IEmailManager;
 
   constructor(
     @inject(SequelizeVolunteerRepository)
-    volunteerRepository: VolunteerRepository
+    volunteerRepository: VolunteerRepository,
+    @inject(EmailManager)
+    emailManager: IEmailManager
   ) {
     super();
     this.volunteerRepository = volunteerRepository;
+    this.emailManager = emailManager;
   }
 
   /**
@@ -204,7 +211,8 @@ export class UnsecuredVolunteerAPI extends Controller {
   }
 
   /**
-   * Create the volunteer
+   * Create the volunteer. If the operation is successfully, an email will be
+   * sent to the volunteer attesting that the account was created
    */
   @Post()
   @SuccessResponse(201, 'Volunteer Created')
@@ -219,6 +227,11 @@ export class UnsecuredVolunteerAPI extends Controller {
       const createdVolunteer = await this.volunteerRepository.createVolunteer(
         volunteer
       );
+      await sendVolunteerCreatedEmail(this.emailManager, {
+        email: createdVolunteer.email,
+        idvol: createdVolunteer.idvol,
+        name: createdVolunteer.name
+      });
       return createdVolunteer;
     } catch (error) {
       throw new ApiError(400, error as VolunteerError);
@@ -233,7 +246,11 @@ export class UnsecuredVolunteerAPI extends Controller {
   @Response<SendEmailError>(400, 'Could not send email')
   async sendHelpEmail(@Body() helpEmailData: SupportEmailSendData) {
     try {
-      await sendEmailToSupport(helpEmailData, HELPDESK_EMAIL);
+      await sendEmailToSupport(
+        this.emailManager,
+        helpEmailData,
+        HELPDESK_EMAIL
+      );
     } catch (error) {
       throw new ApiError(400, error as SendEmailError);
     }
@@ -247,7 +264,7 @@ export class UnsecuredVolunteerAPI extends Controller {
   @Response<SendEmailError>(400, 'Could not send email')
   async sendContactEmail(@Body() contactEmailData: SupportEmailSendData) {
     try {
-      await sendEmailToSupport(contactEmailData, INFO_EMAIL);
+      await sendEmailToSupport(this.emailManager, contactEmailData, INFO_EMAIL);
     } catch (error) {
       throw new ApiError(400, error as SendEmailError);
     }
@@ -282,7 +299,7 @@ export class UnsecuredVolunteerAPI extends Controller {
       );
 
     try {
-      await sendEmailToVolunteer(emailWrapper.email);
+      await sendEmailToVolunteer(this.emailManager, emailWrapper.email);
     } catch (error) {
       throw new ApiError(400, error as SendEmailError);
     }

@@ -1,8 +1,7 @@
 import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 
-export const updateVolunteerMapperKeys: Record<
-  keyof UpdateVolunteerEntity,
-  string
+export const updateVolunteerMapperKeys: Partial<
+  Record<keyof UpdateVolunteerEntity, string>
 > = {
   name: 'nome',
   birthDate: 'nascimento',
