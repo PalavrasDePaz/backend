@@ -200,7 +200,8 @@
 					"VOLUNTEER_NOT_DELETED",
 					"PASSWORD_WRONG_ERROR",
 					"INVALID_DATE_REGISTER",
-					"HOURS_ALREADY_REGISTERED"
+					"HOURS_ALREADY_REGISTERED",
+					"HOURS_NOT_FOUND"
 				]
 			},
 			"VolunteerError": {
@@ -1916,7 +1917,7 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__": {
+			"Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__": {
 				"properties": {
 					"email": {
 						"type": "string",
@@ -1960,12 +1961,6 @@
 					"studiesKnowledge": {
 						"type": "string"
 					},
-					"courseOne": {
-						"type": "string"
-					},
-					"courseTwo": {
-						"type": "string"
-					},
 					"lifeExperience": {
 						"type": "string"
 					},
@@ -1987,18 +1982,6 @@
 					"needDeclaration": {
 						"type": "boolean"
 					},
-					"readSkill": {
-						"type": "boolean"
-					},
-					"bookSkill": {
-						"type": "boolean"
-					},
-					"certificate": {
-						"type": "boolean"
-					},
-					"authorization": {
-						"type": "string"
-					},
 					"password": {
 						"type": "string"
 					}
@@ -2007,7 +1990,7 @@
 				"description": "Make all properties in T optional"
 			},
 			"UpdateVolunteerEntity": {
-				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__"
+				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__"
 			},
 			"Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__": {
 				"properties": {
@@ -4693,7 +4676,7 @@
 						}
 					}
 				},
-				"description": "Create the volunteer",
+				"description": "Create the volunteer. If the operation is successfully, an email will be\nsent to the volunteer attesting that the account was created",
 				"tags": [
 					"Volunteer"
 				],
@@ -5277,6 +5260,84 @@
 						}
 					}
 				}
+			}
+		},
+		"/volunteers/hours/{idVol}": {
+			"head": {
+				"operationId": "CheckVolunteerHoursStatus",
+				"responses": {
+					"200": {
+						"description": "Successfully checked volunteer hours status"
+					},
+					"404": {
+						"description": "volunteer not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "head volunteer hours",
+				"tags": [
+					"Volunteer"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "idVol",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		}
 	},

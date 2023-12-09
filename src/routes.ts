@@ -65,7 +65,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ErrorName": {
         "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["VOLUNTEER_NOT_FOUND"]},{"dataType":"enum","enums":["VOLUNTEER_ALREADY_EXISTS"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_UPDATED"]},{"dataType":"enum","enums":["VOLUNTEER_UNREGISTERED"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["PASSWORD_WRONG_ERROR"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["INVALID_DATE_REGISTER"]},{"dataType":"enum","enums":["HOURS_ALREADY_REGISTERED"]}],"validators":{}},
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["VOLUNTEER_NOT_FOUND"]},{"dataType":"enum","enums":["VOLUNTEER_ALREADY_EXISTS"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_UPDATED"]},{"dataType":"enum","enums":["VOLUNTEER_UNREGISTERED"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["PASSWORD_WRONG_ERROR"]},{"dataType":"enum","enums":["VOLUNTEER_NOT_DELETED"]},{"dataType":"enum","enums":["INVALID_DATE_REGISTER"]},{"dataType":"enum","enums":["HOURS_ALREADY_REGISTERED"]},{"dataType":"enum","enums":["HOURS_NOT_FOUND"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "VolunteerError": {
@@ -421,14 +421,14 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"password":{"dataType":"string","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__": {
+    "Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","validators":{"pattern":{"errorMsg":"must be a valid email","value":"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"}}},"name":{"dataType":"string"},"birthDate":{"dataType":"datetime"},"phoneNumber":{"dataType":"string"},"country":{"dataType":"string"},"state":{"dataType":"string"},"city":{"dataType":"string"},"disability":{"dataType":"string"},"howFoundPep":{"dataType":"string"},"knowledgePep":{"dataType":"string"},"schooling":{"dataType":"string"},"bachelor":{"dataType":"string"},"studiesKnowledge":{"dataType":"string"},"courseOne":{"dataType":"string"},"courseTwo":{"dataType":"string"},"lifeExperience":{"dataType":"string"},"desires":{"dataType":"string"},"rolesPep":{"dataType":"array","array":{"dataType":"string"}},"interestFutureRoles":{"dataType":"array","array":{"dataType":"string"}},"needDeclaration":{"dataType":"boolean"},"readSkill":{"dataType":"boolean"},"bookSkill":{"dataType":"boolean"},"certificate":{"dataType":"boolean"},"authorization":{"dataType":"string"},"password":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","validators":{"pattern":{"errorMsg":"must be a valid email","value":"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"}}},"name":{"dataType":"string"},"birthDate":{"dataType":"datetime"},"phoneNumber":{"dataType":"string"},"country":{"dataType":"string"},"state":{"dataType":"string"},"city":{"dataType":"string"},"disability":{"dataType":"string"},"howFoundPep":{"dataType":"string"},"knowledgePep":{"dataType":"string"},"schooling":{"dataType":"string"},"bachelor":{"dataType":"string"},"studiesKnowledge":{"dataType":"string"},"lifeExperience":{"dataType":"string"},"desires":{"dataType":"string"},"rolesPep":{"dataType":"array","array":{"dataType":"string"}},"interestFutureRoles":{"dataType":"array","array":{"dataType":"string"}},"needDeclaration":{"dataType":"boolean"},"password":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UpdateVolunteerEntity": {
         "dataType": "refAlias",
-        "type": {"ref":"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities_-and-Pick_VolunteerAuthDataEntity.password__","validators":{}},
+        "type": {"ref":"Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__": {
@@ -1635,6 +1635,37 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.postVolunteerHours.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.head('/volunteers/hours/:idVol',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI)),
+            ...(fetchMiddlewares<RequestHandler>(VolunteerAPI.prototype.checkVolunteerHoursStatus)),
+
+            async function VolunteerAPI_checkVolunteerHoursStatus(request: any, response: any, next: any) {
+            const args = {
+                    idVol: {"in":"path","name":"idVol","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<VolunteerAPI>(VolunteerAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.checkVolunteerHoursStatus.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
             }

@@ -16,7 +16,8 @@ import {
   Route,
   Security,
   SuccessResponse,
-  Tags
+  Tags,
+  Head
 } from 'tsoa';
 import { inject } from 'inversify';
 import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
@@ -294,5 +295,44 @@ export class VolunteerAPI extends Controller {
       );
     }
     await this.volunteerRepository.postVolunteerHours(hoursVolunteer);
+  }
+
+  /**
+   * head volunteer hours
+   *
+   */
+
+  @Head('hours/{idVol}')
+  @Security('jwt')
+  @SuccessResponse(200, 'Successfully checked volunteer hours status')
+  @Response<VolunteerError>(404, 'volunteer not found')
+  public async checkVolunteerHoursStatus(@Path() idVol: number): Promise<void> {
+    if (!idVol) {
+      throw new ApiError(
+        404,
+        new VolunteerError({
+          name: 'VOLUNTEER_NOT_FOUND',
+          message: `Volunteer with id ${idVol} not found`
+        })
+      );
+    }
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const existingRegister = await this.volunteerRepository.findHoursByMonth(
+      idVol,
+      currentMonth,
+      currentYear
+    );
+    if (!existingRegister) {
+      throw new ApiError(
+        404,
+        new VolunteerError({
+          name: 'HOURS_NOT_FOUND',
+          message: `Registered volunteer hours with  id ${idVol} not found`
+        })
+      );
+    }
   }
 }
