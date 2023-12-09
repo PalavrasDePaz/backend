@@ -4,7 +4,17 @@ import { VolunteerAuthDataEntity } from './volunteer-auth-entity';
 export type UpdateVolunteerEntity = Partial<
   Omit<
     VolunteerEntity,
-    'pep' | 'idvol' | 'createdAt' | 'isDisability' | 'opportunities'
+    | 'pep'
+    | 'idvol'
+    | 'createdAt'
+    | 'isDisability'
+    | 'opportunities'
+    | 'readSkill'
+    | 'bookSkill'
+    | 'authorization'
+    | 'certificate'
+    | 'courseOne'
+    | 'courseTwo'
   > &
     Pick<VolunteerAuthDataEntity, 'password'>
 >;
