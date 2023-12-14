@@ -51,8 +51,8 @@ export interface VolunteerEntity {
   needDeclaration: boolean;
   idvol: number;
   createdAt: Date;
-  readSkill?: boolean;
-  bookSkill?: boolean;
+  notebookPermission?: boolean;
+  bookclubPermission?: boolean;
   certificate?: boolean;
   authorization?: string;
 }
