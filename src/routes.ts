@@ -1010,8 +1010,8 @@ const models: TsoaRoute.Models = {
       needDeclaration: { dataType: 'boolean', required: true },
       idvol: { dataType: 'double', required: true },
       createdAt: { dataType: 'datetime', required: true },
-      readSkill: { dataType: 'boolean' },
-      bookSkill: { dataType: 'boolean' },
+      notebookPermission: { dataType: 'boolean' },
+      bookclubPermission: { dataType: 'boolean' },
       certificate: { dataType: 'boolean' },
       authorization: { dataType: 'string' }
     },
@@ -1039,7 +1039,7 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Pick_VolunteerWithAuthEntity.Exclude_keyofVolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo__':
+  'Pick_VolunteerWithAuthEntity.Exclude_keyofVolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo__':
     {
       dataType: 'refAlias',
       type: {
@@ -1091,11 +1091,11 @@ const models: TsoaRoute.Models = {
       }
     },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Omit_VolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_':
+  'Omit_VolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_':
     {
       dataType: 'refAlias',
       type: {
-        ref: 'Pick_VolunteerWithAuthEntity.Exclude_keyofVolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo__',
+        ref: 'Pick_VolunteerWithAuthEntity.Exclude_keyofVolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo__',
         validators: {}
       }
     },
@@ -1103,7 +1103,7 @@ const models: TsoaRoute.Models = {
   CreateVolunteerEntity: {
     dataType: 'refAlias',
     type: {
-      ref: 'Omit_VolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_',
+      ref: 'Omit_VolunteerWithAuthEntity.idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_',
       validators: {}
     }
   },
@@ -1203,7 +1203,7 @@ const models: TsoaRoute.Models = {
     }
   },
   // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-  'Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__':
+  'Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__':
     {
       dataType: 'refAlias',
       type: {
@@ -1247,7 +1247,7 @@ const models: TsoaRoute.Models = {
   UpdateVolunteerEntity: {
     dataType: 'refAlias',
     type: {
-      ref: 'Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-readSkill-or-bookSkill-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__',
+      ref: 'Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__',
       validators: {}
     }
   },

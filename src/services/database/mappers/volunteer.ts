@@ -39,8 +39,8 @@ export const volunteerModelToEntity = (
     interestFutureRoles: volunteer.ajudar ? volunteer.ajudar.split(' ') : [],
     needDeclaration: volunteer.declaração == 'SIM',
     createdAt: volunteer.createdAt,
-    readSkill: volunteer['habil-leitura'],
-    bookSkill: volunteer['habil-livro'],
+    notebookPermission: volunteer['habil-leitura'],
+    bookclubPermission: volunteer['habil-livro'],
     certificate: volunteer.cert,
     authorization: volunteer.author
   };
