@@ -177,11 +177,11 @@ export const volunteerDownloadMappers = (
   Oportunidades: volunteer.oportunidades,
   'Interesse em Posições Futuras': volunteer.ajudar ?? '',
   Declaração: volunteer.declaração,
-  'Habilidade de leitura':
+  'Permissão de Avaliação de Cadernos':
     typeof volunteer['habil-leitura'] === 'boolean'
       ? volunteer['habil-leitura']
       : '',
-  'Habilidade com livro':
+  'Permissão de Avaliação de Redações':
     typeof volunteer['habil-livro'] === 'boolean'
       ? volunteer['habil-livro']
       : '',
