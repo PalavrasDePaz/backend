@@ -21,8 +21,8 @@ export type VolunteerDownloadEntity = {
   Oportunidades: string;
   'Interesse em Posições Futuras': string;
   Declaração: string;
-  'Habilidade de leitura': boolean | string;
-  'Habilidade com livro': boolean | string;
+  'Permissão de Avaliação de Cadernos': boolean | string;
+  'Permissão de Avaliação de Redações': boolean | string;
   certificado: boolean | string;
   autorização: string;
 };
