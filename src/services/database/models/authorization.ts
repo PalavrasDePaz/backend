@@ -16,6 +16,7 @@ export class Authorization extends Model<
   'mod det vol'!: boolean;
   'mod bo redacao'!: boolean;
   'mod bo cadernos': boolean;
+  'mod news': boolean;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -42,6 +43,10 @@ export class Authorization extends Model<
           allowNull: false
         },
         'mod bo redacao': {
+          type: DataTypes.BOOLEAN,
+          allowNull: false
+        },
+        'mod news': {
           type: DataTypes.BOOLEAN,
           allowNull: false
         }

@@ -3,7 +3,8 @@ export type PermissionUnionType =
   | 'manageVolunteerModulePermission'
   | 'determineVolunteerModulePermission'
   | 'essayModulePermission'
-  | 'notebookModulePermission';
+  | 'notebookModulePermission'
+  | 'moduleNewsPermission';
 
 export type PermissionEntity = {
   name: string;
