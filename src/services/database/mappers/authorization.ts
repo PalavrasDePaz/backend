@@ -11,7 +11,8 @@ export const authorizationModelToEntity = (
       manageVolunteerModulePermission: authorization['mod ger vol'],
       determineVolunteerModulePermission: authorization['mod det vol'],
       essayModulePermission: authorization['mod bo redacao'],
-      notebookModulePermission: authorization['mod bo cadernos']
+      notebookModulePermission: authorization['mod bo cadernos'],
+      moduleNewsPermission: authorization['mod news']
     }
   };
 };
