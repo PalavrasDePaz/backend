@@ -47,7 +47,10 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     idvol: number
   ): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await BookClubClass.findAll({
-      include: BookClubClass.associations.place,
+      include: [
+        { model: Place, as: 'place' },
+        { model: BookEvaluation, as: 'bookEvaluations' }
+      ],
       where: { idvol }
     });
     return availableEssays
@@ -96,7 +99,10 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     idclass: number
   ): Promise<AssociatedBCCEntity | null> {
     const book = await BookClubClass.findByPk(idclass, {
-      include: BookClubClass.associations.place
+      include: [
+        { model: Place, as: 'place' },
+        { model: BookEvaluation, as: 'bookEvaluations' }
+      ],
     });
     return book ? AssociatedBCCModelToEntity(book) : null;
   }
@@ -105,7 +111,11 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     const classes = await BookClubClass.findAll({
       where: {
         idturma: { [Op.gte]: classId }
-      }
+      },
+      include: [
+        { model: Place, as: 'place' },
+        { model: BookEvaluation, as: 'bookEvaluations' }
+      ],
     });
 
     return classes.map(AssociatedBCCModelToEntity);
