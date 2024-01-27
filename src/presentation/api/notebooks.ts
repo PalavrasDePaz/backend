@@ -383,4 +383,31 @@ export class NotebookAPI extends Controller {
 
     return updatedNotebook;
   }
+
+  /**
+   * Get all the information from a notebook through the idcad
+   *
+   *
+   * (The volunteer must have notebookModulePermission, which is checked using JWT)
+   */
+  @Get('{notebookId}')
+  @Security('jwt', ['notebookModulePermission'])
+  @SuccessResponse(200, 'Successfully fetched the notbooks')
+  @Response<NotebookError>(404, 'Essay not found', {
+    name: 'NOTEBOOK_NOT_FOUND_ERROR',
+    message: 'Notebook with id {some Id} not found'
+  })
+  async getNotbookbyIdcad(@Path() notebookId: number) {
+    const notebook = await this.notebooksRepository.getNotebookById(notebookId);
+    if (!notebook) {
+      throw new ApiError(
+        404,
+        new NotebookError({
+          name: 'NOTEBOOK_NOT_FOUND_ERROR',
+          message: `Notebook with id ${notebookId} not found`
+        })
+      );
+    }
+    return notebook;
+  }
 }
