@@ -51,3 +51,8 @@ export interface AssociatedBCCEntity extends BookClubClass {
   place: PlaceEntity | undefined;
   bookEvaluations: BookEvaluationEntity[];
 }
+
+export interface BookClassAllInfo extends BookClubClassEntity {
+  placeName: string | null,
+  volunteerName: string | null
+}

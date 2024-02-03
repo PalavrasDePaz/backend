@@ -21,7 +21,8 @@ import {
   FieldErrors,
   Put,
   Body,
-  Request
+  Request,
+  Middlewares
 } from 'tsoa';
 import { ApiError } from '../types/api-error';
 import { FileHandler } from '@src/services/files/file-handler';
@@ -32,8 +33,10 @@ import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
-import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
+import { AssociatedBCCEntity, BookClassAllInfo } from '@src/domain/entities/book-club-class/book-club-class';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -61,6 +64,35 @@ export class BookClubClassAPI extends Controller {
     this.volunteerRepository = volunteerRepository;
     this.fileHandler = fileHandler;
   }
+
+
+  /**
+   * Get all book-club-class.
+   *
+   * (The user must have bookPermissionn, which is checked using JWT)
+   *  Pagination
+   *  Page: ?page=number& (page number)
+   *  Limit: ?limit=number& (data quantity - max=30)
+   *
+   * @example page "page=3"
+   * @example limit "limit=20"
+   */
+
+  @Get('/')
+  @Security('jwt', ['manageVolunteerModulePermission'])
+  @Middlewares(paginationMiddleware)
+  @SuccessResponse(200, 'Successfully generated the metrics')
+  public async getVolunteersAttendanceMetrics(
+    @Request() req: express.Request
+  ): Promise<PaginationResult<BookClassAllInfo[]>> {
+    const { pagination } = req;
+    
+    if (!pagination) throw Error();
+
+    const bookClasses = this.bccRepository.getAllClasses(pagination)
+    return bookClasses;
+  }
+
 
   /**
    * Download files of the book club class as a zip

@@ -4,17 +4,39 @@ import { BookClubClass } from '../database/models/book-club-class';
 import { Op } from 'sequelize';
 import {
   AssociatedBCCModelToEntity,
+  bookClubClassToBookClassAllInfoEntity,
   updateBCClassEntityToUpdateModel
 } from '../database/mappers/book-class-club';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
-import { AssociatedBCCEntity } from '@src/domain/entities/book-club-class/book-club-class';
+import { AssociatedBCCEntity, BookClassAllInfo } from '@src/domain/entities/book-club-class/book-club-class';
 import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
 import { Place } from '../database/models/place';
 import { BookEvaluation } from '../database/models/book-evaluation';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { Volunteer } from '../database/models/volunteer';
+import { wrapPagination } from './helpers/wrapPagination';
 
 @provideSingleton(SequelizeBCCRepository)
 export class SequelizeBCCRepository implements BookClubClassRepository {
+  
+  getAllClasses = wrapPagination( async (pagination: PaginationParams): Promise<[BookClassAllInfo[], number]> => {
+     const { offset, limit } = pagination;
+     const bookClasses = await BookClubClass.findAll<BookClubClass & {'place.fullname'?: string, 'volunteer.nome'?: string}>({ 
+       include: [
+         { model: Place, as: 'place', attributes:['fullname'] },
+         { model: Volunteer, as: 'volunteer', attributes:['nome'] },
+        ], 
+        offset, 
+        limit,
+        raw: true
+      })
+      
+      const totalCount  = await BookClubClass.count()
+          
+      return [bookClasses.map(bookClubClassToBookClassAllInfoEntity), totalCount]
+  })
+
   async countEvaluatedClassesByIdVol(
     idvol: number
   ): Promise<{ count: number }> {
