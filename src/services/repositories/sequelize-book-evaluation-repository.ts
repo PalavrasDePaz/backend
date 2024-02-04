@@ -4,17 +4,38 @@ import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation
 import { BookEvaluation } from '../database/models/book-evaluation';
 import {
   bookEvaluationModelToEntity,
+  bookEvaluationToBookEvaluationListEntity,
   createBookEvaluationEntityToCreationModel,
   updateBookEvaluationEntityToUpdateModel
 } from '../database/mappers/book-evaluation';
 import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
-import { BookEvaluationEntity } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import { BookEvaluationEntity, BookEvaluationList } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
+import { wrapPagination } from './helpers/wrapPagination';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { Volunteer } from '../database/models/volunteer';
 
 @provideSingleton(SequelizeBookEvaluationRepository)
 export class SequelizeBookEvaluationRepository
   implements BookEvaluationRepository
 {
+
+  getBookEvaluationList = wrapPagination(async (pagination: PaginationParams): Promise<[BookEvaluationList[], number]> => {
+    const { offset, limit } = pagination;
+    const booksEvaluation = await BookEvaluation.findAll<BookEvaluation & { 'volunteer.nome'?: string}>({
+      include: [
+        {model: Volunteer, as: 'volunteer', attributes: ['nome']}
+      ],
+      offset,
+      limit,
+      raw: true
+    })
+
+    const totalCount = await BookEvaluation.count()
+
+    return [ booksEvaluation.map(bookEvaluationToBookEvaluationListEntity), totalCount]
+  })
+
   async updatedBookEvaluation(
     evaluationId: number,
     bookEvaluation: UpdateBookEvaluationEntity

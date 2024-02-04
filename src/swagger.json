@@ -832,6 +832,71 @@
 			"UpdateBCClassEntity": {
 				"$ref": "#/components/schemas/Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_"
 			},
+			"BookEvaluationList": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/BookEvaluationEntity"
+					},
+					{
+						"properties": {
+							"volunteerName": {
+								"type": "string",
+								"nullable": true
+							},
+							"expirationDate": {
+								"type": "string",
+								"format": "date-time",
+								"nullable": true
+							}
+						},
+						"required": [
+							"volunteerName",
+							"expirationDate"
+						],
+						"type": "object"
+					}
+				]
+			},
+			"PaginationResult_BookEvaluationList-Array_": {
+				"properties": {
+					"totalCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"pageInfo": {
+						"properties": {
+							"hasPreviousPage": {
+								"type": "boolean"
+							},
+							"hasNextPage": {
+								"type": "boolean"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"hasPreviousPage",
+							"hasNextPage",
+							"page"
+						],
+						"type": "object"
+					},
+					"nodes": {
+						"items": {
+							"$ref": "#/components/schemas/BookEvaluationList"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"totalCount",
+					"pageInfo",
+					"nodes"
+				],
+				"type": "object"
+			},
 			"Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-createdAt__": {
 				"properties": {
 					"readerName": {
@@ -2501,7 +2566,7 @@
 				"security": [
 					{
 						"jwt": [
-							"manageVolunteerModulePermission"
+							"bookPermission"
 						]
 					}
 				],
@@ -3198,6 +3263,33 @@
 			}
 		},
 		"/book-evaluations": {
+			"get": {
+				"operationId": "GetVolunteersAttendanceMetrics",
+				"responses": {
+					"200": {
+						"description": "Successfully generated the metrics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginationResult_BookEvaluationList-Array_"
+								}
+							}
+						}
+					}
+				},
+				"description": "List all book evaluations.\r\n\r\n(The user must have bookPermissionn, which is checked using JWT)\r\n Pagination\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)",
+				"tags": [
+					"Book evaluation"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": []
+			},
 			"post": {
 				"operationId": "CreateBookEvaluations",
 				"responses": {

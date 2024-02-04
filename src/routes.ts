@@ -228,6 +228,16 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BookEvaluationList": {
+        "dataType": "refAlias",
+        "type": {"dataType":"intersection","subSchemas":[{"ref":"BookEvaluationEntity"},{"dataType":"nestedObjectLiteral","nestedProperties":{"volunteerName":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"expirationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true}}}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginationResult_BookEvaluationList-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"totalCount":{"dataType":"double","required":true},"pageInfo":{"dataType":"nestedObjectLiteral","nestedProperties":{"hasPreviousPage":{"dataType":"boolean","required":true},"hasNextPage":{"dataType":"boolean","required":true},"page":{"dataType":"double","required":true}},"required":true},"nodes":{"dataType":"array","array":{"dataType":"refAlias","ref":"BookEvaluationList"},"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-createdAt__": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"readerName":{"dataType":"string","required":true},"readerRegistration":{"dataType":"double","required":true},"classId":{"dataType":"double","required":true},"evaluatorId":{"dataType":"double","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
@@ -677,7 +687,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-club-class',
-            authenticateMiddleware([{"jwt":["manageVolunteerModulePermission"]}]),
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.getVolunteersAttendanceMetrics)),
 
@@ -920,6 +930,37 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.updateClass.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-evaluations',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getVolunteersAttendanceMetrics)),
+
+            async function BookEvaluationAPI_getVolunteersAttendanceMetrics(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookEvaluationAPI>(BookEvaluationAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getVolunteersAttendanceMetrics.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);

@@ -79,7 +79,7 @@ export class BookClubClassAPI extends Controller {
    */
 
   @Get('/')
-  @Security('jwt', ['manageVolunteerModulePermission'])
+  @Security('jwt', ['bookPermission'])
   @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully generated the metrics')
   public async getVolunteersAttendanceMetrics(
@@ -89,8 +89,7 @@ export class BookClubClassAPI extends Controller {
     
     if (!pagination) throw Error();
 
-    const bookClasses = this.bccRepository.getAllClasses(pagination)
-    return bookClasses;
+    return  this.bccRepository.getAllClasses(pagination);
   }
 
 
