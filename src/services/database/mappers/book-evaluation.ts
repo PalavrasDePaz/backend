@@ -3,7 +3,7 @@ import { CreationAttributes } from 'sequelize';
 import { BookEvaluation } from '../models/book-evaluation';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
 import UpdateModel from './helpers/update-model-type';
-import { BookEvaluationEntity } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import { BookEvaluationEntity, BookEvaluationList } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 
 export const createBookEvaluationEntityToCreationModel = (
   bookEvaluation: CreateBookEvaluationEntity
@@ -29,6 +29,35 @@ export const createBookEvaluationEntityToCreationModel = (
     'hist-relat': bookEvaluation.readHistories.join(', ')
   };
 };
+
+export const bookEvaluationToBookEvaluationListEntity = (bookEvaluation: BookEvaluation & { 'volunteer.nome'?: string }):BookEvaluationList   => ({
+  id: bookEvaluation.idavLivro,
+  readerName: bookEvaluation.leitor,
+  readerRegistration: bookEvaluation.matricula,
+  classId: bookEvaluation.nturma,
+  evaluatorId: bookEvaluation.idvol,
+  isParcialPlagiarism: bookEvaluation.plagioparcial
+    ? bookEvaluation.plagioparcial == 'NÃO'
+    : false,
+  isAppropriation: bookEvaluation.plagio
+    ? bookEvaluation.plagio == 'NÃO'
+    : false,
+  textAestheticsAvaliation: bookEvaluation.estetica ?? '',
+  textReliabilityAvaliation: bookEvaluation.dignidade ?? '',
+  textClarityAvaliation: bookEvaluation.clareza ?? '',
+  bookCriticalAnalysisAvaliation: bookEvaluation.opiniao ?? '',
+  societyCriticalAnalysisAvaliation: bookEvaluation.sociedade ?? '',
+  grammarAvaliation: bookEvaluation.portug ?? '',
+  syntheticAvaliation: bookEvaluation.redacao ?? '',
+  observations: bookEvaluation.observ ?? '',
+  concept: bookEvaluation.conceito ?? '',
+  relevantPhrases: bookEvaluation.relevantes ?? '',
+  readHistories: bookEvaluation['hist-relat']?.split(',') ?? [],
+  observedHistories: bookEvaluation['hist-observ'] ?? '',
+  createdAt: bookEvaluation.createdAt,
+  volunteerName: bookEvaluation['volunteer.nome'] ?? null,
+  expirationDate: bookEvaluation['data valid'] ?? null
+})
 
 export const bookEvaluationModelToEntity = (
   bookEvaluation: BookEvaluation
