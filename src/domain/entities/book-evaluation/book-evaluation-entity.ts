@@ -20,3 +20,5 @@ export type BookEvaluationEntity = {
   observedHistories?: string;
   createdAt: Date;
 };
+
+export type BookEvaluationList = BookEvaluationEntity & { expirationDate: Date | null, volunteerName: string | null}

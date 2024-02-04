@@ -35,6 +35,7 @@ export class BookEvaluation extends Model<
   nascimento?: Date;
   'hist-observ'?: string;
   'hist-relat'?: string;
+  'data valid'?: Date;
 
   public static initialize(sequelize: Sequelize) {
     this.init(
@@ -69,7 +70,8 @@ export class BookEvaluation extends Model<
         escolaridade: { type: DataTypes.STRING },
         nascimento: { type: DataTypes.DATE },
         'hist-observ': { type: DataTypes.STRING },
-        'hist-relat': { type: DataTypes.STRING }
+        'hist-relat': { type: DataTypes.STRING },
+        'data valid': {type: DataTypes.DATE},
       },
       {
         sequelize,

@@ -10,15 +10,22 @@ import {
   Security,
   SuccessResponse,
   Response,
-  Tags
+  Tags,
+  Get,
+  Middlewares,
+  Request
 } from 'tsoa';
 import { BookEvaluationRepository } from '@src/domain/interfaces/repositories/book-evaluation-repository';
 import { SequelizeBookEvaluationRepository } from '@src/services/repositories/sequelize-book-evaluation-repository';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { ApiError } from '../types/api-error';
 import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
-import { BookEvaluationEntity } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import { BookEvaluationEntity, BookEvaluationList } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import express from 'express';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+
 
 @Route('book-evaluations')
 @Tags('Book evaluation')
@@ -33,6 +40,32 @@ export class BookEvaluationAPI extends Controller {
     super();
     this.bookEvaluationRepository = bookEvaluationRepository;
   }
+
+    /**
+   * List all book evaluations.
+   *
+   * (The user must have bookPermissionn, which is checked using JWT)
+   *  Pagination
+   *  Page: ?page=number& (page number)
+   *  Limit: ?limit=number& (data quantity - max=30)
+   *
+   * @example page "page=3"
+   * @example limit "limit=20"
+   */
+
+    @Get('/')
+    @Security('jwt', ['bookPermission'])
+    @Middlewares(paginationMiddleware)
+    @SuccessResponse(200, 'Successfully generated the metrics')
+    public async getVolunteersAttendanceMetrics(
+      @Request() req: express.Request
+    ): Promise<PaginationResult<BookEvaluationList[]>> {
+      const { pagination } = req;
+      
+      if (!pagination) throw Error();
+  
+      return this.bookEvaluationRepository.getBookEvaluationList(pagination)
+    }
 
   /**
    * Create multiple multiple evaluations
