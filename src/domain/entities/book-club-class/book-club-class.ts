@@ -53,6 +53,6 @@ export interface AssociatedBCCEntity extends BookClubClass {
 }
 
 export interface BookClassAllInfo extends BookClubClassEntity {
-  placeName: string | null,
-  volunteerName: string | null
+  placeName: string | null;
+  volunteerName: string | null;
 }

@@ -23,15 +23,15 @@ const initModels = () => {
   Volunteer.hasMany(Attendance, { foreignKey: 'idvol' });
   Attendance.belongsTo(Volunteer, { foreignKey: 'idvol' });
 
-    Volunteer.hasMany(VolunteerHours, { foreignKey: 'idvol' });
+  Volunteer.hasMany(VolunteerHours, { foreignKey: 'idvol' });
   Volunteer.belongsTo(Volunteer, { foreignKey: 'idvol' });
-  
+
   Volunteer.hasMany(Notebook, { foreignKey: 'idvol' });
   Notebook.belongsTo(Volunteer, { foreignKey: 'idvol', as: 'volunteer' });
-  
+
   Pep.hasMany(Notebook, { foreignKey: 'idpep' });
   Notebook.belongsTo(Pep, { foreignKey: 'idpep', as: 'pep' });
-  
+
   Volunteer.hasMany(BookClubClass, { foreignKey: 'idvol' });
   BookClubClass.belongsTo(Volunteer, { foreignKey: 'idvol', as: 'volunteer' });
 

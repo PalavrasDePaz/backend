@@ -1,13 +1,16 @@
-import { BookEvaluationEntity, BookEvaluationList } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import {
+  BookEvaluationEntity,
+  BookEvaluationList
+} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 export interface BookEvaluationRepository {
-  getBookEvaluationList (
+  getBookEvaluationList(
     pagination: PaginationParams
-    ): Promise<PaginationResult<BookEvaluationList[]>> 
+  ): Promise<PaginationResult<BookEvaluationList[]>>;
 
   createBookEvaluations(
     bookEvaluations: CreateBookEvaluationEntity[]

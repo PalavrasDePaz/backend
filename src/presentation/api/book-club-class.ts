@@ -33,7 +33,10 @@ import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
 import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { Readable } from 'stream';
 import { logger } from '@src/services/logger/logger';
-import { AssociatedBCCEntity, BookClassAllInfo } from '@src/domain/entities/book-club-class/book-club-class';
+import {
+  AssociatedBCCEntity,
+  BookClassAllInfo
+} from '@src/domain/entities/book-club-class/book-club-class';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
@@ -65,7 +68,6 @@ export class BookClubClassAPI extends Controller {
     this.fileHandler = fileHandler;
   }
 
-
   /**
    * Get all book-club-class.
    *
@@ -86,12 +88,11 @@ export class BookClubClassAPI extends Controller {
     @Request() req: express.Request
   ): Promise<PaginationResult<BookClassAllInfo[]>> {
     const { pagination } = req;
-    
+
     if (!pagination) throw Error();
 
-    return  this.bccRepository.getAllClasses(pagination);
+    return this.bccRepository.getAllClasses(pagination);
   }
-
 
   /**
    * Download files of the book club class as a zip

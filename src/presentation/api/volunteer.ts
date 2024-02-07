@@ -270,7 +270,7 @@ export class VolunteerAPI extends Controller {
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
     const fifthDayOfMonth = new Date(currentYear, currentMonth, 6);
-    
+
     if (currentDate > fifthDayOfMonth) {
       throw new ApiError(
         400,

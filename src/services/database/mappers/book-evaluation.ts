@@ -3,7 +3,10 @@ import { CreationAttributes } from 'sequelize';
 import { BookEvaluation } from '../models/book-evaluation';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
 import UpdateModel from './helpers/update-model-type';
-import { BookEvaluationEntity, BookEvaluationList } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import {
+  BookEvaluationEntity,
+  BookEvaluationList
+} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 
 export const createBookEvaluationEntityToCreationModel = (
   bookEvaluation: CreateBookEvaluationEntity
@@ -30,7 +33,9 @@ export const createBookEvaluationEntityToCreationModel = (
   };
 };
 
-export const bookEvaluationToBookEvaluationListEntity = (bookEvaluation: BookEvaluation & { 'volunteer.nome'?: string }):BookEvaluationList   => ({
+export const bookEvaluationToBookEvaluationListEntity = (
+  bookEvaluation: BookEvaluation & { 'volunteer.nome'?: string }
+): BookEvaluationList => ({
   id: bookEvaluation.idavLivro,
   readerName: bookEvaluation.leitor,
   readerRegistration: bookEvaluation.matricula,
@@ -57,7 +62,7 @@ export const bookEvaluationToBookEvaluationListEntity = (bookEvaluation: BookEva
   createdAt: bookEvaluation.createdAt,
   volunteerName: bookEvaluation['volunteer.nome'] ?? null,
   expirationDate: bookEvaluation['data valid'] ?? null
-})
+});
 
 export const bookEvaluationModelToEntity = (
   bookEvaluation: BookEvaluation
