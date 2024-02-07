@@ -1,5 +1,6 @@
 import BookClubClassEntity, {
-  AssociatedBCCEntity, BookClassAllInfo
+  AssociatedBCCEntity,
+  BookClassAllInfo
 } from '@src/domain/entities/book-club-class/book-club-class';
 import { BookClubClass } from '../models/book-club-class';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
@@ -78,7 +79,10 @@ export const updateBCClassEntityToUpdateModel = (
 };
 
 export const bookClubClassToBookClassAllInfoEntity = (
-  bookClubClass: BookClubClass & {'place.fullname'?: string, 'volunteer.nome'?: string}
+  bookClubClass: BookClubClass & {
+    'place.fullname'?: string;
+    'volunteer.nome'?: string;
+  }
 ): BookClassAllInfo => ({
   idclass: bookClubClass.idturma,
   place: bookClubClass.placeId,
@@ -99,6 +103,5 @@ export const bookClubClassToBookClassAllInfoEntity = (
   idvol: bookClubClass.idvol,
   folderLink: bookClubClass.linkpasta,
   placeName: bookClubClass['place.fullname'] ?? null,
-volunteerName: bookClubClass['volunteer.nome'] ?? null
-
-}) 
+  volunteerName: bookClubClass['volunteer.nome'] ?? null
+});

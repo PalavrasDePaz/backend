@@ -20,12 +20,14 @@ import { SequelizeBookEvaluationRepository } from '@src/services/repositories/se
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { ApiError } from '../types/api-error';
 import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
-import { BookEvaluationEntity, BookEvaluationList } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import {
+  BookEvaluationEntity,
+  BookEvaluationList
+} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import express from 'express';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
-
 
 @Route('book-evaluations')
 @Tags('Book evaluation')
@@ -41,7 +43,7 @@ export class BookEvaluationAPI extends Controller {
     this.bookEvaluationRepository = bookEvaluationRepository;
   }
 
-    /**
+  /**
    * List all book evaluations.
    *
    * (The user must have bookPermissionn, which is checked using JWT)
@@ -53,19 +55,19 @@ export class BookEvaluationAPI extends Controller {
    * @example limit "limit=20"
    */
 
-    @Get('/')
-    @Security('jwt', ['bookPermission'])
-    @Middlewares(paginationMiddleware)
-    @SuccessResponse(200, 'Successfully generated the metrics')
-    public async getVolunteersAttendanceMetrics(
-      @Request() req: express.Request
-    ): Promise<PaginationResult<BookEvaluationList[]>> {
-      const { pagination } = req;
-      
-      if (!pagination) throw Error();
-  
-      return this.bookEvaluationRepository.getBookEvaluationList(pagination)
-    }
+  @Get('/')
+  @Security('jwt', ['bookPermission'])
+  @Middlewares(paginationMiddleware)
+  @SuccessResponse(200, 'Successfully generated the metrics')
+  public async getVolunteersAttendanceMetrics(
+    @Request() req: express.Request
+  ): Promise<PaginationResult<BookEvaluationList[]>> {
+    const { pagination } = req;
+
+    if (!pagination) throw Error('lancei');
+
+    return this.bookEvaluationRepository.getBookEvaluationList(pagination);
+  }
 
   /**
    * Create multiple multiple evaluations
@@ -137,5 +139,36 @@ export class BookEvaluationAPI extends Controller {
     }
 
     return updatedEvaluation;
+  }
+
+  /**
+   * Get evaluation by ID
+   *
+   * (The volunteer must have bookPermission, which is checked using JWT)
+   */
+  @Get('{evaluationId}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(200, 'Successfully get the evaluation')
+  @Response<BookEvaluationError>(404, 'Could not find evaluation', {
+    name: 'EVALUATION_NOT_FOUND_ERROR',
+    message: `Evaluation with id {evaluationId} not found`
+  })
+  async getBookEvaluationById(
+    @Path() evaluationId: number
+  ): Promise<BookEvaluationEntity> {
+    const evaluation =
+      await this.bookEvaluationRepository.getBookEvaluationById(evaluationId);
+
+    if (!evaluation) {
+      throw new ApiError(
+        404,
+        new BookEvaluationError({
+          name: 'EVALUATION_NOT_FOUND_ERROR',
+          message: `Evaluation with id ${evaluationId} not found`
+        })
+      );
+    }
+
+    return evaluation;
   }
 }

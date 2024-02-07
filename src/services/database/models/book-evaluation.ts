@@ -71,7 +71,7 @@ export class BookEvaluation extends Model<
         nascimento: { type: DataTypes.DATE },
         'hist-observ': { type: DataTypes.STRING },
         'hist-relat': { type: DataTypes.STRING },
-        'data valid': {type: DataTypes.DATE},
+        'data valid': { type: DataTypes.DATE }
       },
       {
         sequelize,
