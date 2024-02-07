@@ -64,7 +64,7 @@ export class BookEvaluationAPI extends Controller {
   ): Promise<PaginationResult<BookEvaluationList[]>> {
     const { pagination } = req;
 
-    if (!pagination) throw Error('lancei');
+    if (!pagination) throw Error();
 
     return this.bookEvaluationRepository.getBookEvaluationList(pagination);
   }
