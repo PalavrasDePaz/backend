@@ -9,7 +9,7 @@ export const sendEmailToSupport = async (
   emailManager.sendEmail({
     sender: supportEmailSendData.email,
     receiver: supportEmail,
-    subject: supportEmailSendData.subject,
-    body: `<p> Enviado por ${supportEmailSendData.name} </p> <p> Mensagem: ${supportEmailSendData.message} </p>`
+    subject: supportEmailSendData.name,
+    body: `<p>${supportEmailSendData.message} </p>`
   });
 };
