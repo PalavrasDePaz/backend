@@ -3,7 +3,7 @@ import { PepClassEntity } from '../pep-class/pep-class-entity';
 export type NotebookEntity = {
   idcad: number;
   idvol: number | null;
-  idpep?: number;
+  idpep?: number | null;
   studentName: string;
   studentRegistration: number;
   studentPrisonUnit?: string;

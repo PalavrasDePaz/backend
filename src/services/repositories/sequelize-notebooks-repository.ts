@@ -75,7 +75,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       where: {
         idvol,
         'Carimbo de data/hora': null,
-        aprovado: 'SIM'
+        aprovado: 'SIM',
+        idpep: { [Op.ne]: null }
       }
     });
     return notebooks.map(notebookModelToEntity);
@@ -87,7 +88,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       where: {
         datareserva: null,
         'Carimbo de data/hora': null,
-        aprovado: 'SIM'
+        aprovado: 'SIM',
+        idpep: { [Op.ne]: null }
       }
     });
 
