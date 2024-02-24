@@ -46,7 +46,7 @@ export class Notebook extends Model<
   'conclusão do avaliador'!: string;
   'exclusão de arquivos recebidos'?: string;
   'Carimbo de data/hora'?: Date | null;
-  idpep?: number;
+  idpep?: number | null;
   datareserva?: Date | null;
   aprovado?: string;
   pep?: Pep;
