@@ -302,7 +302,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NotebookEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"intersection","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"archivesExclusion":{"dataType":"boolean","required":true},"approved":{"dataType":"boolean","required":true},"conclusion":{"dataType":"string","required":true},"a13":{"dataType":"string"},"a12":{"dataType":"string"},"a11":{"dataType":"string"},"a10":{"dataType":"string"},"a9":{"dataType":"string"},"a8":{"dataType":"string"},"a7":{"dataType":"string"},"a6":{"dataType":"string"},"a5":{"dataType":"string"},"a4":{"dataType":"string"},"a3":{"dataType":"string"},"a2":{"dataType":"string"},"a1":{"dataType":"string"},"relevantContent":{"dataType":"string"},"subject10":{"dataType":"string"},"subject9":{"dataType":"string"},"subject8":{"dataType":"string"},"subject7":{"dataType":"string"},"subject6":{"dataType":"string"},"subject5":{"dataType":"string"},"subject4":{"dataType":"string"},"subject3":{"dataType":"string"},"subject2":{"dataType":"string"},"subject1":{"dataType":"string"},"evaluatorEmail":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"studentPrisonUnit":{"dataType":"string"},"studentRegistration":{"dataType":"double","required":true},"studentName":{"dataType":"string","required":true},"idpep":{"dataType":"double"},"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"idcad":{"dataType":"double","required":true}}},{"ref":"Pick_PepClassEntity.notebookDirectory_"}],"validators":{}},
+        "type": {"dataType":"intersection","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"archivesExclusion":{"dataType":"boolean","required":true},"approved":{"dataType":"boolean","required":true},"conclusion":{"dataType":"string","required":true},"a13":{"dataType":"string"},"a12":{"dataType":"string"},"a11":{"dataType":"string"},"a10":{"dataType":"string"},"a9":{"dataType":"string"},"a8":{"dataType":"string"},"a7":{"dataType":"string"},"a6":{"dataType":"string"},"a5":{"dataType":"string"},"a4":{"dataType":"string"},"a3":{"dataType":"string"},"a2":{"dataType":"string"},"a1":{"dataType":"string"},"relevantContent":{"dataType":"string"},"subject10":{"dataType":"string"},"subject9":{"dataType":"string"},"subject8":{"dataType":"string"},"subject7":{"dataType":"string"},"subject6":{"dataType":"string"},"subject5":{"dataType":"string"},"subject4":{"dataType":"string"},"subject3":{"dataType":"string"},"subject2":{"dataType":"string"},"subject1":{"dataType":"string"},"evaluatorEmail":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"studentPrisonUnit":{"dataType":"string"},"studentRegistration":{"dataType":"double","required":true},"studentName":{"dataType":"string","required":true},"idpep":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"idcad":{"dataType":"double","required":true}}},{"ref":"Pick_PepClassEntity.notebookDirectory_"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
@@ -1055,6 +1055,37 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getBookEvaluationById.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-evaluations/by-class/:classId',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getBookEvaluationByClassId)),
+
+            async function BookEvaluationAPI_getBookEvaluationByClassId(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookEvaluationAPI>(BookEvaluationAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getBookEvaluationByClassId.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);

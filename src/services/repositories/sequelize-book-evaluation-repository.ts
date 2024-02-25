@@ -69,6 +69,15 @@ export class SequelizeBookEvaluationRepository
     return evaluation ? bookEvaluationModelToEntity(evaluation) : null;
   }
 
+  async getBookEvaluationByClassId(
+    classId: number
+  ): Promise<BookEvaluationEntity | null> {
+    const evaluation = await BookEvaluation.findOne({where: {nturma: classId}});
+
+    return evaluation ? bookEvaluationModelToEntity(evaluation) : null;
+  }
+
+
   async createBookEvaluations(
     bookEvaluations: CreateBookEvaluationEntity[]
   ): Promise<void> {

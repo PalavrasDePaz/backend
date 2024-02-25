@@ -24,4 +24,8 @@ export interface BookEvaluationRepository {
   getBookEvaluationById(
     evaluationId: number
   ): Promise<BookEvaluationEntity | null>;
+
+  getBookEvaluationByClassId(
+    evaluationId: number
+  ): Promise<BookEvaluationEntity | null>;
 }
