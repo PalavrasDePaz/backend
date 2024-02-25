@@ -171,4 +171,37 @@ export class BookEvaluationAPI extends Controller {
 
     return evaluation;
   }
+
+    /**
+   * Get evaluation by class ID
+   *
+   * (The volunteer must have bookPermission, which is checked using JWT)
+   */
+    @Get('/by-class/{classId}')
+    @Security('jwt', ['bookPermission'])
+    @SuccessResponse(200, 'Successfully get the evaluation')
+    @Response<BookEvaluationError>(404, 'Could not find evaluation', {
+      name: 'EVALUATION_NOT_FOUND_ERROR',
+      message: `Evaluation with id {classId} not found`
+    })
+    async getBookEvaluationByClassId(
+      @Path() classId: number
+    ): Promise<BookEvaluationEntity> {
+      const evaluation =
+        await this.bookEvaluationRepository.getBookEvaluationByClassId(classId);
+  
+      if (!evaluation) {
+        throw new ApiError(
+          404,
+          new BookEvaluationError({
+            name: 'EVALUATION_NOT_FOUND_ERROR',
+            message: `Evaluation with id ${classId} not found`
+          })
+        );
+      }
+  
+      return evaluation;
+    }
 }
+
+
