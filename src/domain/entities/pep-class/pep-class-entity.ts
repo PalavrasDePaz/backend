@@ -1,6 +1,7 @@
 export type PepClassEntity = {
   id: number;
   placeId: number;
+  place?: string;
   groupName?: string;
   report?: boolean;
   receivedDay?: Date;
@@ -11,4 +12,8 @@ export type PepClassEntity = {
   numEnrolled?: number;
   numEnrolledGotCertificate?: number;
   notebookDirectory?: string;
+};
+
+export type PepClassWithPlace = Omit<PepClassEntity, 'place'> & {
+  fullName: string;
 };

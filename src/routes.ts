@@ -345,9 +345,29 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_NotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_PepClassEntity.Exclude_keyofPepClassEntity.place__": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"double","required":true},"notebookDirectory":{"dataType":"string"},"placeId":{"dataType":"double","required":true},"groupName":{"dataType":"string"},"report":{"dataType":"boolean"},"receivedDay":{"dataType":"datetime"},"releasedDay":{"dataType":"datetime"},"facilitatorName":{"dataType":"string"},"classOneDate":{"dataType":"datetime"},"classTenDate":{"dataType":"datetime"},"numEnrolled":{"dataType":"double"},"numEnrolledGotCertificate":{"dataType":"double"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Omit_PepClassEntity.place_": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_PepClassEntity.Exclude_keyofPepClassEntity.place__","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PepClassWithPlace": {
+        "dataType": "refAlias",
+        "type": {"dataType":"intersection","subSchemas":[{"ref":"Omit_PepClassEntity.place_"},{"dataType":"nestedObjectLiteral","nestedProperties":{"fullName":{"dataType":"string","required":true}}}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginationResult_PepClassWithPlace-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"totalCount":{"dataType":"double","required":true},"pageInfo":{"dataType":"nestedObjectLiteral","nestedProperties":{"hasPreviousPage":{"dataType":"boolean","required":true},"hasNextPage":{"dataType":"boolean","required":true},"page":{"dataType":"double","required":true}},"required":true},"nodes":{"dataType":"array","array":{"dataType":"refAlias","ref":"PepClassWithPlace"},"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PepClassEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"notebookDirectory":{"dataType":"string"},"numEnrolledGotCertificate":{"dataType":"double"},"numEnrolled":{"dataType":"double"},"classTenDate":{"dataType":"datetime"},"classOneDate":{"dataType":"datetime"},"facilitatorName":{"dataType":"string"},"releasedDay":{"dataType":"datetime"},"receivedDay":{"dataType":"datetime"},"report":{"dataType":"boolean"},"groupName":{"dataType":"string"},"placeId":{"dataType":"double","required":true},"id":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"notebookDirectory":{"dataType":"string"},"numEnrolledGotCertificate":{"dataType":"double"},"numEnrolled":{"dataType":"double"},"classTenDate":{"dataType":"datetime"},"classOneDate":{"dataType":"datetime"},"facilitatorName":{"dataType":"string"},"releasedDay":{"dataType":"datetime"},"receivedDay":{"dataType":"datetime"},"report":{"dataType":"boolean"},"groupName":{"dataType":"string"},"place":{"dataType":"string"},"placeId":{"dataType":"double","required":true},"id":{"dataType":"double","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "PepClassError": {
@@ -363,7 +383,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_PepClassEntity.Exclude_keyofPepClassEntity.id-or-placeId__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"notebookDirectory":{"dataType":"string"},"groupName":{"dataType":"string"},"report":{"dataType":"boolean"},"receivedDay":{"dataType":"datetime"},"releasedDay":{"dataType":"datetime"},"facilitatorName":{"dataType":"string"},"classOneDate":{"dataType":"datetime"},"classTenDate":{"dataType":"datetime"},"numEnrolled":{"dataType":"double"},"numEnrolledGotCertificate":{"dataType":"double"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"place":{"dataType":"string"},"notebookDirectory":{"dataType":"string"},"groupName":{"dataType":"string"},"report":{"dataType":"boolean"},"receivedDay":{"dataType":"datetime"},"releasedDay":{"dataType":"datetime"},"facilitatorName":{"dataType":"string"},"classOneDate":{"dataType":"datetime"},"classTenDate":{"dataType":"datetime"},"numEnrolled":{"dataType":"double"},"numEnrolledGotCertificate":{"dataType":"double"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_PepClassEntity.id-or-placeId_": {
@@ -1337,6 +1357,37 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getNotbookbyIdcad.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/pep-class',
+            authenticateMiddleware([{"jwt":["notebookModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(PepAPI)),
+            ...(fetchMiddlewares<RequestHandler>(PepAPI.prototype.getClasses)),
+
+            async function PepAPI_getClasses(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PepAPI>(PepAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getClasses.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);

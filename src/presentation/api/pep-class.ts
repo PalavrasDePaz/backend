@@ -1,25 +1,33 @@
+import { validationExample } from '@src/documentation/validation-example';
+import {
+  PepClassEntity,
+  PepClassWithPlace
+} from '@src/domain/entities/pep-class/pep-class-entity';
+import { UpdatePepClassEntity } from '@src/domain/entities/pep-class/update-pep-class-entity';
+import { PepClassError } from '@src/domain/errors/pep-class';
+import { PepClassRepository } from '@src/domain/interfaces/repositories/pep-class-repository';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { SequelizePepClassRepository } from '@src/services/repositories/sequelize-pep-class-repository';
+import express from 'express';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import {
+  Body,
   Controller,
   FieldErrors,
   Get,
+  Middlewares,
   Path,
+  Put,
+  Request,
+  Response,
   Route,
   Security,
   SuccessResponse,
-  Response,
-  Tags,
-  Body,
-  Put
+  Tags
 } from 'tsoa';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { ApiError } from '../types/api-error';
-import { validationExample } from '@src/documentation/validation-example';
-import { PepClassEntity } from '@src/domain/entities/pep-class/pep-class-entity';
-import { PepClassRepository } from '@src/domain/interfaces/repositories/pep-class-repository';
-import { SequelizePepClassRepository } from '@src/services/repositories/sequelize-pep-class-repository';
-import { PepClassError } from '@src/domain/errors/pep-class';
-import { UpdatePepClassEntity } from '@src/domain/entities/pep-class/update-pep-class-entity';
 
 @Route('pep-class')
 @Response<{ message: string; details: FieldErrors }>(
@@ -40,6 +48,17 @@ export class PepAPI extends Controller {
     this.pepClassRepository = pepClassRepository;
   }
 
+  @Get('/')
+  @Security('jwt', ['notebookModulePermission'])
+  @Middlewares(paginationMiddleware)
+  @SuccessResponse(200, 'Successfully fetched the classes')
+  async getClasses(
+    @Request() req: express.Request
+  ): Promise<PaginationResult<PepClassWithPlace[]>> {
+    const { pagination } = req;
+    if (!pagination) throw Error();
+    return await this.pepClassRepository.getAllPepClasses(pagination);
+  }
   /**
    * Get all the pep classes starting from the classId in the path
    *

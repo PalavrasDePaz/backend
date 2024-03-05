@@ -1,10 +1,12 @@
 import {
+  Association,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model,
   Sequelize
 } from 'sequelize';
+import { Pep } from './class';
 
 export class Place extends Model<
   InferAttributes<Place>,
@@ -17,6 +19,10 @@ export class Place extends Model<
   addr?: string;
   sex!: string;
   closed!: number;
+
+  public static associations: {
+    pep: Association<Place, Pep>;
+  };
 
   public static initialize(sequelize: Sequelize) {
     this.init(
