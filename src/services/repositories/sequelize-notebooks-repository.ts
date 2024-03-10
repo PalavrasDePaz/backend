@@ -1,17 +1,24 @@
-import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
-import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
+import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
 import {
-  notebookModelToEntity,
+  NotebookEntity,
+  NotebookWithPlaceAndVolunteer
+} from '@src/domain/entities/notebook/notebook-entity';
+import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
+import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
+import { provideSingleton } from '@src/helpers/provide-singleton';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { Op } from 'sequelize';
+import {
   evaluateNotebookEntityToEvaluateNotebookModel,
+  evalutionListNotebookModelToEntity,
+  notebookModelToEntity,
   updateNotebookEntityToUpdateModel
 } from '../database/mappers/notebooks';
-import { Notebook } from '../database/models/notebook';
-import { provideSingleton } from '@src/helpers/provide-singleton';
-import { Op } from 'sequelize';
-import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
-import { Volunteer } from '../database/models/volunteer';
 import { Pep } from '../database/models/class';
-import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
+import { Notebook } from '../database/models/notebook';
+import { Place } from '../database/models/place';
+import { Volunteer } from '../database/models/volunteer';
+import { wrapPagination } from './helpers/wrapPagination';
 
 @provideSingleton(SequelizeNotebookRepository)
 export class SequelizeNotebookRepository implements NotebookRepository {
@@ -114,4 +121,28 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     });
     return await this.getNotebookById(notebookId);
   }
+
+  getAllNotebookEvaluation = wrapPagination(
+    async (
+      pagination: PaginationParams
+    ): Promise<[NotebookWithPlaceAndVolunteer[], number]> => {
+      const { offset, limit } = pagination;
+      const notebooks = await Notebook.findAll<
+        Notebook & { 'pep.place.fullName'?: string; 'volunteer.NOME'?: string }
+      >({
+        include: [
+          { model: Volunteer, as: 'volunteer', attributes: ['NOME'] },
+          { model: Pep, as: 'pep', include: [{ model: Place, as: 'place' }] }
+        ],
+        order: [['idcad', 'DESC']],
+        offset,
+        limit,
+        raw: true
+      });
+
+      const totalCount = await Notebook.count();
+
+      return [notebooks.map(evalutionListNotebookModelToEntity), totalCount];
+    }
+  );
 }
