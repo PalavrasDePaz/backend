@@ -1,15 +1,22 @@
-import { provideSingleton } from '@src/helpers/provide-singleton';
-import { Op } from 'sequelize';
-import { PepClassRepository } from '@src/domain/interfaces/repositories/pep-class-repository';
-import { PepClassEntity } from '@src/domain/entities/pep-class/pep-class-entity';
-import { Pep } from '../database/models/class';
+import {
+  PepClassEntity,
+  PepClassWithPlace
+} from '@src/domain/entities/pep-class/pep-class-entity';
 import { UpdatePepClassEntity } from '@src/domain/entities/pep-class/update-pep-class-entity';
+import { PepClassError } from '@src/domain/errors/pep-class';
+import { PepClassRepository } from '@src/domain/interfaces/repositories/pep-class-repository';
+import { provideSingleton } from '@src/helpers/provide-singleton';
+import { ApiError } from '@src/presentation/types/api-error';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { Op } from 'sequelize';
 import {
   pepClassModelToEntity,
+  pepClassPlaceModelToEntity,
   updatePepClassEntityToUpdateModel
 } from '../database/mappers/pep-class';
-import { ApiError } from '@src/presentation/types/api-error';
-import { PepClassError } from '@src/domain/errors/pep-class';
+import { Pep } from '../database/models/class';
+import { Place } from '../database/models/place';
+import { wrapPagination } from './helpers/wrapPagination';
 
 @provideSingleton(SequelizePepClassRepository)
 export class SequelizePepClassRepository implements PepClassRepository {
@@ -48,4 +55,22 @@ export class SequelizePepClassRepository implements PepClassRepository {
       );
     }
   }
+
+  getAllPepClasses = wrapPagination(
+    async (
+      pagination: PaginationParams
+    ): Promise<[PepClassWithPlace[], number]> => {
+      const { offset, limit } = pagination;
+      const pepPlace = await Pep.findAll<Pep & { 'place.fullName'?: string }>({
+        include: { model: Place, as: 'place', attributes: ['fullName'] },
+        offset,
+        limit,
+        raw: true
+      });
+
+      const totalCount = await Pep.count();
+
+      return [pepPlace.map(pepClassPlaceModelToEntity), totalCount];
+    }
+  );
 }
