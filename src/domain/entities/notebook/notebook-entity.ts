@@ -39,3 +39,12 @@ export type NotebookEntity = {
   evaluatedDate?: Date | null;
   reservationDate?: Date | null;
 } & Pick<PepClassEntity, 'notebookDirectory'>;
+
+export type NotebookWithPlaceAndVolunteer = {
+  studentName: string;
+  studentRegistration: string;
+  fullName: string;
+  evaluatorName: string;
+  idpep: number | null | undefined;
+  reservationDate: Date | null | undefined;
+};
