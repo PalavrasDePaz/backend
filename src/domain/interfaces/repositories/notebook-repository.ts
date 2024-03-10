@@ -1,6 +1,11 @@
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
-import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
+import {
+  NotebookEntity,
+  NotebookWithPlaceAndVolunteer
+} from '@src/domain/entities/notebook/notebook-entity';
 import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 export interface NotebookRepository {
   countEvaluatedNotebooksByIdVol(idvol: number): Promise<{ count: number }>;
@@ -29,4 +34,8 @@ export interface NotebookRepository {
     notebookId: number,
     notebook: UpdateNotebookEntity
   ): Promise<NotebookEntity | null>;
+
+  getAllNotebookEvaluation(
+    pagination: PaginationParams
+  ): Promise<PaginationResult<NotebookWithPlaceAndVolunteer[]>>;
 }

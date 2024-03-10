@@ -1099,6 +1099,79 @@
 			"UpdateBookEvaluationEntity": {
 				"$ref": "#/components/schemas/Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration_"
 			},
+			"NotebookWithPlaceAndVolunteer": {
+				"properties": {
+					"reservationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"idpep": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"evaluatorName": {
+						"type": "string"
+					},
+					"fullName": {
+						"type": "string"
+					},
+					"studentRegistration": {
+						"type": "string"
+					},
+					"studentName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"evaluatorName",
+					"fullName",
+					"studentRegistration",
+					"studentName"
+				],
+				"type": "object"
+			},
+			"PaginationResult_NotebookWithPlaceAndVolunteer-Array_": {
+				"properties": {
+					"totalCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"pageInfo": {
+						"properties": {
+							"hasPreviousPage": {
+								"type": "boolean"
+							},
+							"hasNextPage": {
+								"type": "boolean"
+							},
+							"page": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"hasPreviousPage",
+							"hasNextPage",
+							"page"
+						],
+						"type": "object"
+					},
+					"nodes": {
+						"items": {
+							"$ref": "#/components/schemas/NotebookWithPlaceAndVolunteer"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"totalCount",
+					"pageInfo",
+					"nodes"
+				],
+				"type": "object"
+			},
 			"NotebookError": {
 				"properties": {
 					"name": {
@@ -3642,6 +3715,72 @@
 						}
 					}
 				]
+			}
+		},
+		"/notebooks/evaluation-list": {
+			"get": {
+				"operationId": "GetNotebooksEvaluation",
+				"responses": {
+					"200": {
+						"description": "Successfully fetched the notebooks",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PaginationResult_NotebookWithPlaceAndVolunteer-Array_"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/notebooks/count/{idvol}": {
