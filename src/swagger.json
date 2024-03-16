@@ -832,6 +832,165 @@
 			"UpdateBCClassEntity": {
 				"$ref": "#/components/schemas/Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_"
 			},
+			"BookClubClass": {
+				"properties": {
+					"idclass": {
+						"type": "number",
+						"format": "double"
+					},
+					"reportReceiveDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"loanDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"returnDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"reportElaborationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"received": {
+						"type": "string"
+					},
+					"yesList": {
+						"type": "string"
+					},
+					"presenceList": {
+						"type": "number",
+						"format": "double"
+					},
+					"qrl": {
+						"type": "number",
+						"format": "double"
+					},
+					"sendDateParec": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"presSedex": {
+						"type": "string"
+					},
+					"sendDateFunap": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"presSedex2": {
+						"type": "string"
+					},
+					"endEvaluationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"parec": {
+						"type": "string"
+					},
+					"idvol": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"folderLink": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"idclass",
+					"reportReceiveDate",
+					"qrl"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_BookClubClassEntity.Exclude_keyofBookClubClassEntity.idclass__": {
+				"properties": {
+					"idvol": {
+						"type": "number",
+						"format": "double",
+						"nullable": true
+					},
+					"place": {
+						"type": "number",
+						"format": "double"
+					},
+					"reportReceiveDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"loanDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"returnDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"reportElaborationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"received": {
+						"type": "string"
+					},
+					"yesList": {
+						"type": "string"
+					},
+					"presenceList": {
+						"type": "number",
+						"format": "double"
+					},
+					"qrl": {
+						"type": "number",
+						"format": "double"
+					},
+					"sendDateParec": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"presSedex": {
+						"type": "string"
+					},
+					"sendDateFunap": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"presSedex2": {
+						"type": "string"
+					},
+					"endEvaluationDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"parec": {
+						"type": "string"
+					},
+					"folderLink": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"place",
+					"reportReceiveDate",
+					"qrl"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_BookClubClassEntity.idclass_": {
+				"$ref": "#/components/schemas/Pick_BookClubClassEntity.Exclude_keyofBookClubClassEntity.idclass__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CreateBookClass": {
+				"$ref": "#/components/schemas/Omit_BookClubClassEntity.idclass_"
+			},
 			"BookEvaluationList": {
 				"allOf": [
 					{
@@ -2694,6 +2853,98 @@
 					}
 				],
 				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateClass",
+				"responses": {
+					"201": {
+						"description": "Successfully created the class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClass"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Could not update class",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookClubClassError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "ClASS_NOT_UPDATED_ERROR",
+											"message": "Class with ID {classId} not updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Book Club Class"
+				],
+				"security": [
+					{
+						"jwt": [
+							"essayModulePermission"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateBookClass"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/book-club-class/download/{idclass}": {

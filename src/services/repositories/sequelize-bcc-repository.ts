@@ -1,22 +1,24 @@
-import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
-import { provideSingleton } from '@src/helpers/provide-singleton';
-import { BookClubClass } from '../database/models/book-club-class';
-import { Op } from 'sequelize';
-import {
-  AssociatedBCCModelToEntity,
-  bookClubClassToBookClassAllInfoEntity,
-  updateBCClassEntityToUpdateModel
-} from '../database/mappers/book-class-club';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
 import {
   AssociatedBCCEntity,
-  BookClassAllInfo
+  BookClassAllInfo,
+  CreateBookClass
 } from '@src/domain/entities/book-club-class/book-club-class';
-import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
-import { Place } from '../database/models/place';
-import { BookEvaluation } from '../database/models/book-evaluation';
+import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
+import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
+import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { Op } from 'sequelize';
+import {
+  AssociatedBCCModelToEntity,
+  BCCEntityToModel,
+  bookClubClassToBookClassAllInfoEntity,
+  updateBCClassEntityToUpdateModel
+} from '../database/mappers/book-class-club';
+import { BookClubClass } from '../database/models/book-club-class';
+import { BookEvaluation } from '../database/models/book-evaluation';
+import { Place } from '../database/models/place';
 import { Volunteer } from '../database/models/volunteer';
 import { wrapPagination } from './helpers/wrapPagination';
 
@@ -168,5 +170,15 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     )[0];
 
     return updatedRows ? await this.getBookClubClassById(classId) : null;
+  }
+
+  async createClass(
+    bookClubClass: CreateBookClass
+  ): Promise<BookClubClass | null> {
+    const createdClass = await BookClubClass.create(
+      BCCEntityToModel(bookClubClass)
+    );
+
+    return createdClass ? createdClass : null;
   }
 }

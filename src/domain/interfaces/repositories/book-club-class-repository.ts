@@ -1,10 +1,12 @@
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
 import {
   AssociatedBCCEntity,
-  BookClassAllInfo
+  BookClassAllInfo,
+  CreateBookClass
 } from '@src/domain/entities/book-club-class/book-club-class';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { BookClubClass } from '@src/services/database/models/book-club-class';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 export interface BookClubClassRepository {
@@ -35,4 +37,6 @@ export interface BookClubClassRepository {
     classId: number,
     bookClubClass: UpdateBCClassEntity
   ): Promise<AssociatedBCCEntity | null>;
+
+  createClass(bookClubClass: CreateBookClass): Promise<BookClubClass | null>;
 }

@@ -228,6 +228,45 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BookClubClass": {
+        "dataType": "refObject",
+        "properties": {
+            "idclass": {"dataType":"double","required":true},
+            "reportReceiveDate": {"dataType":"datetime","required":true},
+            "loanDate": {"dataType":"datetime"},
+            "returnDate": {"dataType":"datetime"},
+            "reportElaborationDate": {"dataType":"datetime"},
+            "received": {"dataType":"string"},
+            "yesList": {"dataType":"string"},
+            "presenceList": {"dataType":"double"},
+            "qrl": {"dataType":"double","required":true},
+            "sendDateParec": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
+            "presSedex": {"dataType":"string"},
+            "sendDateFunap": {"dataType":"datetime"},
+            "presSedex2": {"dataType":"string"},
+            "endEvaluationDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
+            "parec": {"dataType":"string"},
+            "idvol": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},
+            "folderLink": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_BookClubClassEntity.Exclude_keyofBookClubClassEntity.idclass__": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},"place":{"dataType":"double","required":true},"reportReceiveDate":{"dataType":"datetime","required":true},"loanDate":{"dataType":"datetime"},"returnDate":{"dataType":"datetime"},"reportElaborationDate":{"dataType":"datetime"},"received":{"dataType":"string"},"yesList":{"dataType":"string"},"presenceList":{"dataType":"double"},"qrl":{"dataType":"double","required":true},"sendDateParec":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"presSedex":{"dataType":"string"},"sendDateFunap":{"dataType":"datetime"},"presSedex2":{"dataType":"string"},"endEvaluationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"parec":{"dataType":"string"},"folderLink":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Omit_BookClubClassEntity.idclass_": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_BookClubClassEntity.Exclude_keyofBookClubClassEntity.idclass__","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateBookClass": {
+        "dataType": "refAlias",
+        "type": {"ref":"Omit_BookClubClassEntity.idclass_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "BookEvaluationList": {
         "dataType": "refAlias",
         "type": {"dataType":"intersection","subSchemas":[{"ref":"BookEvaluationEntity"},{"dataType":"nestedObjectLiteral","nestedProperties":{"volunteerName":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"expirationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true}}}],"validators":{}},
@@ -951,6 +990,37 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.updateClass.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/book-club-class',
+            authenticateMiddleware([{"jwt":["essayModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.createClass)),
+
+            async function BookClubClassAPI_createClass(request: any, response: any, next: any) {
+            const args = {
+                    bookClubClass: {"in":"body","name":"bookClubClass","required":true,"ref":"CreateBookClass"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.createClass.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 201, next);
             } catch (err) {
                 return next(err);
             }

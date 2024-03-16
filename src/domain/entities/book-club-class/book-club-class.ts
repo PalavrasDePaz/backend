@@ -43,6 +43,26 @@ interface BookClubClass {
   folderLink?: string;
 }
 
+export interface BookClubClassModel {
+  placeId: number;
+  datarecebrelatorio: Date;
+  emprestimo?: Date;
+  devolucao?: Date;
+  dataelabrelatorio?: Date;
+  recebido?: string;
+  simlista?: string;
+  listapresenca?: number;
+  qrl: number;
+  datainvioparec?: Date | null;
+  pressedex?: string;
+  datainviofunap?: Date;
+  pressedex2?: string;
+  datafimaval?: Date | null;
+  parec?: string;
+  idvol?: number | null;
+  linkpasta?: string;
+}
+
 export default interface BookClubClassEntity extends BookClubClass {
   place: number;
 }
@@ -56,3 +76,5 @@ export interface BookClassAllInfo extends BookClubClassEntity {
   placeName: string | null;
   volunteerName: string | null;
 }
+
+export type CreateBookClass = Omit<BookClubClassEntity, 'idclass'>;

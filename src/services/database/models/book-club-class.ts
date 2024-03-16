@@ -1,5 +1,6 @@
 import {
   Association,
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -7,14 +8,14 @@ import {
   NonAttribute,
   Sequelize
 } from 'sequelize';
-import { Place } from './place';
 import { BookEvaluation } from './book-evaluation';
+import { Place } from './place';
 
 export class BookClubClass extends Model<
   InferAttributes<BookClubClass>,
   InferCreationAttributes<BookClubClass>
 > {
-  idturma!: number;
+  idturma!: CreationOptional<number>;
   placeId!: number;
   datarecebrelatorio!: Date;
   emprestimo?: Date;
