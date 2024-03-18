@@ -7,8 +7,8 @@ services:
       - 3002:3002
     working_dir: /app
     # Caso queira que o container esteja atualizado durante o desenvolvimento, sem que você precise ficar fazendo down e up dos containers, descomente as 3 linhas abaixo
-    command: start:dev 
-    volumes: 
+    command: start:dev
+    volumes:
       - ./src:/app/src
     env_file:
       - .env
@@ -16,7 +16,7 @@ services:
       mysql:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3002"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      test: ['CMD', 'lsof', '-t', '-i:3002'] # Caso utilize outra porta interna para o back, altere ela aqui também
       timeout: 10s
       retries: 5
   mysql:
@@ -34,7 +34,7 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD}
     restart: 'always'
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost'] # Deve aguardar o banco ficar operacional
       timeout: 10s
       retries: 5
     cap_add:
