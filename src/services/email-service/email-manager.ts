@@ -1,9 +1,9 @@
+import { INFO_EMAIL, INFO_EMAIL_PASSWORD } from '@src/config/server';
 import { SendEmailError } from '@src/domain/errors/send-email';
 import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
+import { provideSingleton } from '@src/helpers/provide-singleton';
 import nodemailer from 'nodemailer';
 import { SendEmailData } from './types/send-email-data';
-import { provideSingleton } from '@src/helpers/provide-singleton';
-import { INFO_EMAIL, INFO_EMAIL_PASSWORD } from '@src/config/server';
 
 @provideSingleton(EmailManager)
 export class EmailManager implements IEmailManager {
@@ -29,7 +29,14 @@ export class EmailManager implements IEmailManager {
             from: sendEmailData.sender,
             to: sendEmailData.receiver,
             subject: sendEmailData.subject,
-            html: sendEmailData.body
+            html: sendEmailData.body,
+            attachments: [
+              {
+                filename: 'ethicscode.pdf',
+                path: __dirname + '/attachments/ethicscode.pdf',
+                cid: 'uniq-ethicscode.pdf'
+              }
+            ]
           },
           (err, info) => {
             if (err) {
