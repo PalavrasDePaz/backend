@@ -5,3 +5,4 @@ src/services/firebase/firebase-admin-credential.json
 firebase-admin.json
 package-lock.json
 *.log
+.docker
