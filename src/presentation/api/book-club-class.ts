@@ -1,45 +1,46 @@
+import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { validationExample } from '@src/documentation/validation-example';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
-import { ReserveClassDataEntity } from '@src/domain/entities/book-club-class/reserve-class-data-entity';
-import { BookClubClassError } from '@src/domain/errors/book-club-class';
-import { VolunteerError } from '@src/domain/errors/volunteer';
-import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
-import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
-import { inject } from 'inversify';
-import { provide } from 'inversify-binding-decorators';
-import {
-  Controller,
-  Get,
-  Path,
-  Route,
-  Response,
-  Security,
-  SuccessResponse,
-  Tags,
-  FieldErrors,
-  Put,
-  Body,
-  Request,
-  Middlewares
-} from 'tsoa';
-import { ApiError } from '../types/api-error';
-import { FileHandler } from '@src/services/files/file-handler';
-import { DriveFileHandler } from '@src/services/files/drive-file-handler';
-import express from 'express';
-import path from 'path';
-import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
-import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
-import { Readable } from 'stream';
-import { logger } from '@src/services/logger/logger';
 import {
   AssociatedBCCEntity,
   BookClassAllInfo
 } from '@src/domain/entities/book-club-class/book-club-class';
+import { ReserveClassDataEntity } from '@src/domain/entities/book-club-class/reserve-class-data-entity';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
-import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { BookClubClassError } from '@src/domain/errors/book-club-class';
+import { VolunteerError } from '@src/domain/errors/volunteer';
+import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { DriveFileHandler } from '@src/services/files/drive-file-handler';
+import { FileHandler } from '@src/services/files/file-handler';
+import { logger } from '@src/services/logger/logger';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
+import express from 'express';
+import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
+import { inject } from 'inversify';
+import { provide } from 'inversify-binding-decorators';
+import path from 'path';
+import { Readable } from 'stream';
+import {
+  Body,
+  Controller,
+  FieldErrors,
+  Get,
+  Middlewares,
+  Patch,
+  Path,
+  Put,
+  Request,
+  Response,
+  Route,
+  Security,
+  SuccessResponse,
+  Tags
+} from 'tsoa';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { ApiError } from '../types/api-error';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -372,5 +373,49 @@ export class BookClubClassAPI extends Controller {
     }
 
     return updatedBCC;
+  }
+
+  @Patch('{classId}')
+  @Security('jwt', ['essayModulePermission'])
+  @SuccessResponse(200, 'Successfully updated the class')
+  @Response<BookClubClassError>(404, 'Could not find class', {
+    name: 'ESSAY_NOT_FOUND',
+    message: `Essay with id {classId} not found`
+  })
+  @Response<BookClubClassError>(400, 'Could not update class', {
+    name: 'ClASS_NOT_UPDATED_ERROR',
+    message: `Class with ID {classId} not updated`
+  })
+  async updateConcluded(
+    @Path() classId: number,
+    @Body() evaluationDate: { endEvaluationDate: Date }
+  ): Promise<AssociatedBCCEntity> {
+    const book = await this.bccRepository.getBookClubClassById(classId);
+    if (!book) {
+      throw new ApiError(
+        404,
+        new BookClubClassError({
+          name: 'ESSAY_NOT_FOUND',
+          message: `Essay with id ${classId} not found`
+        })
+      );
+    }
+
+    const updatedField = await this.bccRepository.updateConcluded(
+      classId,
+      evaluationDate
+    );
+
+    if (!updatedField) {
+      throw new ApiError(
+        400,
+        new BookClubClassError({
+          name: 'ClASS_NOT_UPDATED_ERROR',
+          message: `Class with ID ${classId} not updated`
+        })
+      );
+    }
+
+    return updatedField;
   }
 }
