@@ -1,22 +1,22 @@
+import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
+import {
+  AssociatedBCCEntity,
+  BookClassAllInfo
+} from '@src/domain/entities/book-club-class/book-club-class';
+import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
+import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
 import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
 import { provideSingleton } from '@src/helpers/provide-singleton';
-import { BookClubClass } from '../database/models/book-club-class';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
 import { Op } from 'sequelize';
 import {
   AssociatedBCCModelToEntity,
   bookClubClassToBookClassAllInfoEntity,
   updateBCClassEntityToUpdateModel
 } from '../database/mappers/book-class-club';
-import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
-import {
-  AssociatedBCCEntity,
-  BookClassAllInfo
-} from '@src/domain/entities/book-club-class/book-club-class';
-import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-available-bcc';
-import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
-import { Place } from '../database/models/place';
+import { BookClubClass } from '../database/models/book-club-class';
 import { BookEvaluation } from '../database/models/book-evaluation';
-import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { Place } from '../database/models/place';
 import { Volunteer } from '../database/models/volunteer';
 import { wrapPagination } from './helpers/wrapPagination';
 
@@ -168,5 +168,21 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     )[0];
 
     return updatedRows ? await this.getBookClubClassById(classId) : null;
+  }
+
+  async updateConcluded(
+    classId: number,
+    evaluationDate: { endEvaluationDate: Date }
+  ): Promise<AssociatedBCCEntity | null> {
+    const updatedField = (
+      await BookClubClass.update(
+        { datafimaval: evaluationDate.endEvaluationDate },
+        {
+          where: { idturma: classId }
+        }
+      )
+    )[0];
+
+    return updatedField ? await this.getBookClubClassById(classId) : null;
   }
 }
