@@ -1,45 +1,45 @@
+import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
 import { validationExample } from '@src/documentation/validation-example';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
-import { ReserveClassDataEntity } from '@src/domain/entities/book-club-class/reserve-class-data-entity';
-import { BookClubClassError } from '@src/domain/errors/book-club-class';
-import { VolunteerError } from '@src/domain/errors/volunteer';
-import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
-import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
-import { inject } from 'inversify';
-import { provide } from 'inversify-binding-decorators';
-import {
-  Controller,
-  Get,
-  Path,
-  Route,
-  Response,
-  Security,
-  SuccessResponse,
-  Tags,
-  FieldErrors,
-  Put,
-  Body,
-  Request,
-  Middlewares
-} from 'tsoa';
-import { ApiError } from '../types/api-error';
-import { FileHandler } from '@src/services/files/file-handler';
-import { DriveFileHandler } from '@src/services/files/drive-file-handler';
-import express from 'express';
-import path from 'path';
-import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
-import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
-import { Readable } from 'stream';
-import { logger } from '@src/services/logger/logger';
 import {
   AssociatedBCCEntity,
   BookClassAllInfo
 } from '@src/domain/entities/book-club-class/book-club-class';
+import { ReserveClassDataEntity } from '@src/domain/entities/book-club-class/reserve-class-data-entity';
 import { UpdateBCClassEntity } from '@src/domain/entities/book-club-class/update-class-entity';
-import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { BookClubClassError } from '@src/domain/errors/book-club-class';
+import { VolunteerError } from '@src/domain/errors/volunteer';
+import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { DriveFileHandler } from '@src/services/files/drive-file-handler';
+import { FileHandler } from '@src/services/files/file-handler';
+import { logger } from '@src/services/logger/logger';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { SequelizeBCCRepository } from '@src/services/repositories/sequelize-bcc-repository';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
+import express from 'express';
+import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
+import { inject } from 'inversify';
+import { provide } from 'inversify-binding-decorators';
+import path from 'path';
+import { Readable } from 'stream';
+import {
+  Body,
+  Controller,
+  FieldErrors,
+  Get,
+  Middlewares,
+  Path,
+  Put,
+  Request,
+  Response,
+  Route,
+  Security,
+  SuccessResponse,
+  Tags
+} from 'tsoa';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { ApiError } from '../types/api-error';
 
 @Route('book-club-class')
 @Tags('Book Club Class')
@@ -194,18 +194,27 @@ export class BookClubClassAPI extends Controller {
   @Get('available/{idvol}')
   @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully fetched the essays')
-  async getAvailableClasses(
-    @Path() idvol: number
-  ): Promise<AvailableClassRowEntity[]> {
+  async getAvailableClasses(): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await this.bccRepository.getAvailableClasses();
 
+    const volunteerAvailableEssays = [...availableEssays];
+
+    return volunteerAvailableEssays;
+  }
+
+  @Get('reserved/{idvol}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(200, 'Successfully fetched the essays')
+  async getReservedClasses(
+    @Path() idvol: number
+  ): Promise<AvailableClassRowEntity[]> {
     const reservedEssays = await this.bccRepository.getReservedClassesByIdVol(
       idvol
     );
 
-    const volunteerAccessableEssays = [...reservedEssays, ...availableEssays];
+    const volunteerReservedEssays = [...reservedEssays];
 
-    return volunteerAccessableEssays;
+    return volunteerReservedEssays;
   }
 
   /**
