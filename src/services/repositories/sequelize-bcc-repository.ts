@@ -182,6 +182,7 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     const updatedField = (
       await BookClubClass.update(
         { datafimaval: endEvaluationDate },
+
         {
           where: { idturma: classId }
         }
