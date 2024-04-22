@@ -1,39 +1,45 @@
+import { validationExample } from '@src/documentation/validation-example';
 import { AvailableNotebookRowEntity } from '@src/domain/entities/notebook/available-notebook-row-entity';
+import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import {
+  NotebookEntity,
+  NotebookWithPlaceAndVolunteer
+} from '@src/domain/entities/notebook/notebook-entity';
 import { ReserveNotebookDataEntity } from '@src/domain/entities/notebook/reserve-notebook-data-entity';
+import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
+import { formatAvailableNotebookToTableRow } from '@src/domain/entity-formatters/format-available-notebook';
+import { FetchFilesError } from '@src/domain/errors/fetch-files';
+import { NotebookError } from '@src/domain/errors/notebook';
+import { VolunteerError } from '@src/domain/errors/volunteer';
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { DriveFileHandler } from '@src/services/files/drive-file-handler';
+import { FileHandler } from '@src/services/files/file-handler';
+import { logger } from '@src/services/logger/logger';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 import { SequelizeNotebookRepository } from '@src/services/repositories/sequelize-notebooks-repository';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
+import express from 'express';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import { Readable } from 'stream';
 import {
+  Body,
   Controller,
   FieldErrors,
   Get,
+  Middlewares,
   Path,
+  Put,
+  Request,
+  Response,
   Route,
   Security,
   SuccessResponse,
-  Response,
-  Tags,
-  Body,
-  Put,
-  Request
+  Tags
 } from 'tsoa';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { ApiError } from '../types/api-error';
-import { NotebookError } from '@src/domain/errors/notebook';
-import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
-import { VolunteerError } from '@src/domain/errors/volunteer';
-import { validationExample } from '@src/documentation/validation-example';
-import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
-import { Readable } from 'stream';
-import express from 'express';
-import { FileHandler } from '@src/services/files/file-handler';
-import { DriveFileHandler } from '@src/services/files/drive-file-handler';
-import { logger } from '@src/services/logger/logger';
-import { FetchFilesError } from '@src/domain/errors/fetch-files';
-import { formatAvailableNotebookToTableRow } from '@src/domain/entity-formatters/format-available-notebook';
-import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
-import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(
@@ -60,6 +66,18 @@ export class NotebookAPI extends Controller {
     this.notebooksRepository = notebooksRepository;
     this.volunteerRepository = volunteerRepository;
     this.fileHandler = fileHandler;
+  }
+
+  @Get('/evaluation-list')
+  @Security('jwt', ['readPermission'])
+  @Middlewares(paginationMiddleware)
+  @SuccessResponse(200, 'Successfully fetched the notebooks')
+  async getNotebooksEvaluation(
+    @Request() req: express.Request
+  ): Promise<PaginationResult<NotebookWithPlaceAndVolunteer[]>> {
+    const { pagination } = req;
+    if (!pagination) throw Error();
+    return await this.notebooksRepository.getAllNotebookEvaluation(pagination);
   }
 
   /**

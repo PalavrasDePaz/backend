@@ -1,22 +1,22 @@
-import { provideSingleton } from '@src/helpers/provide-singleton';
-import { BookEvaluationRepository } from '@src/domain/interfaces/repositories/book-evaluation-repository';
+import {
+  BookEvaluationEntity,
+  BookEvaluationList
+} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
-import { BookEvaluation } from '../database/models/book-evaluation';
+import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
+import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
+import { BookEvaluationRepository } from '@src/domain/interfaces/repositories/book-evaluation-repository';
+import { provideSingleton } from '@src/helpers/provide-singleton';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
 import {
   bookEvaluationModelToEntity,
   bookEvaluationToBookEvaluationListEntity,
   createBookEvaluationEntityToCreationModel,
   updateBookEvaluationEntityToUpdateModel
 } from '../database/mappers/book-evaluation';
-import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
-import {
-  BookEvaluationEntity,
-  BookEvaluationList
-} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
-import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
-import { wrapPagination } from './helpers/wrapPagination';
-import { PaginationParams } from '@src/presentation/types/paginationParams';
+import { BookEvaluation } from '../database/models/book-evaluation';
 import { Volunteer } from '../database/models/volunteer';
+import { wrapPagination } from './helpers/wrapPagination';
 
 @provideSingleton(SequelizeBookEvaluationRepository)
 export class SequelizeBookEvaluationRepository
@@ -72,11 +72,12 @@ export class SequelizeBookEvaluationRepository
   async getBookEvaluationByClassId(
     classId: number
   ): Promise<BookEvaluationEntity | null> {
-    const evaluation = await BookEvaluation.findOne({where: {nturma: classId}});
+    const evaluation = await BookEvaluation.findOne({
+      where: { nturma: classId }
+    });
 
     return evaluation ? bookEvaluationModelToEntity(evaluation) : null;
   }
-
 
   async createBookEvaluations(
     bookEvaluations: CreateBookEvaluationEntity[]

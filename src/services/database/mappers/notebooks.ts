@@ -1,8 +1,8 @@
-import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
-import { Notebook } from '../models/notebook';
 import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
-import UpdateModel from './helpers/update-model-type';
+import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
+import { Notebook } from '../models/notebook';
+import UpdateModel from './helpers/update-model-type';
 
 export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   idcad: notebook.idcad,
@@ -43,6 +43,25 @@ export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   evaluatedDate: notebook['Carimbo de data/hora'],
   reservationDate: notebook.datareserva,
   notebookDirectory: notebook.pep?.directory
+});
+
+export const evalutionListNotebookModelToEntity = (
+  notebook: Notebook & {
+    'pep.place.fullName'?: string;
+    'volunteer.NOME'?: string;
+  }
+) => ({
+  id: notebook.idcad,
+  studentName: notebook['nome do(a) aluno(a)'] || '',
+  studentRegistration: notebook['número de matrícula do(a) aluno(a)'] || '',
+  fullName:
+    notebook['pep.place.fullName'] ||
+    notebook['unidade prisional do(a) aluno(a)'] ||
+    '',
+  evaluatorName: notebook['volunteer.NOME'] || '',
+  idpep: notebook.idpep,
+  evaluatedDate: notebook['Carimbo de data/hora'],
+  reservationDate: notebook.datareserva
 });
 
 export const evaluateNotebookEntityToEvaluateNotebookModel = (

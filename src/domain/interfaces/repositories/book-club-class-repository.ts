@@ -35,4 +35,9 @@ export interface BookClubClassRepository {
     classId: number,
     bookClubClass: UpdateBCClassEntity
   ): Promise<AssociatedBCCEntity | null>;
+
+  updateConcluded(
+    classId: number,
+    evaluationDate: { endEvaluationDate: Date }
+  ): Promise<AssociatedBCCEntity | null>;
 }

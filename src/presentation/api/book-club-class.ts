@@ -29,6 +29,7 @@ import {
   FieldErrors,
   Get,
   Middlewares,
+  Patch,
   Path,
   Put,
   Request,
@@ -381,5 +382,49 @@ export class BookClubClassAPI extends Controller {
     }
 
     return updatedBCC;
+  }
+
+  @Patch('{classId}')
+  @Security('jwt', ['essayModulePermission'])
+  @SuccessResponse(200, 'Successfully updated the class')
+  @Response<BookClubClassError>(404, 'Could not find class', {
+    name: 'ESSAY_NOT_FOUND',
+    message: `Essay with id {classId} not found`
+  })
+  @Response<BookClubClassError>(400, 'Could not update class', {
+    name: 'ClASS_NOT_UPDATED_ERROR',
+    message: `Class with ID {classId} not updated`
+  })
+  async updateConcluded(
+    @Path() classId: number,
+    @Body() evaluationDate: { endEvaluationDate: Date }
+  ): Promise<AssociatedBCCEntity> {
+    const book = await this.bccRepository.getBookClubClassById(classId);
+    if (!book) {
+      throw new ApiError(
+        404,
+        new BookClubClassError({
+          name: 'ESSAY_NOT_FOUND',
+          message: `Essay with id ${classId} not found`
+        })
+      );
+    }
+
+    const updatedField = await this.bccRepository.updateConcluded(
+      classId,
+      evaluationDate
+    );
+
+    if (!updatedField) {
+      throw new ApiError(
+        400,
+        new BookClubClassError({
+          name: 'ClASS_NOT_UPDATED_ERROR',
+          message: `Class with ID ${classId} not updated`
+        })
+      );
+    }
+
+    return updatedField;
   }
 }

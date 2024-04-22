@@ -279,6 +279,16 @@ const models: TsoaRoute.Models = {
         "type": {"ref":"Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "NotebookWithPlaceAndVolunteer": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]},{"dataType":"undefined"}],"required":true},"idpep":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]},{"dataType":"undefined"}],"required":true},"evaluatorName":{"dataType":"string","required":true},"fullName":{"dataType":"string","required":true},"studentRegistration":{"dataType":"string","required":true},"studentName":{"dataType":"string","required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PaginationResult_NotebookWithPlaceAndVolunteer-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"totalCount":{"dataType":"double","required":true},"pageInfo":{"dataType":"nestedObjectLiteral","nestedProperties":{"hasPreviousPage":{"dataType":"boolean","required":true},"hasNextPage":{"dataType":"boolean","required":true},"page":{"dataType":"double","required":true}},"required":true},"nodes":{"dataType":"array","array":{"dataType":"refAlias","ref":"NotebookWithPlaceAndVolunteer"},"required":true}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NotebookError": {
         "dataType": "refObject",
         "properties": {
@@ -986,6 +996,38 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/book-club-class/:classId',
+            authenticateMiddleware([{"jwt":["essayModulePermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.updateConcluded)),
+
+            async function BookClubClassAPI_updateConcluded(request: any, response: any, next: any) {
+            const args = {
+                    classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
+                    evaluationDate: {"in":"body","name":"evaluationDate","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"endEvaluationDate":{"dataType":"datetime","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookClubClassAPI>(BookClubClassAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateConcluded.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-evaluations',
             authenticateMiddleware([{"jwt":["bookPermission"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
@@ -1136,6 +1178,37 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getBookEvaluationByClassId.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/notebooks/evaluation-list',
+            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.getNotebooksEvaluation)),
+
+            async function NotebookAPI_getNotebooksEvaluation(request: any, response: any, next: any) {
+            const args = {
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getNotebooksEvaluation.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
             } catch (err) {
                 return next(err);
