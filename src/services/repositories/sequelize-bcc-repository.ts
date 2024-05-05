@@ -177,7 +177,7 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
   ): Promise<AssociatedBCCEntity | null> {
     const endEvaluationDate = moment(
       new Date(evaluationDate.endEvaluationDate)
-    );
+    ).toDate();
 
     const updatedField = (
       await BookClubClass.update(
