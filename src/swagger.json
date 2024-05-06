@@ -5785,6 +5785,16 @@
 							}
 						}
 					},
+					"404": {
+						"description": "Could not find volunteer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VolunteerError"
+								}
+							}
+						}
+					},
 					"422": {
 						"description": "Validation Error",
 						"content": {

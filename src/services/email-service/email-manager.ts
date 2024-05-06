@@ -30,13 +30,7 @@ export class EmailManager implements IEmailManager {
             to: sendEmailData.receiver,
             subject: sendEmailData.subject,
             html: sendEmailData.body,
-            attachments: [
-              {
-                filename: 'ethicscode.pdf',
-                path: __dirname + '/attachments/ethicscode.pdf',
-                cid: 'uniq-ethicscode.pdf'
-              }
-            ]
+            attachments: sendEmailData.attachments
           },
           (err, info) => {
             if (err) {
