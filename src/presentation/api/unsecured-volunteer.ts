@@ -1,9 +1,24 @@
-import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
-import { sign } from 'jsonwebtoken';
 import { HELPDESK_EMAIL, INFO_EMAIL, JWT_SECRET_KEY } from '@src/config/server';
-import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
+import { validationExample } from '@src/documentation/validation-example';
+import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
+import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
+import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
+import { SendEmailError } from '@src/domain/errors/send-email';
 import { VolunteerError } from '@src/domain/errors/volunteer';
+import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { decrypt } from '@src/helpers/message-encryption';
+import { checkPlainWithHash } from '@src/helpers/message-hashing';
+import { EmailManager } from '@src/services/email-service/email-manager';
+import { SupportEmailSendData } from '@src/services/email-service/types/support-email-send-data';
+import { sendEmailToSupport } from '@src/services/email-service/use-cases/send-email-to-support';
+import { sendEmailToVolunteer } from '@src/services/email-service/use-cases/send-password-email';
+import { sendVolunteerCreatedEmail } from '@src/services/email-service/use-cases/send-volunteer-create-email';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
+import { inject } from 'inversify';
+import { provide } from 'inversify-binding-decorators';
+import { sign } from 'jsonwebtoken';
 import {
   Body,
   Controller,
@@ -17,23 +32,8 @@ import {
   SuccessResponse,
   Tags
 } from 'tsoa';
-import { inject } from 'inversify';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
-import { provide } from 'inversify-binding-decorators';
-import { sendEmailToVolunteer } from '@src/services/email-service/use-cases/send-password-email';
-import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
-import { checkPlainWithHash } from '@src/helpers/message-hashing';
-import { decrypt } from '@src/helpers/message-encryption';
 import { ApiError } from '../types/api-error';
-import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
-import { SendEmailError } from '@src/domain/errors/send-email';
-import { validationExample } from '@src/documentation/validation-example';
-import { SupportEmailSendData } from '@src/services/email-service/types/support-email-send-data';
-import { sendEmailToSupport } from '@src/services/email-service/use-cases/send-email-to-support';
-import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
-import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
-import { EmailManager } from '@src/services/email-service/email-manager';
-import { sendVolunteerCreatedEmail } from '@src/services/email-service/use-cases/send-volunteer-create-email';
+import { VolunteerJWTPayload } from '../types/volunteer-jwt-payload';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -280,7 +280,7 @@ export class UnsecuredVolunteerAPI extends Controller {
    */
   @Post('password-email')
   @SuccessResponse(200, 'Successfully sent the email to the volunteer')
-  @Response<VolunteerError>(400, 'Could not find volunteer')
+  @Response<VolunteerError>(404, 'Could not find volunteer')
   @Response<SendEmailError>(400, 'Could not send email')
   async sendCreatePasswordEmail(
     @Body() emailWrapper: Pick<VolunteerAuthDataEntity, 'email'>
@@ -291,7 +291,7 @@ export class UnsecuredVolunteerAPI extends Controller {
 
     if (!volunteer)
       throw new ApiError(
-        400,
+        404,
         new VolunteerError({
           name: 'VOLUNTEER_NOT_FOUND',
           message: `Volunteer with email ${emailWrapper.email} not found`

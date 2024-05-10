@@ -3,4 +3,9 @@ export type SendEmailData = {
   receiver: string;
   subject: string;
   body: string;
+  attachments?: {
+    filename: string;
+    path: string;
+    cid: string;
+  }[];
 };

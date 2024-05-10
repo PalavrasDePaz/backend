@@ -8,6 +8,7 @@ import { formatAvailableBCClass } from '@src/domain/entity-formatters/format-ava
 import { BookClubClassRepository } from '@src/domain/interfaces/repositories/book-club-class-repository';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
+import moment from 'moment';
 import { Op } from 'sequelize';
 import {
   AssociatedBCCModelToEntity,
@@ -174,9 +175,14 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
     classId: number,
     evaluationDate: { endEvaluationDate: Date }
   ): Promise<AssociatedBCCEntity | null> {
+    const endEvaluationDate = moment(
+      new Date(evaluationDate.endEvaluationDate)
+    );
+
     const updatedField = (
       await BookClubClass.update(
-        { datafimaval: evaluationDate.endEvaluationDate },
+        { datafimaval: endEvaluationDate },
+
         {
           where: { idturma: classId }
         }
