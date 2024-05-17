@@ -1,38 +1,39 @@
 import { AttendanceEntity } from '@src/domain/entities/attendance/attendance-entity';
+import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
+import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-attendance-entity';
+import { WorkshopAttendanceRowEntity } from '@src/domain/entities/attendance/workshop-attendance-row-entity';
+import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
+import { AttendanceError } from '@src/domain/errors/attendance';
+import { VolunteerError } from '@src/domain/errors/volunteer';
 import { AttendanceRepository } from '@src/domain/interfaces/repositories/attendance-repository';
 import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { inject } from 'inversify';
+import { logger } from '@src/services/logger/logger';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { SequelizeAttendanceRepository } from '@src/services/repositories/sequelize-attendance-repository';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
 import express from 'express';
+import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
+import { Readable } from 'stream';
 import {
   Body,
   Controller,
+  Example,
   Get,
+  Middlewares,
   Path,
   Post,
+  Request,
+  Response,
   Route,
   Security,
-  Response,
   SuccessResponse,
-  Tags,
-  Example,
-  Request,
-  Middlewares
+  Tags
 } from 'tsoa';
-import { ApiError } from '../types/api-error';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
-import { AttendanceError } from '@src/domain/errors/attendance';
-import { SequelizeAttendanceRepository } from '@src/services/repositories/sequelize-attendance-repository';
-import { WorkshopAttendanceRowEntity } from '@src/domain/entities/attendance/workshop-attendance-row-entity';
-import { SubmitAttendanceEntity } from '@src/domain/entities/attendance/submit-attendance-entity';
-import { VolunteerError } from '@src/domain/errors/volunteer';
-import { formatAttendanceAsWorkshopAttendanceRow } from '@src/domain/entity-formatters/format-attendance-row';
-import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence-info-entity';
-import { Readable } from 'stream';
-import { logger } from '@src/services/logger/logger';
-import { paginationMiddleware } from '../middlewares/paginationMiddleware';
-import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 import xlsx from 'xlsx';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { ApiError } from '../types/api-error';
 
 @Route('attendances')
 @Tags('Attendance')
@@ -68,7 +69,7 @@ export class AttendanceAPI extends Controller {
     @Path() date: string,
     @Request() req: express.Request
   ): Promise<Readable> {
-    const dateFormated = new Date(date);
+    const dateFormated = moment(new Date(date)).toDate();
     const attendances =
       await this.attendanceRepository.getAttendancesDownloadFromDate(
         dateFormated
@@ -125,7 +126,7 @@ export class AttendanceAPI extends Controller {
     @Path() date: string,
     @Request() req: express.Request
   ): Promise<PaginationResult<AttendanceInfoEntity[]>> {
-    const dateFormated = new Date(date);
+    const dateFormated = moment(new Date(date)).toDate();
     const { pagination } = req;
     if (!pagination) throw Error();
     return await this.attendanceRepository.getAttendancesFromDate(

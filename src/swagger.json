@@ -3571,16 +3571,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"endEvaluationDate": {
-										"type": "string",
-										"format": "date-time"
-									}
-								},
-								"required": [
-									"endEvaluationDate"
-								],
-								"type": "object"
+								"type": "string"
 							}
 						}
 					}

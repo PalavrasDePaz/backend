@@ -21,6 +21,7 @@ import express from 'express';
 import { createReadStream, mkdirSync, readdirSync, rmSync, statSync } from 'fs';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
 import path from 'path';
 import { Readable } from 'stream';
 import {
@@ -388,9 +389,10 @@ export class BookClubClassAPI extends Controller {
   })
   async updateConcluded(
     @Path() classId: number,
-    @Body() evaluationDate: { endEvaluationDate: Date }
+    @Body() evaluationDate: string
   ): Promise<AssociatedBCCEntity> {
     const book = await this.bccRepository.getBookClubClassById(classId);
+    const evaluationDateFormatted = moment(new Date(evaluationDate)).toDate();
     if (!book) {
       throw new ApiError(
         404,
@@ -403,7 +405,7 @@ export class BookClubClassAPI extends Controller {
 
     const updatedField = await this.bccRepository.updateConcluded(
       classId,
-      evaluationDate
+      evaluationDateFormatted
     );
 
     if (!updatedField) {
