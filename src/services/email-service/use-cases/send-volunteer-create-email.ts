@@ -1,6 +1,7 @@
 import { INFO_EMAIL } from '@src/config/server';
 import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
 import { getVolCreatedEmailBody } from '@src/helpers/get-vol-created-email-body';
+import path from 'path';
 import { VolDataForCreatedEmail } from '../types/volunteer-data-for-created-email';
 
 export const sendVolunteerCreatedEmail = async (
@@ -17,7 +18,7 @@ export const sendVolunteerCreatedEmail = async (
     attachments: [
       {
         filename: 'ethicscode.pdf',
-        path: __dirname + '/attachments/ethicscode.pdf',
+        path: path.resolve(__dirname, '..', 'attachments', 'ethicscode.pdf'),
         cid: 'uniq-ethicscode.pdf'
       }
     ]
