@@ -389,10 +389,12 @@ export class BookClubClassAPI extends Controller {
   })
   async updateConcluded(
     @Path() classId: number,
-    @Body() evaluationDate: string
+    @Body() evaluationDate: { endEvaluationDate: Date }
   ): Promise<AssociatedBCCEntity> {
     const book = await this.bccRepository.getBookClubClassById(classId);
-    const evaluationDateFormatted = moment(new Date(evaluationDate)).toDate();
+    const evaluationDateFormatted = moment(
+      new Date(evaluationDate.endEvaluationDate)
+    ).toDate();
     if (!book) {
       throw new ApiError(
         404,

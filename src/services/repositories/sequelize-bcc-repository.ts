@@ -173,15 +173,14 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
 
   async updateConcluded(
     classId: number,
-    evaluationDate: { endEvaluationDate: Date }
+    evaluationDate: Date
   ): Promise<AssociatedBCCEntity | null> {
-    const endEvaluationDate = moment(
-      new Date(evaluationDate.endEvaluationDate)
-    ).toDate();
+    const endEvaluationDate = moment(new Date(evaluationDate)).toDate();
 
     const updatedField = (
       await BookClubClass.update(
         { datafimaval: endEvaluationDate },
+
         {
           where: { idturma: classId }
         }
