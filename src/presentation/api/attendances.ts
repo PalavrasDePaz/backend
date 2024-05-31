@@ -69,7 +69,7 @@ export class AttendanceAPI extends Controller {
     @Path() date: string,
     @Request() req: express.Request
   ): Promise<Readable> {
-    const dateFormated = moment(new Date(date)).toDate();
+    const dateFormated = moment(date).toDate();
     const attendances =
       await this.attendanceRepository.getAttendancesDownloadFromDate(
         dateFormated
@@ -126,7 +126,7 @@ export class AttendanceAPI extends Controller {
     @Path() date: string,
     @Request() req: express.Request
   ): Promise<PaginationResult<AttendanceInfoEntity[]>> {
-    const dateFormated = moment(new Date(date)).toDate();
+    const dateFormated = moment(date).toDate();
     const { pagination } = req;
     if (!pagination) throw Error();
     return await this.attendanceRepository.getAttendancesFromDate(

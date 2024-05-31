@@ -1,28 +1,29 @@
-import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
-import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
-import { Volunteer } from '@src/services/database/models/volunteer';
-import {
-  volunteerModelToEntity,
-  updateVolunteerEntityToUpdateModel,
-  volunteerModelToAuthEntity,
-  createVolunteerEntityToCreationModel,
-  volunteerDownloadMappers
-} from '@src/services/database/mappers/volunteer';
-import { VolunteerError } from '@src/domain/errors/volunteer';
-import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
-import { CreationAttributes, Op, UniqueConstraintError } from 'sequelize';
-import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
-import { provideSingleton } from '@src/helpers/provide-singleton';
-import { hashString } from '@src/helpers/message-hashing';
 import { CreateVolunteerEntity } from '@src/domain/entities/volunteer/create-volunteer-entity';
 import { PermissionEntity } from '@src/domain/entities/volunteer/permission-entity';
-import { Authorization } from '../database/models/authorization';
-import { authorizationModelToEntity } from '../database/mappers/authorization';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
 import { VolunteerDownloadEntity } from '@src/domain/entities/volunteer/volunteer-download-entity';
-import { PaginationParams } from '@src/presentation/types/paginationParams';
-import { wrapPagination } from './helpers/wrapPagination';
-import { VolunteerHours } from '../database/models/hours';
+import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { VolunteerHoursEntity } from '@src/domain/entities/volunteer/volunteer-hours-entity';
+import { VolunteerWithAuthEntity } from '@src/domain/entities/volunteer/volunteer-with-auth-entity';
+import { VolunteerError } from '@src/domain/errors/volunteer';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { hashString } from '@src/helpers/message-hashing';
+import { provideSingleton } from '@src/helpers/provide-singleton';
+import { PaginationParams } from '@src/presentation/types/paginationParams';
+import {
+  createVolunteerEntityToCreationModel,
+  updateVolunteerEntityToUpdateModel,
+  volunteerDownloadMappers,
+  volunteerModelToAuthEntity,
+  volunteerModelToEntity
+} from '@src/services/database/mappers/volunteer';
+import { Volunteer } from '@src/services/database/models/volunteer';
+import moment from 'moment';
+import { CreationAttributes, Op, UniqueConstraintError } from 'sequelize';
+import { authorizationModelToEntity } from '../database/mappers/authorization';
+import { Authorization } from '../database/models/authorization';
+import { VolunteerHours } from '../database/models/hours';
+import { wrapPagination } from './helpers/wrapPagination';
 
 @provideSingleton(SequelizeVolunteerRepository)
 export class SequelizeVolunteerRepository implements VolunteerRepository {
@@ -172,7 +173,7 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
     month: number,
     year: number
   ): Promise<VolunteerHoursEntity | null> {
-    const currentDate = new Date(year, month);
+    const currentDate = moment([year, month]).toDate();
     return VolunteerHours.findOne({
       where: {
         idVol,

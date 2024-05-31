@@ -393,7 +393,7 @@ export class BookClubClassAPI extends Controller {
   ): Promise<AssociatedBCCEntity> {
     const book = await this.bccRepository.getBookClubClassById(classId);
     const evaluationDateFormatted = moment(
-      new Date(evaluationDate.endEvaluationDate)
+      evaluationDate.endEvaluationDate
     ).toDate();
     if (!book) {
       throw new ApiError(

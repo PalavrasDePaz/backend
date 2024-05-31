@@ -130,7 +130,7 @@ export class VolunteerAPI extends Controller {
     @Path() date: string,
     @Request() req: express.Request
   ): Promise<PaginationResult<VolunteerEntity[]>> {
-    const dateFormated = moment(new Date(date)).toDate();
+    const dateFormated = moment(date).toDate();
     const { pagination } = req;
     if (!pagination) throw Error();
     return await this.volunteerRepository.getVolunteersFromDate(
@@ -267,7 +267,7 @@ export class VolunteerAPI extends Controller {
   public async postVolunteerHours(
     @Body() hoursVolunteer: PostVolunteerHoursEntity
   ): Promise<void> {
-    const currentDate = moment(new Date());
+    const currentDate = moment();
     const currentYear = currentDate.year();
     const currentMonth = currentDate.month();
     const eleventhDayOfTheMonth = moment(
@@ -321,7 +321,7 @@ export class VolunteerAPI extends Controller {
       );
     }
 
-    const currentDate = moment(new Date());
+    const currentDate = moment();
     const currentYear = currentDate.year();
     const currentMonth = currentDate.month();
     const existingRegister = await this.volunteerRepository.findHoursByMonth(
