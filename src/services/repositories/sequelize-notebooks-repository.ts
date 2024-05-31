@@ -7,6 +7,7 @@ import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-noteb
 import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
+import moment from 'moment';
 import { Op } from 'sequelize';
 import {
   evaluateNotebookEntityToEvaluateNotebookModel,
@@ -48,7 +49,7 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     notebookId: number
   ): Promise<NotebookEntity | null> {
     await Notebook.update(
-      { idvol, datareserva: new Date() },
+      { idvol, datareserva: moment().toDate() },
       {
         where: {
           idcad: notebookId,

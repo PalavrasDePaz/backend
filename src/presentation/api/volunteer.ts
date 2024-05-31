@@ -1,38 +1,39 @@
-import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { validationExample } from '@src/documentation/validation-example';
+import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-volunteer-hours-entity';
+import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
+import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
 import { VolunteerEntity } from '@src/domain/entities/volunteer/volunteer-entity';
 import { VolunteerError } from '@src/domain/errors/volunteer';
+import { VolunteerRepository } from '@src/domain/interfaces/repositories/volunteer-repository';
+import { logger } from '@src/services/logger/logger';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
+import express from 'express';
+import { inject } from 'inversify';
+import { provide } from 'inversify-binding-decorators';
+import moment from 'moment';
+import { Readable } from 'stream';
 import {
   Body,
   Controller,
   Delete,
   FieldErrors,
   Get,
+  Head,
   Middlewares,
   Patch,
   Path,
-  Request,
   Post,
+  Request,
   Response,
   Route,
   Security,
   SuccessResponse,
-  Tags,
-  Head
+  Tags
 } from 'tsoa';
-import { inject } from 'inversify';
-import { SequelizeVolunteerRepository } from '@src/services/repositories/sequelize-volunteer-repository';
-import { provide } from 'inversify-binding-decorators';
-import { UpdateVolunteerEntity } from '@src/domain/entities/volunteer/update-volunteer-entity';
-import { VolunteerAuthDataEntity } from '@src/domain/entities/volunteer/volunteer-auth-entity';
-import { ApiError } from '../types/api-error';
-import { validationExample } from '@src/documentation/validation-example';
-import express from 'express';
-import { Readable } from 'stream';
-import { logger } from '@src/services/logger/logger';
-import { paginationMiddleware } from '../middlewares/paginationMiddleware';
-import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
-import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-volunteer-hours-entity';
 import xlsx from 'xlsx';
+import { paginationMiddleware } from '../middlewares/paginationMiddleware';
+import { ApiError } from '../types/api-error';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -129,7 +130,7 @@ export class VolunteerAPI extends Controller {
     @Path() date: string,
     @Request() req: express.Request
   ): Promise<PaginationResult<VolunteerEntity[]>> {
-    const dateFormated = new Date(date);
+    const dateFormated = moment(date).toDate();
     const { pagination } = req;
     if (!pagination) throw Error();
     return await this.volunteerRepository.getVolunteersFromDate(
@@ -266,17 +267,19 @@ export class VolunteerAPI extends Controller {
   public async postVolunteerHours(
     @Body() hoursVolunteer: PostVolunteerHoursEntity
   ): Promise<void> {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
-    const fifthDayOfMonth = new Date(currentYear, currentMonth, 11);
+    const currentDate = moment();
+    const currentYear = currentDate.year();
+    const currentMonth = currentDate.month();
+    const eleventhDayOfTheMonth = moment(
+      new Date(currentYear, currentMonth, 11)
+    );
 
-    if (currentDate > fifthDayOfMonth) {
+    if (currentDate.isAfter(eleventhDayOfTheMonth)) {
       throw new ApiError(
         400,
         new VolunteerError({
           name: 'INVALID_DATE_REGISTER',
-          message: `Not permitted to register hours after the 5th`
+          message: `Not permitted to register hours after the 11th`
         })
       );
     }
@@ -318,9 +321,9 @@ export class VolunteerAPI extends Controller {
       );
     }
 
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
+    const currentDate = moment();
+    const currentYear = currentDate.year();
+    const currentMonth = currentDate.month();
     const existingRegister = await this.volunteerRepository.findHoursByMonth(
       idVol,
       currentMonth,
