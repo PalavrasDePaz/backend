@@ -1,33 +1,33 @@
+import {
+  BookEvaluationEntity,
+  BookEvaluationList
+} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
+import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
+import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
+import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
+import { BookEvaluationRepository } from '@src/domain/interfaces/repositories/book-evaluation-repository';
+import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { SequelizeBookEvaluationRepository } from '@src/services/repositories/sequelize-book-evaluation-repository';
+import express from 'express';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
 import {
   Body,
   Controller,
+  Get,
+  Middlewares,
   Path,
   Post,
   Put,
+  Request,
+  Response,
   Route,
   Security,
   SuccessResponse,
-  Response,
-  Tags,
-  Get,
-  Middlewares,
-  Request
+  Tags
 } from 'tsoa';
-import { BookEvaluationRepository } from '@src/domain/interfaces/repositories/book-evaluation-repository';
-import { SequelizeBookEvaluationRepository } from '@src/services/repositories/sequelize-book-evaluation-repository';
-import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
-import { ApiError } from '../types/api-error';
-import { BookEvaluationError } from '@src/domain/errors/book-evaluation';
-import {
-  BookEvaluationEntity,
-  BookEvaluationList
-} from '@src/domain/entities/book-evaluation/book-evaluation-entity';
-import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
-import express from 'express';
-import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
+import { ApiError } from '../types/api-error';
 
 @Route('book-evaluations')
 @Tags('Book evaluation')
@@ -172,36 +172,34 @@ export class BookEvaluationAPI extends Controller {
     return evaluation;
   }
 
-    /**
+  /**
    * Get evaluation by class ID
    *
    * (The volunteer must have bookPermission, which is checked using JWT)
    */
-    @Get('/by-class/{classId}')
-    @Security('jwt', ['bookPermission'])
-    @SuccessResponse(200, 'Successfully get the evaluation')
-    @Response<BookEvaluationError>(404, 'Could not find evaluation', {
-      name: 'EVALUATION_NOT_FOUND_ERROR',
-      message: `Evaluation with id {classId} not found`
-    })
-    async getBookEvaluationByClassId(
-      @Path() classId: number
-    ): Promise<BookEvaluationEntity> {
-      const evaluation =
-        await this.bookEvaluationRepository.getBookEvaluationByClassId(classId);
-  
-      if (!evaluation) {
-        throw new ApiError(
-          404,
-          new BookEvaluationError({
-            name: 'EVALUATION_NOT_FOUND_ERROR',
-            message: `Evaluation with id ${classId} not found`
-          })
-        );
-      }
-  
-      return evaluation;
+  @Get('/by-class/{classId}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(200, 'Successfully get the evaluation')
+  @Response<BookEvaluationError>(404, 'Could not find evaluation', {
+    name: 'EVALUATION_NOT_FOUND_ERROR',
+    message: `Evaluation with id {classId} not found`
+  })
+  async getBookEvaluationByClassId(
+    @Path() classId: number
+  ): Promise<BookEvaluationEntity> {
+    const evaluation =
+      await this.bookEvaluationRepository.getBookEvaluationByClassId(classId);
+
+    if (!evaluation) {
+      throw new ApiError(
+        404,
+        new BookEvaluationError({
+          name: 'EVALUATION_NOT_FOUND_ERROR',
+          message: `Evaluation with id ${classId} not found`
+        })
+      );
     }
+
+    return evaluation;
+  }
 }
-
-
