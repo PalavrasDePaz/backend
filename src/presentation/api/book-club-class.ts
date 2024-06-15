@@ -196,18 +196,27 @@ export class BookClubClassAPI extends Controller {
   @Get('available/{idvol}')
   @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully fetched the essays')
-  async getAvailableClasses(
-    @Path() idvol: number
-  ): Promise<AvailableClassRowEntity[]> {
+  async getAvailableClasses(): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await this.bccRepository.getAvailableClasses();
 
+    const volunteerAvailableEssays = [...availableEssays];
+
+    return volunteerAvailableEssays;
+  }
+
+  @Get('reserved/{idvol}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(200, 'Successfully fetched the essays')
+  async getReservedClasses(
+    @Path() idvol: number
+  ): Promise<AvailableClassRowEntity[]> {
     const reservedEssays = await this.bccRepository.getReservedClassesByIdVol(
       idvol
     );
 
-    const volunteerAccessableEssays = [...reservedEssays, ...availableEssays];
+    const volunteerReservedEssays = [...reservedEssays];
 
-    return volunteerAccessableEssays;
+    return volunteerReservedEssays;
   }
 
   /**
