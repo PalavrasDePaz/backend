@@ -37,7 +37,8 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
         ],
         offset,
         limit,
-        raw: true
+        raw: true,
+        order: [['IDTURMA', 'DESC']]
       });
 
       const totalCount = await BookClubClass.count();
