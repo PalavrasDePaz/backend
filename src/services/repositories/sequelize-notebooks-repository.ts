@@ -135,7 +135,10 @@ export class SequelizeNotebookRepository implements NotebookRepository {
           { model: Volunteer, as: 'volunteer', attributes: ['NOME'] },
           { model: Pep, as: 'pep', include: [{ model: Place, as: 'place' }] }
         ],
-        order: [['idcad', 'DESC']],
+        order: [
+          ['idcad', 'DESC'],
+          ['Carimbo de data/hora', 'DESC']
+        ],
         offset,
         limit,
         raw: true
