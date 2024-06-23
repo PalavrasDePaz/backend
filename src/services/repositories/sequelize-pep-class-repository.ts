@@ -65,7 +65,8 @@ export class SequelizePepClassRepository implements PepClassRepository {
         include: { model: Place, as: 'place', attributes: ['fullName'] },
         offset,
         limit,
-        raw: true
+        raw: true,
+        order: [['id', 'DESC']]
       });
 
       const totalCount = await Pep.count();
