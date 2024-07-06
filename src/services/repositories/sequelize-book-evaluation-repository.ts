@@ -33,7 +33,8 @@ export class SequelizeBookEvaluationRepository
         include: [{ model: Volunteer, as: 'volunteer', attributes: ['nome'] }],
         offset,
         limit,
-        raw: true
+        raw: true,
+        order: [['Carimbo de data/hora', 'DESC']]
       });
 
       const totalCount = await BookEvaluation.count();
