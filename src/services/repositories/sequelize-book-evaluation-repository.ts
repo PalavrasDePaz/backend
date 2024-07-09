@@ -17,6 +17,7 @@ import {
 import { BookEvaluation } from '../database/models/book-evaluation';
 import { Volunteer } from '../database/models/volunteer';
 import { wrapPagination } from './helpers/wrapPagination';
+import { FindOptions, Op } from 'sequelize';
 
 @provideSingleton(SequelizeBookEvaluationRepository)
 export class SequelizeBookEvaluationRepository
@@ -26,16 +27,20 @@ export class SequelizeBookEvaluationRepository
     async (
       pagination: PaginationParams
     ): Promise<[BookEvaluationList[], number]> => {
-      const { offset, limit } = pagination;
-      const booksEvaluation = await BookEvaluation.findAll<
-        BookEvaluation & { 'volunteer.nome'?: string }
-      >({
+      const { offset, limit, filter } = pagination;
+      const options: FindOptions = {
         include: [{ model: Volunteer, as: 'volunteer', attributes: ['nome'] }],
         offset,
         limit,
         raw: true,
         order: [['Carimbo de data/hora', 'DESC']]
-      });
+      };
+      if (filter && filter?.classes) {
+        options.where = { NTURMA: { [Op.in]: filter.classes } };
+      }
+      const booksEvaluation = await BookEvaluation.findAll<
+        BookEvaluation & { 'volunteer.nome'?: string }
+      >(options);
 
       const totalCount = await BookEvaluation.count();
 

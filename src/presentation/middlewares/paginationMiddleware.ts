@@ -14,7 +14,12 @@ export const paginationMiddleware = async (
     offset: 0,
     order: [['createdAt', 'DESC']]
   };
-  const { page = 1, limit = LIMIT, order, ...filter } = req.query;
+  const {
+    page = 1,
+    limit = LIMIT,
+    order,
+    ...filter
+  } = req.query as Record<string, string>;
 
   const skip = page ? (+page - 1) * +limit : 0;
 
@@ -23,7 +28,13 @@ export const paginationMiddleware = async (
   }
 
   if (Object.keys(filter).length) {
-    pagination.filter = filter;
+    pagination.filter = Object.keys(filter).reduce(
+      (filterResult, key) => ({
+        ...filterResult,
+        [String(key)]: filter[key as keyof typeof filter].split(',')
+      }),
+      {}
+    );
   }
 
   pagination.page = +page;
