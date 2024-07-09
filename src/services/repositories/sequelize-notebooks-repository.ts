@@ -8,7 +8,7 @@ import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import moment from 'moment';
-import { Op } from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import {
   evaluateNotebookEntityToEvaluateNotebookModel,
   evalutionListNotebookModelToEntity,
@@ -34,6 +34,7 @@ export class SequelizeNotebookRepository implements NotebookRepository {
 
     return this.getNotebookById(notebookId);
   }
+
   async getNotebookById(notebookId: number): Promise<NotebookEntity | null> {
     const notebook = await Notebook.findOne({
       include: [
@@ -44,6 +45,7 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     });
     return notebook ? notebookModelToEntity(notebook) : null;
   }
+
   async reserveNotebookForVolunteer(
     idvol: number,
     notebookId: number
@@ -127,10 +129,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     async (
       pagination: PaginationParams
     ): Promise<[NotebookWithPlaceAndVolunteer[], number]> => {
-      const { offset, limit } = pagination;
-      const notebooks = await Notebook.findAll<
-        Notebook & { 'pep.place.fullName'?: string; 'volunteer.NOME'?: string }
-      >({
+      const { offset, limit, filter } = pagination;
+      const options: FindOptions = {
         include: [
           { model: Volunteer, as: 'volunteer', attributes: ['NOME'] },
           { model: Pep, as: 'pep', include: [{ model: Place, as: 'place' }] }
@@ -142,7 +142,15 @@ export class SequelizeNotebookRepository implements NotebookRepository {
         offset,
         limit,
         raw: true
-      });
+      };
+
+      if (filter && filter?.classes) {
+        options.where = { IDPEP: { [Op.in]: filter.classes } };
+      }
+
+      const notebooks = await Notebook.findAll<
+        Notebook & { 'pep.place.fullName'?: string; 'volunteer.NOME'?: string }
+      >(options);
 
       const totalCount = await Notebook.count();
 
