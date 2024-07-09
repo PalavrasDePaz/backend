@@ -68,6 +68,18 @@ export class NotebookAPI extends Controller {
     this.fileHandler = fileHandler;
   }
 
+  /**
+   * List all notebooks.
+   *  Pagination
+   *  Page: ?page=number& (page number)
+   *  Limit: ?limit=number& (data quantity - max=30)
+   *  Filter: ?classes=399,404,405& (filter by class ids - separator "," (comma))
+   *
+   * @example page "page=3"
+   * @example limit "limit=20"
+   * @example classes=399,404,405
+   */
+
   @Get('/evaluation-list')
   @Security('jwt', ['readPermission'])
   @Middlewares(paginationMiddleware)
