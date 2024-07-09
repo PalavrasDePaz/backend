@@ -974,7 +974,7 @@ export function RegisterRoutes(app: Router) {
             async function BookClubClassAPI_updateConcluded(request: any, response: any, next: any) {
             const args = {
                     classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
-                    evaluationDate: {"in":"body","name":"evaluationDate","required":true,"dataType":"string"},
+                    evaluationDate: {"in":"body","name":"evaluationDate","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"endEvaluationDate":{"dataType":"datetime","required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
