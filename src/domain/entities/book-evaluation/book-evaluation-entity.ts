@@ -25,3 +25,28 @@ export type BookEvaluationList = BookEvaluationEntity & {
   expirationDate: Date | null;
   volunteerName: string | null;
 };
+
+export type BookEvaluationListDownload = {
+  'ID do voluntário': number;
+  'Nome do voluntário': string;
+  'Matrícula do leitor': number;
+  'Nome do leitor': string;
+  'Número da turma': number;
+  'Carimbo de data/hora': string;
+  Estética: string;
+  Fidedignidade: string;
+  Clareza: string;
+  'Apropriação indevida do Texto': string;
+  'Plágio parcial': string;
+  Observação: string;
+  Conceito: string;
+  'Frases relevantes': string;
+  'Histórias lidas': string;
+  'História observada': string;
+  'Número da avaliação': number;
+  Opinião: string;
+  Sociedade: string;
+  Gramática: string;
+  Redação: string;
+  'Data de expiração': string;
+};

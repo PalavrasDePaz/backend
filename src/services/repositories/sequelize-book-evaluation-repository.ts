@@ -1,6 +1,7 @@
 import {
   BookEvaluationEntity,
-  BookEvaluationList
+  BookEvaluationList,
+  BookEvaluationListDownload
 } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
@@ -10,6 +11,7 @@ import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import {
   bookEvaluationModelToEntity,
+  bookEvaluationToBookEvaluationListDownloadEntity,
   bookEvaluationToBookEvaluationListEntity,
   createBookEvaluationEntityToCreationModel,
   updateBookEvaluationEntityToUpdateModel
@@ -50,6 +52,27 @@ export class SequelizeBookEvaluationRepository
       ];
     }
   );
+
+  getBookEvaluationListDownload = async (
+    pagination: PaginationParams
+  ): Promise<BookEvaluationListDownload[]> => {
+    const { filter } = pagination;
+    const options: FindOptions = {
+      include: [{ model: Volunteer, as: 'volunteer', attributes: ['nome'] }],
+      raw: true,
+      order: [['Carimbo de data/hora', 'DESC']]
+    };
+    if (filter && filter?.classes) {
+      options.where = { NTURMA: { [Op.in]: filter.classes } };
+    }
+    const booksEvaluation = await BookEvaluation.findAll<
+      BookEvaluation & { 'volunteer.nome'?: string }
+    >(options);
+
+    return booksEvaluation.map(
+      bookEvaluationToBookEvaluationListDownloadEntity
+    );
+  };
 
   async updatedBookEvaluation(
     evaluationId: number,
