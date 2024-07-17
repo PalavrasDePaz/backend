@@ -1,6 +1,7 @@
 import {
   BookEvaluationEntity,
-  BookEvaluationList
+  BookEvaluationList,
+  BookEvaluationListDownload
 } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
@@ -11,6 +12,10 @@ export interface BookEvaluationRepository {
   getBookEvaluationList(
     pagination: PaginationParams
   ): Promise<PaginationResult<BookEvaluationList[]>>;
+
+  getBookEvaluationListDownload(
+    pagination: PaginationParams
+  ): Promise<BookEvaluationListDownload[]>;
 
   createBookEvaluations(
     bookEvaluations: CreateBookEvaluationEntity[]

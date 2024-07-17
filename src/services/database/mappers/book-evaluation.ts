@@ -5,7 +5,8 @@ import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation
 import UpdateModel from './helpers/update-model-type';
 import {
   BookEvaluationEntity,
-  BookEvaluationList
+  BookEvaluationList,
+  BookEvaluationListDownload
 } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 
 export const createBookEvaluationEntityToCreationModel = (
@@ -62,6 +63,35 @@ export const bookEvaluationToBookEvaluationListEntity = (
   createdAt: bookEvaluation.createdAt,
   volunteerName: bookEvaluation['volunteer.nome'] ?? null,
   expirationDate: bookEvaluation['data valid'] ?? null
+});
+
+export const bookEvaluationToBookEvaluationListDownloadEntity = (
+  bookEvaluation: BookEvaluation & { 'volunteer.nome'?: string }
+): BookEvaluationListDownload => ({
+  'ID do voluntário': bookEvaluation.idvol,
+  'Nome do voluntário': bookEvaluation['volunteer.nome'] ?? '',
+  'Matrícula do leitor': bookEvaluation.matricula,
+  'Nome do leitor': bookEvaluation.leitor,
+  'Número da turma': bookEvaluation.nturma,
+  'Carimbo de data/hora': bookEvaluation.createdAt.toLocaleString(),
+  Estética: bookEvaluation.estetica ?? '',
+  Fidedignidade: bookEvaluation.dignidade ?? '',
+  Clareza: bookEvaluation.clareza ?? '',
+  'Apropriação indevida do Texto': bookEvaluation.plagio ?? '',
+  'Plágio parcial': bookEvaluation.plagioparcial ?? '',
+  Observação: bookEvaluation.observ ?? '',
+  Conceito: bookEvaluation.conceito ?? '',
+  'Frases relevantes': bookEvaluation.relevantes ?? '',
+  'Histórias lidas': bookEvaluation['hist-relat'] ?? '',
+  'História observada': bookEvaluation['hist-observ'] ?? '',
+  'Número da avaliação': bookEvaluation.idavLivro,
+  Opinião: bookEvaluation.opiniao ?? '',
+  Sociedade: bookEvaluation.sociedade ?? '',
+  Gramática: bookEvaluation.portug ?? '',
+  Redação: bookEvaluation.redacao ?? '',
+  'Data de expiração': bookEvaluation?.['data valid']
+    ? bookEvaluation['data valid'].toLocaleString()
+    : ''
 });
 
 export const bookEvaluationModelToEntity = (
