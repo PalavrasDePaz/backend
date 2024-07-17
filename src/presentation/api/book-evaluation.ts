@@ -11,6 +11,8 @@ import { SequelizeBookEvaluationRepository } from '@src/services/repositories/se
 import express from 'express';
 import { inject } from 'inversify';
 import { provide } from 'inversify-binding-decorators';
+import { logger } from '@src/services/logger/logger';
+
 import {
   Body,
   Controller,
@@ -28,6 +30,8 @@ import {
 } from 'tsoa';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { ApiError } from '../types/api-error';
+import xlsx from 'xlsx';
+import { Readable } from 'stream';
 
 @Route('book-evaluations')
 @Tags('Book evaluation')
@@ -61,7 +65,7 @@ export class BookEvaluationAPI extends Controller {
   @Security('jwt', ['bookPermission'])
   @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully generated the metrics')
-  public async getVolunteersAttendanceMetrics(
+  public async getVBookEvaluationList(
     @Request() req: express.Request
   ): Promise<PaginationResult<BookEvaluationList[]>> {
     const { pagination } = req;
@@ -69,6 +73,56 @@ export class BookEvaluationAPI extends Controller {
     if (!pagination) throw Error();
 
     return this.bookEvaluationRepository.getBookEvaluationList(pagination);
+  }
+
+  /**
+   * Download list all book evaluations.
+   *
+   * (The user must have bookPermissionn, which is checked using JWT)
+   *  Filter: ?classes=399,404,405& (filter by class ids - separator "," (comma))
+   *
+   * @example classes=399,404,405
+   */
+
+  @Get('/download')
+  @Security('jwt', ['bookPermission'])
+  @Middlewares(paginationMiddleware)
+  @SuccessResponse(200, 'Successfully generated the metrics')
+  public async getVBookEvaluationListDownload(
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const { pagination } = req;
+
+    if (!pagination) throw Error();
+
+    const bookEvaluations =
+      await this.bookEvaluationRepository.getBookEvaluationListDownload(
+        pagination
+      );
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(bookEvaluations);
+    xlsx.utils.book_append_sheet(wb, ws, `avaliação-do-livro.xlsx`);
+    const xlsxBuffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `avaliação-do-livro.xlsx`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
+
+    const stream = Readable.from(xlsxBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 
   /**
