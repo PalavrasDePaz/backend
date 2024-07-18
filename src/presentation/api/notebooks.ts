@@ -40,6 +40,7 @@ import {
 } from 'tsoa';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { ApiError } from '../types/api-error';
+import xlsx from 'xlsx';
 
 @Route('notebooks')
 @Response<{ message: string; details: FieldErrors }>(
@@ -90,6 +91,52 @@ export class NotebookAPI extends Controller {
     const { pagination } = req;
     if (!pagination) throw Error();
     return await this.notebooksRepository.getAllNotebookEvaluation(pagination);
+  }
+
+  /**
+   * Download  all notebooks.
+   *  Filter: ?classes=399,404,405& (filter by class ids - separator "," (comma))
+   *
+   * @example classes=399,404,405
+   */
+
+  @Get('/evaluation-list/download')
+  @Security('jwt', ['readPermission'])
+  @Middlewares(paginationMiddleware)
+  @SuccessResponse(200, 'Successfully fetched the notebooks')
+  async getNotebooksEvaluationDownload(
+    @Request() req: express.Request
+  ): Promise<Readable> {
+    const { pagination } = req;
+    if (!pagination) throw Error();
+    const notebooks =
+      await this.notebooksRepository.getAllNotebookEvaluationDownload(
+        pagination
+      );
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(notebooks);
+    xlsx.utils.book_append_sheet(wb, ws, `avaliação-do-caderno.xlsx`);
+    const xlsxBuffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `avaliação-do-caderno.xlsx`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
+
+    const stream = Readable.from(xlsxBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 
   /**
