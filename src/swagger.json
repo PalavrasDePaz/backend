@@ -3943,6 +3943,74 @@
 				"parameters": []
 			}
 		},
+		"/notebooks/evaluation-list/download": {
+			"get": {
+				"operationId": "GetNotebooksEvaluationDownload",
+				"responses": {
+					"200": {
+						"description": "Successfully fetched the notebooks",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Download  all notebooks.\r\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": [
+							"readPermission"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/notebooks/count/{idvol}": {
 			"get": {
 				"operationId": "CountEvaluatedNotebooksByIdVol",
