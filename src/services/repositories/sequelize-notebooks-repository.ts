@@ -1,4 +1,7 @@
-import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import {
+  EvaluateNotebookEntity,
+  EvaluateNotebookEntityDownload
+} from '@src/domain/entities/notebook/evaluate-notebook-entity';
 import {
   NotebookEntity,
   NotebookWithPlaceAndVolunteer
@@ -12,6 +15,7 @@ import { FindOptions, Op } from 'sequelize';
 import {
   evaluateNotebookEntityToEvaluateNotebookModel,
   evalutionListNotebookModelToEntity,
+  evalutionListNotebookModelToEntityDownload,
   notebookModelToEntity,
   updateNotebookEntityToUpdateModel
 } from '../database/mappers/notebooks';
@@ -157,4 +161,31 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       return [notebooks.map(evalutionListNotebookModelToEntity), totalCount];
     }
   );
+
+  async getAllNotebookEvaluationDownload(
+    pagination: PaginationParams
+  ): Promise<EvaluateNotebookEntityDownload[]> {
+    const { filter } = pagination;
+    const options: FindOptions = {
+      include: [
+        { model: Volunteer, as: 'volunteer', attributes: ['NOME'] },
+        { model: Pep, as: 'pep', include: [{ model: Place, as: 'place' }] }
+      ],
+      order: [
+        ['idcad', 'DESC'],
+        ['Carimbo de data/hora', 'DESC']
+      ],
+      raw: true
+    };
+
+    if (filter && filter?.classes) {
+      options.where = { IDPEP: { [Op.in]: filter.classes } };
+    }
+
+    const notebooks = await Notebook.findAll<
+      Notebook & { 'pep.place.fullName'?: string; 'volunteer.NOME'?: string }
+    >(options);
+
+    return notebooks.map(evalutionListNotebookModelToEntityDownload);
+  }
 }

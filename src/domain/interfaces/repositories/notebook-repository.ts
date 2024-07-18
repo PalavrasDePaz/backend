@@ -1,4 +1,7 @@
-import { EvaluateNotebookEntity } from '@src/domain/entities/notebook/evaluate-notebook-entity';
+import {
+  EvaluateNotebookEntity,
+  EvaluateNotebookEntityDownload
+} from '@src/domain/entities/notebook/evaluate-notebook-entity';
 import {
   NotebookEntity,
   NotebookWithPlaceAndVolunteer
@@ -38,4 +41,8 @@ export interface NotebookRepository {
   getAllNotebookEvaluation(
     pagination: PaginationParams
   ): Promise<PaginationResult<NotebookWithPlaceAndVolunteer[]>>;
+
+  getAllNotebookEvaluationDownload(
+    pagination: PaginationParams
+  ): Promise<EvaluateNotebookEntityDownload[]>;
 }
