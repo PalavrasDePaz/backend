@@ -389,20 +389,23 @@ export class BookClubClassAPI extends Controller {
   })
   async updateConcluded(
     @Path() classId: number,
-    @Body() evaluationDate: { endEvaluationDate: Date }
+    @Body() evaluationDate: { endEvaluationDate: Date | null }
   ): Promise<AssociatedBCCEntity> {
     const book = await this.bccRepository.getBookClubClassById(classId);
-    const evaluationDateFormatted = moment(
-      evaluationDate.endEvaluationDate
-    ).toDate();
-    if (!book) {
-      throw new ApiError(
-        404,
-        new BookClubClassError({
-          name: 'ESSAY_NOT_FOUND',
-          message: `Essay with id ${classId} not found`
-        })
-      );
+    let evaluationDateFormatted = evaluationDate?.endEvaluationDate ?? null;
+    if (evaluationDate?.endEvaluationDate) {
+      evaluationDateFormatted = moment(
+        evaluationDate.endEvaluationDate
+      ).toDate();
+      if (!book) {
+        throw new ApiError(
+          404,
+          new BookClubClassError({
+            name: 'ESSAY_NOT_FOUND',
+            message: `Essay with id ${classId} not found`
+          })
+        );
+      }
     }
 
     const updatedField = await this.bccRepository.updateConcluded(
