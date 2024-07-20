@@ -493,14 +493,14 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"password":{"dataType":"string","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__": {
+    "Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","validators":{"pattern":{"errorMsg":"must be a valid email","value":"^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"}}},"name":{"dataType":"string"},"birthDate":{"dataType":"datetime"},"phoneNumber":{"dataType":"string"},"country":{"dataType":"string"},"state":{"dataType":"string"},"city":{"dataType":"string"},"disability":{"dataType":"string"},"howFoundPep":{"dataType":"string"},"knowledgePep":{"dataType":"string"},"schooling":{"dataType":"string"},"bachelor":{"dataType":"string"},"studiesKnowledge":{"dataType":"string"},"lifeExperience":{"dataType":"string"},"desires":{"dataType":"string"},"rolesPep":{"dataType":"array","array":{"dataType":"string"}},"interestFutureRoles":{"dataType":"array","array":{"dataType":"string"}},"needDeclaration":{"dataType":"boolean"},"password":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UpdateVolunteerEntity": {
         "dataType": "refAlias",
-        "type": {"ref":"Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__","validators":{}},
+        "type": {"ref":"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__": {
@@ -974,7 +974,7 @@ export function RegisterRoutes(app: Router) {
             async function BookClubClassAPI_updateConcluded(request: any, response: any, next: any) {
             const args = {
                     classId: {"in":"path","name":"classId","required":true,"dataType":"double"},
-                    evaluationDate: {"in":"body","name":"evaluationDate","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"endEvaluationDate":{"dataType":"datetime","required":true}}},
+                    evaluationDate: {"in":"body","name":"evaluationDate","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"endEvaluationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}],"required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
