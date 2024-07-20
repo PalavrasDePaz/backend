@@ -103,12 +103,8 @@ export const bookEvaluationModelToEntity = (
     readerRegistration: bookEvaluation.matricula,
     classId: bookEvaluation.nturma,
     evaluatorId: bookEvaluation.idvol,
-    isParcialPlagiarism: bookEvaluation.plagioparcial
-      ? bookEvaluation.plagioparcial == 'NÃO'
-      : false,
-    isAppropriation: bookEvaluation.plagio
-      ? bookEvaluation.plagio == 'NÃO'
-      : false,
+    isParcialPlagiarism: bookEvaluation.plagioparcial === 'SIM',
+    isAppropriation: bookEvaluation.plagio == 'SIM',
     textAestheticsAvaliation: bookEvaluation.estetica ?? '',
     textReliabilityAvaliation: bookEvaluation.dignidade ?? '',
     textClarityAvaliation: bookEvaluation.clareza ?? '',
