@@ -139,6 +139,6 @@ export const updateBookEvaluationEntityToUpdateModel = (
     redacao: bookEvaluation.syntheticAvaliation,
     portug: bookEvaluation.grammarAvaliation,
     'hist-observ': bookEvaluation.observedHistories,
-    'hist-relat': bookEvaluation.readHistories.join(', ')
+    'hist-relat': bookEvaluation.readHistories.join(',')
   };
 };
