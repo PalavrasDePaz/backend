@@ -30,7 +30,6 @@ export class SequelizeBookEvaluationRepository
       pagination: PaginationParams
     ): Promise<[BookEvaluationList[], number]> => {
       const { offset, limit, filter } = pagination;
-      console.log({ filter });
       const options: FindOptions = {
         include: [{ model: Volunteer, as: 'volunteer', attributes: ['nome'] }],
         offset,
