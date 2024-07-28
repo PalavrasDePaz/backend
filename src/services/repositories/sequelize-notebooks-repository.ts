@@ -156,7 +156,7 @@ export class SequelizeNotebookRepository implements NotebookRepository {
         Notebook & { 'pep.place.fullName'?: string; 'volunteer.NOME'?: string }
       >(options);
 
-      const totalCount = await Notebook.count();
+      const totalCount = await Notebook.count(options);
 
       return [notebooks.map(evalutionListNotebookModelToEntity), totalCount];
     }
