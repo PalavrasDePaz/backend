@@ -198,7 +198,7 @@ export class NotebookAPI extends Controller {
     try {
       fileBuffer = await this.fileHandler.donwloadFileBufferFromName(
         folderId,
-        notebook.studentName
+        notebook?.studentName ?? ''
       );
     } catch (error) {
       throw new ApiError(404, error as FetchFilesError);

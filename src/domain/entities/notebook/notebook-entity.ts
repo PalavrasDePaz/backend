@@ -4,7 +4,7 @@ export type NotebookEntity = {
   idcad: number;
   idvol: number | null;
   idpep?: number | null;
-  studentName: string;
+  studentName: string | null;
   studentRegistration: number;
   studentPrisonUnit?: string;
   evaluatorName: string;

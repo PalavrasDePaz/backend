@@ -1363,7 +1363,8 @@
 								"format": "double"
 							},
 							"studentName": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"idpep": {
 								"type": "number",
@@ -2283,7 +2284,7 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__": {
+			"Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__": {
 				"properties": {
 					"email": {
 						"type": "string",
@@ -2356,7 +2357,7 @@
 				"description": "Make all properties in T optional"
 			},
 			"UpdateVolunteerEntity": {
-				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__"
+				"$ref": "#/components/schemas/Partial_Omit_VolunteerEntity.-or-pep-or-idvol-or-createdAt-or-isDisability-or-opportunities-or-notebookPermission-or-bookclubPermission-or-authorization-or-certificate-or-courseOne-or-courseTwo_-and-Pick_VolunteerAuthDataEntity.password__"
 			},
 			"Pick_VolunteerHoursEntity.Exclude_keyofVolunteerHoursEntity.idHour-or-createdAt__": {
 				"properties": {
