@@ -8,7 +8,7 @@ export const formatAvailableNotebookToTableRow = (
     notebookId: notebook.idcad,
     studentId: notebook.studentRegistration,
     classId: notebook.idpep ?? -1,
-    studentName: notebook.studentName,
+    studentName: notebook.studentName ?? '',
     reservationDate: notebook.reservationDate,
     notebookPath: notebook.notebookDirectory
       ? `${notebook.notebookDirectory}/${notebook.studentName}.pdf`
