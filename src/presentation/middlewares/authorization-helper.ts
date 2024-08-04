@@ -11,10 +11,8 @@ export const checkAuthorization = (
 
   let authorizedVolunteer = true;
   if (
-    req.params.email ||
-    req.params.idvol ||
-    req.body.email ||
-    req.body.idvol
+    !loggedVolunteer.manageVolunteerModulePermission &&
+    (req.params.email || req.params.idvol || req.body.email || req.body.idvol)
   ) {
     authorizedVolunteer =
       loggedVolunteer.email == req.params.email ||
