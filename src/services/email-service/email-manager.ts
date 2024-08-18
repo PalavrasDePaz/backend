@@ -12,11 +12,14 @@ export class EmailManager implements IEmailManager {
   constructor(auth_user = INFO_EMAIL, auth_pass = INFO_EMAIL_PASSWORD) {
     this.transporter = nodemailer.createTransport({
       host: 'smtpi.kinghost.net',
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false,
       auth: {
         user: auth_user,
         pass: auth_pass
+      },
+      tls: {
+        rejectUnauthorized: false
       }
     });
   }
