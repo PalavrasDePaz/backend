@@ -416,7 +416,7 @@ export class NotebookAPI extends Controller {
    * (The volunteer must have notebookModulePermission, which is checked using JWT)
    */
   @Put('{notebookId}')
-  @Security('jwt', ['notebookModulePermission'])
+  @Security('jwt', ['readPermission'])
   @SuccessResponse(200, 'Successfully updated the class')
   @Response<NotebookError>(404, 'Could not find notebook', {
     name: 'NOTEBOOK_NOT_FOUND_ERROR',
