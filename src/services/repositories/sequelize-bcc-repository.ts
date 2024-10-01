@@ -79,14 +79,21 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
   }
 
   async getReservedClassesByIdVol(
-    idvol: number
+    idvol: number,
+    hasDataInvioFunap: boolean
   ): Promise<AvailableClassRowEntity[]> {
+    const queryWhereForAvailableEssaysByIdVol = hasDataInvioFunap
+      ? { idvol }
+      : { [Op.and]: { idvol, datainviofunap: { [Op.is]: null } } };
+
     const availableEssays = await BookClubClass.findAll({
       include: [
         { model: Place, as: 'place' },
         { model: BookEvaluation, as: 'bookEvaluations' }
       ],
-      where: { idvol }
+      where: {
+        ...queryWhereForAvailableEssaysByIdVol
+      }
     });
     return availableEssays
       .map(AssociatedBCCModelToEntity)
