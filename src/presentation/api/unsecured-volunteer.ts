@@ -27,6 +27,7 @@ import {
   Patch,
   Path,
   Post,
+  Query,
   Response,
   Route,
   SuccessResponse,
@@ -221,9 +222,13 @@ export class UnsecuredVolunteerAPI extends Controller {
     message: 'Volunteer with email {some email} already exists'
   })
   async createVolunteer(
-    @Body() volunteer: CreateVolunteerEntity
+    @Body() volunteer: CreateVolunteerEntity,
+    @Query() idpep?: number
   ): Promise<VolunteerEntity> {
     try {
+      if (idpep) {
+        volunteer.pep = idpep;
+      }
       const createdVolunteer = await this.volunteerRepository.createVolunteer(
         volunteer
       );
