@@ -12,7 +12,7 @@ let template = '';
 export const getVolCreatedEmailBody = (
   volunteerData: VolDataForCreatedEmail
 ): string => {
-  if (volunteerData.pep) {
+  if (volunteerData.pep != undefined && volunteerData.pep > 0) {
     template = readFileSync(EMAIL_BODY_ALTERNATIVE_TEMPLATE_PATH).toString();
   } else {
     template = readFileSync(EMAIL_BODY_TEMPLATE_PATH).toString();
