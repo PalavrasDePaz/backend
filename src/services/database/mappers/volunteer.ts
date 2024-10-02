@@ -88,7 +88,7 @@ export const createVolunteerEntityToCreationModel = (
     nome: volunteer.name,
     'e-mail': volunteer.email,
     senha: hashString(volunteer.password),
-    idpep: 0,
+    idpep: volunteer.pep,
     nascimento: volunteer.birthDate,
     telefone: volunteer.phoneNumber,
     author: volunteer.authorPermission,
