@@ -233,6 +233,7 @@ export class UnsecuredVolunteerAPI extends Controller {
         volunteer
       );
 
+
       await sendVolunteerCreatedEmail(
         this.emailManager,
         {
@@ -242,6 +243,14 @@ export class UnsecuredVolunteerAPI extends Controller {
         },
         idpep ?? 0
       );
+
+
+      await sendVolunteerCreatedEmail(this.emailManager, {
+        email: createdVolunteer.email,
+        idvol: createdVolunteer.idvol,
+        name: createdVolunteer.name,
+        pep: createdVolunteer.pep
+      });
 
       return createdVolunteer;
     } catch (error) {
