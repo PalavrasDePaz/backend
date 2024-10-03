@@ -240,6 +240,9 @@ export class UnsecuredVolunteerAPI extends Controller {
         pep: createdVolunteer.pep
       });
 
+      if (idpep) {
+        createdVolunteer.pep = idpep;
+      }
       return createdVolunteer;
     } catch (error) {
       throw new ApiError(400, error as VolunteerError);
