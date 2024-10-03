@@ -10,9 +10,11 @@ const EMAIL_BODY_ALTERNATIVE_TEMPLATE_PATH =
 
 let template = '';
 export const getVolCreatedEmailBody = (
-  volunteerData: VolDataForCreatedEmail
+  volunteerData: VolDataForCreatedEmail,
+  idpep: number
 ): string => {
-  if (volunteerData.pep != undefined && volunteerData.pep > 0) {
+
+  if (idpep > 0) {
     template = readFileSync(EMAIL_BODY_ALTERNATIVE_TEMPLATE_PATH).toString();
   } else {
     template = readFileSync(EMAIL_BODY_TEMPLATE_PATH).toString();
