@@ -232,6 +232,7 @@ export class UnsecuredVolunteerAPI extends Controller {
       const createdVolunteer = await this.volunteerRepository.createVolunteer(
         volunteer
       );
+
       await sendVolunteerCreatedEmail(
         this.emailManager,
         {
@@ -241,6 +242,7 @@ export class UnsecuredVolunteerAPI extends Controller {
         },
         idpep ?? 0
       );
+
       return createdVolunteer;
     } catch (error) {
       throw new ApiError(400, error as VolunteerError);
