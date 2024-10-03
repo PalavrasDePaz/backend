@@ -232,19 +232,22 @@ export class UnsecuredVolunteerAPI extends Controller {
       const createdVolunteer = await this.volunteerRepository.createVolunteer(
         volunteer
       );
-      await sendVolunteerCreatedEmail(this.emailManager, {
-        email: createdVolunteer.email,
-        idvol: createdVolunteer.idvol,
-        name: createdVolunteer.name,
-        pep: createdVolunteer.pep
-      });
+      await sendVolunteerCreatedEmail(
+        this.emailManager,
+        {
+          email: createdVolunteer.email,
+          idvol: createdVolunteer.idvol,
+          name: createdVolunteer.name
+        },
+        idpep ?? 0
+      );
       return createdVolunteer;
     } catch (error) {
       throw new ApiError(400, error as VolunteerError);
     }
   }
 
-  /**
+  /**teste
    * Sends email from volunteer to helpdesk email
    */
   @Post('help-email')
