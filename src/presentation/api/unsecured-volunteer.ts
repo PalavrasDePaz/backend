@@ -246,7 +246,7 @@ export class UnsecuredVolunteerAPI extends Controller {
     }
   }
 
-  /**teste
+  /**
    * Sends email from volunteer to helpdesk email
    */
   @Post('help-email')
