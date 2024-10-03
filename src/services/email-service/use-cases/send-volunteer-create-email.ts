@@ -6,10 +6,9 @@ import { VolDataForCreatedEmail } from '../types/volunteer-data-for-created-emai
 
 export const sendVolunteerCreatedEmail = async (
   emailManager: IEmailManager,
-  volunteerData: VolDataForCreatedEmail,
-  idpep: number
+  volunteerData: VolDataForCreatedEmail
 ) => {
-  const body = getVolCreatedEmailBody(volunteerData, idpep);
+  const body = getVolCreatedEmailBody(volunteerData);
 
   await emailManager.sendEmail({
     sender: INFO_EMAIL,
