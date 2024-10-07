@@ -126,6 +126,7 @@ export const updateBookEvaluationEntityToUpdateModel = (
 ): UpdateModel<BookEvaluation> => {
   return {
     leitor: bookEvaluation.readerName,
+    matricula: bookEvaluation.readerRegistration,
     estetica: bookEvaluation.textAestheticsAvaliation,
     dignidade: bookEvaluation.textReliabilityAvaliation,
     clareza: bookEvaluation.textClarityAvaliation,
