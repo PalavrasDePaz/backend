@@ -26,7 +26,7 @@ export class BookClubClass extends Model<
   qrl!: number;
   datainvioparec?: Date | null;
   pressedex?: string;
-  datainviofunap?: Date;
+  datainviofunap?: Date | null;
   pressedex2?: string;
   datafimaval?: Date | null;
   parec?: string;
