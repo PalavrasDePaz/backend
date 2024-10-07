@@ -16,7 +16,10 @@ export interface BookClubClassRepository {
 
   getAvailableClasses(): Promise<AvailableClassRowEntity[]>;
 
-  getReservedClassesByIdVol(idvol: number): Promise<AvailableClassRowEntity[]>;
+  getReservedClassesByIdVol(
+    idvol: number,
+    hasDataInvioFunap: boolean
+  ): Promise<AvailableClassRowEntity[]>;
 
   reserveClassForVolunteer(
     idvol: number,
