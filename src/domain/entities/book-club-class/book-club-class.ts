@@ -35,7 +35,7 @@ interface BookClubClass {
   qrl: number;
   sendDateParec?: Date | null;
   presSedex?: string;
-  sendDateFunap?: Date;
+  sendDateFunap?: Date | null;
   presSedex2?: string;
   endEvaluationDate?: Date | null;
   parec?: string;
