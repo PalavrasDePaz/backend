@@ -200,9 +200,11 @@ export class BookClubClassAPI extends Controller {
     @Path() idvol: number
   ): Promise<AvailableClassRowEntity[]> {
     const availableEssays = await this.bccRepository.getAvailableClasses();
+    const hasDataInvioFunap = false;
 
     const reservedEssays = await this.bccRepository.getReservedClassesByIdVol(
-      idvol
+      idvol,
+      hasDataInvioFunap
     );
 
     const volunteerAccessableEssays = [...reservedEssays, ...availableEssays];
