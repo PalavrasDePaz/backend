@@ -379,7 +379,7 @@ export class BookClubClassAPI extends Controller {
   }
 
   @Patch('{classId}')
-  @Security('jwt', ['essayModulePermission'])
+  @Security('jwt', ['bookPermission'])
   @SuccessResponse(200, 'Successfully updated the class')
   @Response<BookClubClassError>(404, 'Could not find class', {
     name: 'ESSAY_NOT_FOUND',
