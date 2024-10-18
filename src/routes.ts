@@ -119,7 +119,7 @@ const models: TsoaRoute.Models = {
             "qrl": {"dataType":"double","required":true},
             "sendDateParec": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "presSedex": {"dataType":"string"},
-            "sendDateFunap": {"dataType":"datetime"},
+            "sendDateFunap": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "presSedex2": {"dataType":"string"},
             "endEvaluationDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "parec": {"dataType":"string"},
@@ -201,7 +201,7 @@ const models: TsoaRoute.Models = {
             "qrl": {"dataType":"double","required":true},
             "sendDateParec": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "presSedex": {"dataType":"string"},
-            "sendDateFunap": {"dataType":"datetime"},
+            "sendDateFunap": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "presSedex2": {"dataType":"string"},
             "endEvaluationDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "parec": {"dataType":"string"},
@@ -215,7 +215,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_AssociatedBCCEntity.Exclude_keyofAssociatedBCCEntity.idclass-or-idvol-or-place__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"reportReceiveDate":{"dataType":"datetime","required":true},"loanDate":{"dataType":"datetime"},"returnDate":{"dataType":"datetime"},"reportElaborationDate":{"dataType":"datetime"},"received":{"dataType":"string"},"yesList":{"dataType":"string"},"presenceList":{"dataType":"double"},"qrl":{"dataType":"double","required":true},"sendDateParec":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"presSedex":{"dataType":"string"},"sendDateFunap":{"dataType":"datetime"},"presSedex2":{"dataType":"string"},"endEvaluationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"parec":{"dataType":"string"},"folderLink":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"reportReceiveDate":{"dataType":"datetime","required":true},"loanDate":{"dataType":"datetime"},"returnDate":{"dataType":"datetime"},"reportElaborationDate":{"dataType":"datetime"},"received":{"dataType":"string"},"yesList":{"dataType":"string"},"presenceList":{"dataType":"double"},"qrl":{"dataType":"double","required":true},"sendDateParec":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"presSedex":{"dataType":"string"},"sendDateFunap":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"presSedex2":{"dataType":"string"},"endEvaluationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"parec":{"dataType":"string"},"folderLink":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_AssociatedBCCEntity.idclass-or-idvol-or-place_": {
@@ -264,19 +264,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration__": {
+    "Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"createdAt":{"dataType":"datetime","required":true},"readerName":{"dataType":"string","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"createdAt":{"dataType":"datetime","required":true},"readerName":{"dataType":"string","required":true},"readerRegistration":{"dataType":"double","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration_": {
+    "Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId_": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration__","validators":{}},
+        "type": {"ref":"Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UpdateBookEvaluationEntity": {
         "dataType": "refAlias",
-        "type": {"ref":"Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId-or-readerRegistration_","validators":{}},
+        "type": {"ref":"Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NotebookWithPlaceAndVolunteer": {
@@ -967,7 +967,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.patch('/book-club-class/:classId',
-            authenticateMiddleware([{"jwt":["essayModulePermission"]}]),
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.updateConcluded)),
 
@@ -1689,6 +1689,7 @@ export function RegisterRoutes(app: Router) {
             async function UnsecuredVolunteerAPI_createVolunteer(request: any, response: any, next: any) {
             const args = {
                     volunteer: {"in":"body","name":"volunteer","required":true,"ref":"CreateVolunteerEntity"},
+                    idpep: {"in":"query","name":"idpep","dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
