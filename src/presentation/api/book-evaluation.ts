@@ -16,6 +16,7 @@ import { logger } from '@src/services/logger/logger';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Middlewares,
   Path,
@@ -257,5 +258,34 @@ export class BookEvaluationAPI extends Controller {
     }
 
     return evaluation;
+  }
+
+  /**
+   * Get evaluation by class ID
+   *
+   * (The volunteer must have bookPermission, which is checked using JWT)
+   */
+  @Delete('/{evaluationId}')
+  @Security('jwt', ['bookPermission'])
+  @SuccessResponse(204, 'Successfully delete evaluation')
+  @Response<BookEvaluationError>(404, 'Could not find evaluation', {
+    name: 'EVALUATION_NOT_FOUND_ERROR',
+    message: `Evaluation with id {evaluationId} not found`
+  })
+  async deleteBookEvaluation(@Path() evaluationId: number): Promise<boolean> {
+    const evaluation =
+      await this.bookEvaluationRepository.getBookEvaluationById(evaluationId);
+
+    if (!evaluation) {
+      throw new ApiError(
+        404,
+        new BookEvaluationError({
+          name: 'EVALUATION_NOT_FOUND_ERROR',
+          message: `Evaluation with id ${evaluationId} not found`
+        })
+      );
+    }
+
+    return this.bookEvaluationRepository.deleteBookEvaluation(evaluationId);
   }
 }
