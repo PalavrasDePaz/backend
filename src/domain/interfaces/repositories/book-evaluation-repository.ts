@@ -33,4 +33,6 @@ export interface BookEvaluationRepository {
   getBookEvaluationByClassId(
     evaluationId: number
   ): Promise<BookEvaluationEntity | null>;
+
+  deleteBookEvaluation(evaluationId: number): Promise<boolean>;
 }
