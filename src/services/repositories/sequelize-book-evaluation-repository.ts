@@ -125,4 +125,12 @@ export class SequelizeBookEvaluationRepository
       });
     }
   }
+
+  async deleteBookEvaluation(evaluationId: number): Promise<boolean> {
+    const deletedBookEvaluatino = await BookEvaluation.destroy({
+      where: { idavLivro: evaluationId }
+    });
+
+    return deletedBookEvaluatino ? true : false;
+  }
 }
