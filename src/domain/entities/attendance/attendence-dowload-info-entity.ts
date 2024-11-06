@@ -1,6 +1,7 @@
 export type AttendanceDownloadInfoEntity = {
   'Data de Submissão': Date;
   'ID Voluntário': number;
+  Idpep: number;
   Nome: string;
   'Assunto do Workshop': string;
   'Desafio Enfrentado': string;

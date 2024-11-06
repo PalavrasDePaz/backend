@@ -35,7 +35,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AttendanceEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idvol":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idpep":{"dataType":"double","required":true},"idvol":{"dataType":"double","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AttendanceInfoEntity": {
@@ -92,7 +92,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_AttendanceEntity.Exclude_keyofAttendanceEntity.idAttend-or-submissionDate__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"workshopSubject":{"dataType":"string","required":true},"idvol":{"dataType":"double","required":true},"enoughTime":{"dataType":"string","required":true},"studyRetention":{"dataType":"string","required":true},"howCanWeImprove":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"expressYourself":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"workshopSubject":{"dataType":"string","required":true},"idvol":{"dataType":"double","required":true},"idpep":{"dataType":"double","required":true},"enoughTime":{"dataType":"string","required":true},"studyRetention":{"dataType":"string","required":true},"howCanWeImprove":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"expressYourself":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_AttendanceEntity.idAttend-or-submissionDate_": {
@@ -315,19 +315,19 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"intersection","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"archivesExclusion":{"dataType":"boolean","required":true},"approved":{"dataType":"boolean","required":true},"conclusion":{"dataType":"string","required":true},"a13":{"dataType":"string"},"a12":{"dataType":"string"},"a11":{"dataType":"string"},"a10":{"dataType":"string"},"a9":{"dataType":"string"},"a8":{"dataType":"string"},"a7":{"dataType":"string"},"a6":{"dataType":"string"},"a5":{"dataType":"string"},"a4":{"dataType":"string"},"a3":{"dataType":"string"},"a2":{"dataType":"string"},"a1":{"dataType":"string"},"relevantContent":{"dataType":"string"},"subject10":{"dataType":"string"},"subject9":{"dataType":"string"},"subject8":{"dataType":"string"},"subject7":{"dataType":"string"},"subject6":{"dataType":"string"},"subject5":{"dataType":"string"},"subject4":{"dataType":"string"},"subject3":{"dataType":"string"},"subject2":{"dataType":"string"},"subject1":{"dataType":"string"},"evaluatorEmail":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"studentPrisonUnit":{"dataType":"string"},"studentRegistration":{"dataType":"double","required":true},"studentName":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"idpep":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"idcad":{"dataType":"double","required":true}}},{"ref":"Pick_PepClassEntity.notebookDirectory_"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
+    "Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"studentPrisonUnit":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"evaluatorEmail":{"dataType":"string"},"subject1":{"dataType":"string"},"subject2":{"dataType":"string"},"subject3":{"dataType":"string"},"subject4":{"dataType":"string"},"subject5":{"dataType":"string"},"subject6":{"dataType":"string"},"subject7":{"dataType":"string"},"subject8":{"dataType":"string"},"subject9":{"dataType":"string"},"subject10":{"dataType":"string"},"relevantContent":{"dataType":"string"},"a1":{"dataType":"string"},"a2":{"dataType":"string"},"a3":{"dataType":"string"},"a4":{"dataType":"string"},"a5":{"dataType":"string"},"a6":{"dataType":"string"},"a7":{"dataType":"string"},"a8":{"dataType":"string"},"a9":{"dataType":"string"},"a10":{"dataType":"string"},"a11":{"dataType":"string"},"a12":{"dataType":"string"},"a13":{"dataType":"string"},"conclusion":{"dataType":"string","required":true},"approved":{"dataType":"boolean","required":true},"archivesExclusion":{"dataType":"boolean","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_": {
+    "Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__","validators":{}},
+        "type": {"ref":"Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "EvaluateNotebookEntity": {
         "dataType": "refAlias",
-        "type": {"ref":"Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_","validators":{}},
+        "type": {"ref":"Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_AvailableNotebookRowEntity.notebookId_": {
@@ -1180,6 +1180,37 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.getBookEvaluationByClassId.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/book-evaluations/:evaluationId',
+            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.deleteBookEvaluation)),
+
+            async function BookEvaluationAPI_deleteBookEvaluation(request: any, response: any, next: any) {
+            const args = {
+                    evaluationId: {"in":"path","name":"evaluationId","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookEvaluationAPI>(BookEvaluationAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.deleteBookEvaluation.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 204, next);
             } catch (err) {
                 return next(err);
             }

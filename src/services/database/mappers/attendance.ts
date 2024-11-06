@@ -6,10 +6,14 @@ import { AttendanceInfoEntity } from '@src/domain/entities/attendance/attendence
 import { AttendanceDownloadInfoEntity } from '@src/domain/entities/attendance/attendence-dowload-info-entity';
 
 export const attendanceModelToEntityFromDate = (
-  attendance: Attendance & { 'Volunteer.nome'?: string }
+  attendance: Attendance & {
+    'Volunteer.nome'?: string;
+    'Volunteer.idpep'?: number;
+  }
 ): AttendanceInfoEntity => ({
   idvol: attendance.idvol,
   name: attendance['Volunteer.nome'] ?? null,
+  idpep: attendance['Volunteer.idpep'] ?? 0,
   idAttend: attendance.idpres,
   workshopSubject: attendance.tema,
   enoughTime: attendance.suff,
@@ -23,7 +27,7 @@ export const attendanceModelToEntityFromDate = (
 });
 
 export const attendanceModelToEntity = (
-  attendance: Attendance
+  attendance: Attendance & { Volunteer?: { idpep?: number } }
 ): AttendanceEntity => ({
   idvol: attendance.idvol,
   idAttend: attendance.idpres,
@@ -35,7 +39,8 @@ export const attendanceModelToEntity = (
   differentKnowledgeLearned: attendance.diferente,
   whatChallengedYou: attendance.desafio,
   expressYourself: attendance.expressões,
-  submissionDate: attendance.createdAt
+  submissionDate: attendance.createdAt,
+  idpep: attendance.Volunteer?.idpep ?? 0
 });
 
 export const submitAttendanceEntityToCreationModel = (
@@ -53,10 +58,14 @@ export const submitAttendanceEntityToCreationModel = (
 });
 
 export const attendancesDownloadMapper = (
-  attendance: Attendance & { 'Volunteer.nome'?: string }
+  attendance: Attendance & {
+    'Volunteer.nome'?: string;
+    'Volunteer.idpep'?: number;
+  }
 ): AttendanceDownloadInfoEntity => ({
   'Data de Submissão': attendance.createdAt,
   'ID Voluntário': attendance.idvol,
+  Idpep: attendance['Volunteer.idpep'] ?? 0,
   Nome: attendance['Volunteer.nome'] ?? '',
   'Assunto do Workshop': attendance.tema,
   'Desafio Enfrentado': attendance.desafio ?? '',

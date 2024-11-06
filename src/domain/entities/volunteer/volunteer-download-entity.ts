@@ -1,6 +1,7 @@
 export type VolunteerDownloadEntity = {
   'Data de Submissão': Date;
   'ID Voluntário': number;
+  Idpep: number;
   Nome: string;
   'Data de Nascimento': Date;
   'E-mail': string;
