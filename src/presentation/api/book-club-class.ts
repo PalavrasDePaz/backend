@@ -83,7 +83,7 @@ export class BookClubClassAPI extends Controller {
    */
 
   @Get('/')
-  @Security('jwt', ['bookPermission'])
+  @Security('jwt')
   @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully generated the metrics')
   public async getVolunteersAttendanceMetrics(

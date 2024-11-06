@@ -35,4 +35,5 @@ export interface BookEvaluationRepository {
   ): Promise<BookEvaluationEntity | null>;
 
   deleteBookEvaluation(evaluationId: number): Promise<boolean>;
+  getRelevantPhrases(date: string): Promise<string[]>;
 }

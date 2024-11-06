@@ -20,6 +20,8 @@ import { BookEvaluation } from '../database/models/book-evaluation';
 import { Volunteer } from '../database/models/volunteer';
 import { wrapPagination } from './helpers/wrapPagination';
 import { FindOptions, Op } from 'sequelize';
+import { Place } from '../database/models/place';
+import { BookClubClass } from '../database/models/book-club-class';
 
 @provideSingleton(SequelizeBookEvaluationRepository)
 export class SequelizeBookEvaluationRepository
@@ -132,5 +134,37 @@ export class SequelizeBookEvaluationRepository
     });
 
     return deletedBookEvaluatino ? true : false;
+  }
+
+  async getRelevantPhrases(date: string): Promise<string[]> {
+    const results = await BookEvaluation.findAll({
+      attributes: ['nturma', 'matricula', 'leitor', 'relevantes'],
+      include: [
+        {
+          model: BookClubClass,
+          as: 'bookEvaluations',
+          required: true,
+          include: [
+            {
+              model: Place,
+              as: 'place',
+              attributes: ['FullName'],
+              required: true
+            }
+          ]
+        }
+      ],
+      where: {
+        relevantes: {
+          [Op.ne]: ''
+        },
+        createdAt: {
+          [Op.gt]: date
+        }
+      }
+    });
+    return results.map(
+      (r) => r.dataValues.relevantes?.replace(/[/"]/g, '') as string
+    );
   }
 }

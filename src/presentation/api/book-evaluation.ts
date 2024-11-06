@@ -288,4 +288,19 @@ export class BookEvaluationAPI extends Controller {
 
     return this.bookEvaluationRepository.deleteBookEvaluation(evaluationId);
   }
+
+  /**
+   * Endpoint to Get Relevant Phrases after a specific date
+   *
+   */
+  @Get('relevant/phrases/{date}')
+  @Security('jwt')
+  @SuccessResponse(200, 'Successfully get relevant phrases')
+  async getRelevantPhrases(@Path() date: string): Promise<string[]> {
+    const response = await this.bookEvaluationRepository.getRelevantPhrases(
+      date
+    );
+
+    return response;
+  }
 }
