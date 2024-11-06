@@ -12,7 +12,8 @@ import { PostVolunteerHoursEntity } from '@src/domain/entities/volunteer/post-vo
 export interface VolunteerRepository {
   updateVolunteer(
     volunteer: UpdateVolunteerEntity,
-    email: string
+    email: string,
+    hasClass: boolean
   ): Promise<VolunteerEntity | null>;
 
   getVolunteersFromDate(
