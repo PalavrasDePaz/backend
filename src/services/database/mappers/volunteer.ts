@@ -17,7 +17,10 @@ export const volunteerModelToEntity = (
     email: volunteer['e-mail'],
     idvol: volunteer.idvol,
     name: volunteer.nome,
-    pep: volunteer.idpep == null ? 0 : volunteer.idpep,
+    pep:
+      volunteer.idpep == null || volunteer.idpep == undefined
+        ? 0
+        : volunteer.idpep,
     birthDate: volunteer.nascimento,
     phoneNumber: volunteer.telefone,
     country: volunteer.país,
@@ -186,5 +189,6 @@ export const volunteerDownloadMappers = (
       ? volunteer['habil-livro']
       : '',
   certificado: typeof volunteer.cert === 'boolean' ? volunteer.cert : '',
-  autorização: volunteer.author ?? ''
+  autorização: volunteer.author ?? '',
+  Idpep: volunteer.idpep ?? 0
 });

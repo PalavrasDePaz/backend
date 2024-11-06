@@ -22,20 +22,19 @@ import { AttendanceDownloadInfoEntity } from '@src/domain/entities/attendance/at
 
 const getAllMetricsQuery = (
   formatedThemes: string
-) => `SELECT i.nome, i.idvol, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
+) => `SELECT i.nome, i.idvol, i.idpep, i.countCad as \`aval cadernos\`, i.countLivro as \`aval livro\`, 
 ${caseWhenBoolean('i', 'cert')},
  ${caseWhenBoolean('i', 'habil-leitura')},
   ${caseWhenBoolean('i', 'habil-livro')},
    COUNT(Presenca.TEMA) AS Npres, ${formatedThemes}, i.telefone, i.\`e-mail\`, i.\`Submission date\`
 FROM
 (
-  SELECT s.idvol, s.nome, s.countCad, s.cert, s.\`habil-leitura\`, s.\`habil-livro\`, s.telefone, s.\`e-mail\`, s.\`Submission date\`, COUNT(TurmasClubeLivro.IDTurma) AS countLivro
+  SELECT s.idvol, s.nome, s.idpep, s.countCad, s.cert, s.\`habil-leitura\`, s.\`habil-livro\`, s.telefone, s.\`e-mail\`, s.\`Submission date\`, COUNT(TurmasClubeLivro.IDTurma) AS countLivro
   FROM
   (
-    SELECT Volunteers.idvol, Volunteers.nome, Volunteers.cert, Volunteers.\`habil-leitura\`, Volunteers.\`habil-livro\`, Volunteers.telefone, Volunteers.\`e-mail\`, Volunteers.\`Submission date\`, COUNT(Cadernos.IDCAD) AS countCad
+    SELECT Volunteers.idvol, Volunteers.nome, Volunteers.idpep, Volunteers.cert, Volunteers.\`habil-leitura\`, Volunteers.\`habil-livro\`, Volunteers.telefone, Volunteers.\`e-mail\`, Volunteers.\`Submission date\`, COUNT(Cadernos.IDCAD) AS countCad
     FROM
-    Volunteers LEFT JOIN Cadernos ON Cadernos.IDVOL = Volunteers.idvol
-    WHERE Volunteers.idpep = 0
+    Volunteers LEFT JOIN Cadernos ON Cadernos.IDVOL = Volunteers.idvol    
     GROUP BY Volunteers.idvol
   ) s LEFT JOIN TurmasClubeLivro ON TurmasClubeLivro.IDVOL = s.idvol
   GROUP BY s.IDVOL
@@ -49,7 +48,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
     date: Date
   ): Promise<AttendanceDownloadInfoEntity[]> {
     const attendances = await Attendance.findAll<
-      Attendance & { 'Volunteer.nome'?: string }
+      Attendance & { 'Volunteer.nome'?: string; 'Volunteer.idpep'?: number }
     >({
       where: {
         createdAt: { [Op.gte]: date }
@@ -59,7 +58,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
         {
           model: Volunteer,
           as: 'Volunteer',
-          attributes: ['nome'],
+          attributes: ['nome', 'idpep'],
           required: true
         }
       ],
@@ -77,7 +76,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
     ): Promise<[AttendanceInfoEntity[], number]> => {
       const { filter, page: _, ...paginationRest } = pagination;
       const attendances = await Attendance.findAll<
-        Attendance & { 'Volunteer.nome'?: string }
+        Attendance & { 'Volunteer.nome'?: string; 'Volunteer.idpep'?: number }
       >({
         where: {
           createdAt: { [Op.gte]: date },
@@ -88,7 +87,7 @@ export class SequelizeAttendanceRepository implements AttendanceRepository {
           {
             model: Volunteer,
             as: 'Volunteer',
-            attributes: ['nome'],
+            attributes: ['nome', 'idpep'],
             required: true
           }
         ],
