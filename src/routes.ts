@@ -35,7 +35,10 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AttendanceEntity": {
         "dataType": "refAlias",
+
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idpep":{"dataType":"double","required":true},"idvol":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idpep":{"dataType":"double"},"idvol":{"dataType":"double","required":true}},"validators":{}},
+
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AttendanceInfoEntity": {
@@ -92,7 +95,11 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_AttendanceEntity.Exclude_keyofAttendanceEntity.idAttend-or-submissionDate__": {
         "dataType": "refAlias",
+
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"workshopSubject":{"dataType":"string","required":true},"idvol":{"dataType":"double","required":true},"idpep":{"dataType":"double","required":true},"enoughTime":{"dataType":"string","required":true},"studyRetention":{"dataType":"string","required":true},"howCanWeImprove":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"expressYourself":{"dataType":"string"}},"validators":{}},
+
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"workshopSubject":{"dataType":"string","required":true},"idvol":{"dataType":"double","required":true},"idpep":{"dataType":"double"},"enoughTime":{"dataType":"string","required":true},"studyRetention":{"dataType":"string","required":true},"howCanWeImprove":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"expressYourself":{"dataType":"string"}},"validators":{}},
+
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_AttendanceEntity.idAttend-or-submissionDate_": {
@@ -717,7 +724,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-club-class',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.getVolunteersAttendanceMetrics)),
 

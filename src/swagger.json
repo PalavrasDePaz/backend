@@ -2780,9 +2780,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": []
@@ -3871,6 +3869,61 @@
 					}
 				},
 				"description": "Get evaluation by class ID\n\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"tags": [
+					"Book evaluation"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "evaluationId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteBookEvaluation",
+				"responses": {
+					"204": {
+						"description": "Successfully delete evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Could not find evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookEvaluationError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "EVALUATION_NOT_FOUND_ERROR",
+											"message": "Evaluation with id {evaluationId} not found"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get evaluation by class ID\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book evaluation"
 				],
