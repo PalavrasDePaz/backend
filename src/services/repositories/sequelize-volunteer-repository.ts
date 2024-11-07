@@ -94,10 +94,16 @@ export class SequelizeVolunteerRepository implements VolunteerRepository {
 
   async updateVolunteer(
     volunteer: UpdateVolunteerEntity,
-    email: string
+    email: string,
+    hasClass: boolean
   ): Promise<VolunteerEntity | null> {
     try {
       const updatedVolunteer = updateVolunteerEntityToUpdateModel(volunteer);
+
+      if (hasClass) {
+        updatedVolunteer.idpep = 0;
+        updatedVolunteer.createdAt = new Date();
+      }
 
       await Volunteer.update(updatedVolunteer, {
         where: { 'e-mail': email }

@@ -71,6 +71,7 @@
 					"enoughTime",
 					"workshopSubject",
 					"idAttend",
+					"idpep",
 					"idvol"
 				],
 				"type": "object"
@@ -306,6 +307,7 @@
 				"required": [
 					"workshopSubject",
 					"idvol",
+					"idpep",
 					"enoughTime",
 					"studyRetention"
 				],
@@ -1414,7 +1416,7 @@
 					}
 				]
 			},
-			"Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
+			"Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
 				"properties": {
 					"idvol": {
 						"type": "number",
@@ -1522,12 +1524,12 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_": {
-				"$ref": "#/components/schemas/Pick_NotebookEntity.Exclude_keyofNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__",
+			"Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_": {
+				"$ref": "#/components/schemas/Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__",
 				"description": "Construct a type with the properties of T except for those in type K."
 			},
 			"EvaluateNotebookEntity": {
-				"$ref": "#/components/schemas/Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_"
+				"$ref": "#/components/schemas/Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_"
 			},
 			"Pick_AvailableNotebookRowEntity.notebookId_": {
 				"properties": {
@@ -2455,7 +2457,7 @@
 						}
 					}
 				},
-				"description": "Get download all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\r\nOBS: This route returns the data as a stream with attachment headers\r\n\r\n(The volunteer must have attendanceModulePermission, which is checked using JWT)",
+				"description": "Get download all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\nOBS: This route returns the data as a stream with attachment headers\n\n(The volunteer must have attendanceModulePermission, which is checked using JWT)",
 				"tags": [
 					"Attendance"
 				],
@@ -2494,7 +2496,7 @@
 						}
 					}
 				},
-				"description": "Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\r\n\r\n(The volunteer must have attendanceModulePermission, which is checked using JWT)\r\n\r\n * Pagination\r\n Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)\r\n Filter: ?field=value& (obs: field according database column)",
+				"description": "Get all attendances from a specified date (the format of the date parameter is: yyyy-mm-dd)\n\n(The volunteer must have attendanceModulePermission, which is checked using JWT)\n\n * Pagination\n Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)\n Filter: ?field=value& (obs: field according database column)",
 				"tags": [
 					"Attendance"
 				],
@@ -2548,7 +2550,7 @@
 						}
 					}
 				},
-				"description": "Get download volunteer attendance metrics such as course attendances, number of evaluations and others.\r\nThe objects returned in this route has field names in portuguese as the use of the route is only to\r\nconvert those objects to a view such as a table for the volunteers of the project\r\n\r\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)",
+				"description": "Get download volunteer attendance metrics such as course attendances, number of evaluations and others.\nThe objects returned in this route has field names in portuguese as the use of the route is only to\nconvert those objects to a view such as a table for the volunteers of the project\n\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)",
 				"tags": [
 					"Attendance"
 				],
@@ -2591,7 +2593,7 @@
 						}
 					}
 				},
-				"description": "Get volunteer attendance metrics such as course attendances, number of evaluations and others.\r\nThe objects returned in this route has field names in portuguese as the use of the route is only to\r\nconvert those objects to a view such as a table for the volunteers of the project\r\n\r\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)\r\n Pagination\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)",
+				"description": "Get volunteer attendance metrics such as course attendances, number of evaluations and others.\nThe objects returned in this route has field names in portuguese as the use of the route is only to\nconvert those objects to a view such as a table for the volunteers of the project\n\n(The volunteer must have manageVolunteerModulePermission, which is checked using JWT)\n Pagination\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)",
 				"tags": [
 					"Attendance"
 				],
@@ -2772,7 +2774,7 @@
 						}
 					}
 				},
-				"description": "Get all book-club-class.\r\n\r\n(The user must have bookPermissionn, which is checked using JWT)\r\n Pagination\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)",
+				"description": "Get all book-club-class.\n\n(The user must have bookPermissionn, which is checked using JWT)\n Pagination\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)",
 				"tags": [
 					"Book Club Class"
 				],
@@ -2856,7 +2858,7 @@
 						}
 					}
 				},
-				"description": "Download files of the book club class as a zip\r\nThe return of this route is a stream (content type: application/octet-stream)\r\nand the response header include the file as an attachement\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"description": "Download files of the book club class as a zip\nThe return of this route is a stream (content type: application/octet-stream)\nand the response header include the file as an attachement\n\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book Club Class"
 				],
@@ -3020,7 +3022,7 @@
 						}
 					}
 				},
-				"description": "Get available essays for evaluation for the volunteer,\r\nthose essays includes the ones which does not have a reservation date\r\nor the reservations of the volunteer.\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"description": "Get available essays for evaluation for the volunteer,\nthose essays includes the ones which does not have a reservation date\nor the reservations of the volunteer.\n\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book Club Class"
 				],
@@ -3151,7 +3153,7 @@
 						}
 					}
 				},
-				"description": "Reserve essay for the volunteer. If the essay is already reserved or evaluated\r\nstatus 400 is returned.\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"description": "Reserve essay for the volunteer. If the essay is already reserved or evaluated\nstatus 400 is returned.\n\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book Club Class"
 				],
@@ -3326,7 +3328,7 @@
 						}
 					}
 				},
-				"description": "Get all the book club classes starting from the classId in the path\r\n\r\n\r\n(The volunteer must have essayModulePermission, which is checked using JWT)",
+				"description": "Get all the book club classes starting from the classId in the path\n\n\n(The volunteer must have essayModulePermission, which is checked using JWT)",
 				"tags": [
 					"Book Club Class"
 				],
@@ -3439,7 +3441,7 @@
 						}
 					}
 				},
-				"description": "Update class values available at UpdateBCClassEntity from class with classId\r\n\r\n\r\n(The volunteer must have essayModulePermission, which is checked using JWT)",
+				"description": "Update class values available at UpdateBCClassEntity from class with classId\n\n\n(The volunteer must have essayModulePermission, which is checked using JWT)",
 				"tags": [
 					"Book Club Class"
 				],
@@ -3618,7 +3620,7 @@
 						}
 					}
 				},
-				"description": "List all book evaluations.\r\n\r\n(The user must have bookPermissionn, which is checked using JWT)\r\n Pagination\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)\r\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
+				"description": "List all book evaluations.\n\n(The user must have bookPermissionn, which is checked using JWT)\n Pagination\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
 				"tags": [
 					"Book evaluation"
 				],
@@ -3638,7 +3640,7 @@
 						"description": "Successfully Created Evaluations"
 					}
 				},
-				"description": "Create multiple multiple evaluations\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"description": "Create multiple multiple evaluations\n\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book evaluation"
 				],
@@ -3681,7 +3683,7 @@
 						}
 					}
 				},
-				"description": "Download list all book evaluations.\r\n\r\n(The user must have bookPermissionn, which is checked using JWT)\r\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
+				"description": "Download list all book evaluations.\n\n(The user must have bookPermissionn, which is checked using JWT)\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
 				"tags": [
 					"Book evaluation"
 				],
@@ -3746,7 +3748,7 @@
 						}
 					}
 				},
-				"description": "Update class values available at UpdateBookEvaluationEntity from class with evaluationId\r\n\r\n\r\n(The volunteer must have essayModulePermission, which is checked using JWT)",
+				"description": "Update class values available at UpdateBookEvaluationEntity from class with evaluationId\n\n\n(The volunteer must have essayModulePermission, which is checked using JWT)",
 				"tags": [
 					"Book evaluation"
 				],
@@ -3811,7 +3813,62 @@
 						}
 					}
 				},
-				"description": "Get evaluation by ID\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"description": "Get evaluation by ID\n\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"tags": [
+					"Book evaluation"
+				],
+				"security": [
+					{
+						"jwt": [
+							"bookPermission"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "evaluationId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteBookEvaluation",
+				"responses": {
+					"204": {
+						"description": "Successfully delete evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Could not find evaluation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BookEvaluationError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "EVALUATION_NOT_FOUND_ERROR",
+											"message": "Evaluation with id {evaluationId} not found"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Get evaluation by class ID\n\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book evaluation"
 				],
@@ -3923,7 +3980,7 @@
 						}
 					}
 				},
-				"description": "Get evaluation by class ID\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
+				"description": "Get evaluation by class ID\n\n(The volunteer must have bookPermission, which is checked using JWT)",
 				"tags": [
 					"Book evaluation"
 				],
@@ -4039,7 +4096,7 @@
 						}
 					}
 				},
-				"description": "List all notebooks.\r\n Pagination\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)\r\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
+				"description": "List all notebooks.\n Pagination\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
 				"tags": [
 					"Notebook"
 				],
@@ -4107,7 +4164,7 @@
 						}
 					}
 				},
-				"description": "Download  all notebooks.\r\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
+				"description": "Download  all notebooks.\n Filter: ?classes=399,404,405& (filter by class ids - separator \",\" (comma))",
 				"tags": [
 					"Notebook"
 				],
@@ -4277,7 +4334,7 @@
 						}
 					}
 				},
-				"description": "Download the notebook with specified id as a pdf file\r\nThe return of this route is a stream (content type: application/octet-stream)\r\nand the response header include the file as an attachement\r\n\r\n(The volunteer must have readPermission, which is checked using JWT)",
+				"description": "Download the notebook with specified id as a pdf file\nThe return of this route is a stream (content type: application/octet-stream)\nand the response header include the file as an attachement\n\n(The volunteer must have readPermission, which is checked using JWT)",
 				"tags": [
 					"Notebook"
 				],
@@ -4357,7 +4414,7 @@
 						}
 					}
 				},
-				"description": "Get available notebooks for evaluation for the volunteer,\r\nthose notebooks includes the ones which does not have a reservation date\r\nor the reservations of the volunteer.\r\n\r\n(The volunteer must have readPermission, which is checked using JWT)",
+				"description": "Get available notebooks for evaluation for the volunteer,\nthose notebooks includes the ones which does not have a reservation date\nor the reservations of the volunteer.\n\n(The volunteer must have readPermission, which is checked using JWT)",
 				"tags": [
 					"Notebook"
 				],
@@ -4470,7 +4527,7 @@
 						}
 					}
 				},
-				"description": "Evaluate a notebook\r\n\r\n(The volunteer must have readPermission, which is checked using JWT)",
+				"description": "Evaluate a notebook\n\n(The volunteer must have readPermission, which is checked using JWT)",
 				"tags": [
 					"Notebook"
 				],
@@ -4611,7 +4668,7 @@
 						}
 					}
 				},
-				"description": "Reserve notebook for the volunteer. If the notebook is already reserve or evaluated\r\nstatus 400 is returned.\r\n\r\n(The volunteer must have readPermission, which is checked using JWT)",
+				"description": "Reserve notebook for the volunteer. If the notebook is already reserve or evaluated\nstatus 400 is returned.\n\n(The volunteer must have readPermission, which is checked using JWT)",
 				"tags": [
 					"Notebook"
 				],
@@ -4819,7 +4876,7 @@
 						}
 					}
 				},
-				"description": "Update notebook values available at UpdateNotebookEntity from notebook with notebookId\r\n\r\n\r\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"description": "Update notebook values available at UpdateNotebookEntity from notebook with notebookId\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
 				"tags": [
 					"Notebook"
 				],
@@ -4922,7 +4979,7 @@
 						}
 					}
 				},
-				"description": "Get all the information from a notebook through the idcad\r\n\r\n\r\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"description": "Get all the information from a notebook through the idcad\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
 				"tags": [
 					"Notebook"
 				],
@@ -5068,7 +5125,7 @@
 						}
 					}
 				},
-				"description": "Get all the pep classes starting from the classId in the path\r\n\r\n\r\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"description": "Get all the pep classes starting from the classId in the path\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
 				"tags": [
 					"Pep Class"
 				],
@@ -5181,7 +5238,7 @@
 						}
 					}
 				},
-				"description": "Update class values available at UpdatePepClassEntity from class with classId\r\n\r\n\r\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
+				"description": "Update class values available at UpdatePepClassEntity from class with classId\n\n\n(The volunteer must have notebookModulePermission, which is checked using JWT)",
 				"tags": [
 					"Pep Class"
 				],
@@ -5357,7 +5414,7 @@
 						}
 					}
 				},
-				"description": "Update the volunteer.\r\n\r\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"description": "Update the volunteer.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
 				"tags": [
 					"Volunteer"
 				],
@@ -5371,6 +5428,14 @@
 						"in": "path",
 						"name": "email",
 						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "header",
+						"name": "turma",
+						"required": false,
 						"schema": {
 							"type": "string"
 						}
@@ -5449,7 +5514,7 @@
 						}
 					}
 				},
-				"description": "Get the volunteer by email.\r\n\r\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"description": "Get the volunteer by email.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
 				"tags": [
 					"Volunteer"
 				],
@@ -5532,7 +5597,7 @@
 						}
 					}
 				},
-				"description": "Delete the volunteer.\r\n\r\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"description": "Delete the volunteer.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
 				"tags": [
 					"Volunteer"
 				],
@@ -5609,7 +5674,7 @@
 						}
 					}
 				},
-				"description": "Create the volunteer password if it does not exist or udpdate it.\r\n\r\nIMPORTANT: That route differently from the PUT /{email}/password\r\nreceives a hashed email, that email should only be retrieved from the POST /password-email\r\nlink send to the volunteer email. Furthermore, this route does not have authentication\r\nas the email is hashed.",
+				"description": "Create the volunteer password if it does not exist or udpdate it.\n\nIMPORTANT: That route differently from the PUT /{email}/password\nreceives a hashed email, that email should only be retrieved from the POST /password-email\nlink send to the volunteer email. Furthermore, this route does not have authentication\nas the email is hashed.",
 				"tags": [
 					"Volunteer"
 				],
@@ -5722,7 +5787,7 @@
 						}
 					}
 				},
-				"description": "Generate an access token for the volunteer if his login data is correct\r\n\r\nExample of token with all permissions:\r\n\r\n{\r\n\r\n  \"email\": \"test@gmail.com\",\r\n\r\n  \"idvol\": 1,\r\n\r\n  \"bookPermission\": true,\r\n\r\n  \"readPermission\": true,\r\n\r\n  \"attendanceModulePermission\": true,\r\n\r\n  \"manageVolunteerModulePermission\": true,\r\n\r\n  \"determineVolunteerModulePermission\": true,\r\n\r\n  \"essayModulePermission\": true,\r\n\r\n  \"notebookModulePermission\": true,\r\n\r\n  \"iat\": 1691699195,\r\n\r\n  \"exp\": 1691706395\r\n\r\n}",
+				"description": "Generate an access token for the volunteer if his login data is correct\n\nExample of token with all permissions:\n\n{\n\n  \"email\": \"test@gmail.com\",\n\n  \"idvol\": 1,\n\n  \"bookPermission\": true,\n\n  \"readPermission\": true,\n\n  \"attendanceModulePermission\": true,\n\n  \"manageVolunteerModulePermission\": true,\n\n  \"determineVolunteerModulePermission\": true,\n\n  \"essayModulePermission\": true,\n\n  \"notebookModulePermission\": true,\n\n  \"iat\": 1691699195,\n\n  \"exp\": 1691706395\n\n}",
 				"tags": [
 					"Volunteer"
 				],
@@ -5811,7 +5876,7 @@
 						}
 					}
 				},
-				"description": "Create the volunteer. If the operation is successfully, an email will be\r\nsent to the volunteer attesting that the account was created",
+				"description": "Create the volunteer. If the operation is successfully, an email will be\nsent to the volunteer attesting that the account was created",
 				"tags": [
 					"Volunteer"
 				],
@@ -6053,7 +6118,7 @@
 						}
 					}
 				},
-				"description": "Sends an email to the volunteer with a link for creating or update a forgotten password.\r\n\r\nThe link contains the user email hash in the path as the following format:\r\n\r\nGET /{reset-password-route}/{email-hash}",
+				"description": "Sends an email to the volunteer with a link for creating or update a forgotten password.\n\nThe link contains the user email hash in the path as the following format:\n\nGET /{reset-password-route}/{email-hash}",
 				"tags": [
 					"Volunteer"
 				],
@@ -6125,7 +6190,7 @@
 						}
 					}
 				},
-				"description": "Get download all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)\r\nOBS: This route returns the data as a stream with attachment headers\r\n\r\n(The volunteer must have determineVolunteerModulePermission, which is checked using JWT)",
+				"description": "Get download all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)\nOBS: This route returns the data as a stream with attachment headers\n\n(The volunteer must have determineVolunteerModulePermission, which is checked using JWT)",
 				"tags": [
 					"Volunteer"
 				],
@@ -6202,7 +6267,7 @@
 						}
 					}
 				},
-				"description": "Get all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)\r\nPagination\r\n Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)\r\n Page: ?page=number& (page number)\r\n Limit: ?limit=number& (data quantity - max=30)\r\n Filter: ?field=value& (obs: field according database column)\r\n\r\n(The volunteer must have determineVolunteerModulePermission, which is checked using JWT)",
+				"description": "Get all volunteer data from a specified date (the format of the date parameter is: yyyy-mm-dd)\nPagination\n Sort: ?sort=field1-ASC,field2=DESC&...(obs: field according database column)\n Page: ?page=number& (page number)\n Limit: ?limit=number& (data quantity - max=30)\n Filter: ?field=value& (obs: field according database column)\n\n(The volunteer must have determineVolunteerModulePermission, which is checked using JWT)",
 				"tags": [
 					"Volunteer"
 				],
@@ -6282,7 +6347,7 @@
 						}
 					}
 				},
-				"description": "Create the volunteer password if it does not exist or udpdate it.\r\n\r\n(The logged volunteer can only use the operation on it's own email, unless admin)",
+				"description": "Create the volunteer password if it does not exist or udpdate it.\n\n(The logged volunteer can only use the operation on it's own email, unless admin)",
 				"tags": [
 					"Volunteer"
 				],
