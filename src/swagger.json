@@ -3951,6 +3951,45 @@
 				]
 			}
 		},
+		"/book-evaluations/relevant/phrases/{date}": {
+			"get": {
+				"operationId": "GetRelevantPhrases",
+				"responses": {
+					"200": {
+						"description": "Successfully get relevant phrases",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Endpoint to Get Relevant Phrases after a specific date",
+				"tags": [
+					"Book evaluation"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/notebooks/evaluation-list": {
 			"get": {
 				"operationId": "GetNotebooksEvaluation",
@@ -5336,6 +5375,14 @@
 						"in": "path",
 						"name": "email",
 						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "header",
+						"name": "turma",
+						"required": false,
 						"schema": {
 							"type": "string"
 						}

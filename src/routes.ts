@@ -1216,6 +1216,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/book-evaluations/relevant/phrases/:date',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
+            ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getRelevantPhrases)),
+
+            async function BookEvaluationAPI_getRelevantPhrases(request: any, response: any, next: any) {
+            const args = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<BookEvaluationAPI>(BookEvaluationAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getRelevantPhrases.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/notebooks/evaluation-list',
             authenticateMiddleware([{"jwt":["readPermission"]}]),
             ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
@@ -1939,6 +1970,8 @@ export function RegisterRoutes(app: Router) {
             const args = {
                     email: {"in":"path","name":"email","required":true,"dataType":"string"},
                     volunteer: {"in":"body","name":"volunteer","required":true,"ref":"UpdateVolunteerEntity"},
+                    turmaHeader: {"in":"header","name":"turma","dataType":"string"},
+                    _request: {"in":"request","name":"_request","dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

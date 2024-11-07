@@ -20,6 +20,7 @@ import {
   FieldErrors,
   Get,
   Head,
+  Header,
   Middlewares,
   Patch,
   Path,
@@ -34,6 +35,10 @@ import {
 import xlsx from 'xlsx';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { ApiError } from '../types/api-error';
+import { request } from 'http';
+import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
+import { EmailManager } from '@src/services/email-service/email-manager';
+import { sendVolunteerCreatedEmail } from '@src/services/email-service/use-cases/send-volunteer-create-email';
 
 @Route('volunteers')
 @Response<{ message: string; details: FieldErrors }>(
@@ -46,13 +51,17 @@ import { ApiError } from '../types/api-error';
 @Tags('Volunteer')
 export class VolunteerAPI extends Controller {
   private volunteerRepository: VolunteerRepository;
+  private emailManager: IEmailManager;
 
   constructor(
     @inject(SequelizeVolunteerRepository)
-    volunteerRepository: VolunteerRepository
+    volunteerRepository: VolunteerRepository,
+    @inject(EmailManager)
+    emailManager: IEmailManager
   ) {
     super();
     this.volunteerRepository = volunteerRepository;
+    this.emailManager = emailManager;
   }
 
   /**
@@ -182,11 +191,14 @@ export class VolunteerAPI extends Controller {
   })
   async updateVolunteer(
     @Path() email: string,
-    @Body() volunteer: UpdateVolunteerEntity
+    @Body() volunteer: UpdateVolunteerEntity,
+    @Header('turma') turmaHeader?: string,
+    @Request() _request?: Express.Request
   ): Promise<VolunteerEntity> {
     const updatedVolunteer = await this.volunteerRepository.updateVolunteer(
       volunteer,
-      email
+      email,
+      !!turmaHeader
     );
     if (!updatedVolunteer)
       throw new ApiError(
@@ -196,6 +208,15 @@ export class VolunteerAPI extends Controller {
           message: `Volunteer with email ${email} not found`
         })
       );
+
+    if (turmaHeader) {
+      await sendVolunteerCreatedEmail(this.emailManager, {
+        email: updatedVolunteer.email,
+        idvol: updatedVolunteer.idvol,
+        name: updatedVolunteer.name,
+        pep: updatedVolunteer.pep
+      });
+    }
 
     return updatedVolunteer;
   }
