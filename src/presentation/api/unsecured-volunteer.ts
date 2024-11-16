@@ -189,7 +189,7 @@ export class UnsecuredVolunteerAPI extends Controller {
         ...permissions?.permissions
       };
 
-      const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '2h' });
+      const token = sign(payload, JWT_SECRET_KEY, { expiresIn: '1d' });
       return { token: token, volunteer };
     }
     if (volunteerWithAuth) {
