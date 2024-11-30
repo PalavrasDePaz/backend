@@ -36,6 +36,7 @@ export class BookClubClass extends Model<
   bookEvaluations!: NonAttribute<BookEvaluation[]>;
 
   public static associations: {
+    bookEvaluations: Association<BookClubClass, BookEvaluation>;
     place: Association<BookClubClass, Place>;
     evals: Association<BookClubClass, BookEvaluation>;
   };
