@@ -50,3 +50,11 @@ export type BookEvaluationListDownload = {
   Redação: string;
   'Data de expiração': string;
 };
+
+export type BookEvaluationsRelevantPhrases = {
+  nturma: number;
+  matricula: number;
+  leitor: string;
+  relevantes: string | undefined;
+  placeFullName: string;
+};
