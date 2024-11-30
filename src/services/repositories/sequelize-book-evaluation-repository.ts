@@ -1,7 +1,8 @@
 import {
   BookEvaluationEntity,
   BookEvaluationList,
-  BookEvaluationListDownload
+  BookEvaluationListDownload,
+  BookEvaluationsRelevantPhrases
 } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
@@ -136,7 +137,9 @@ export class SequelizeBookEvaluationRepository
     return deletedBookEvaluatino ? true : false;
   }
 
-  async getRelevantPhrases(date: string): Promise<string[]> {
+  async getRelevantPhrases(
+    date: string
+  ): Promise<BookEvaluationsRelevantPhrases[]> {
     const results = await BookEvaluation.findAll({
       attributes: ['nturma', 'matricula', 'leitor', 'relevantes'],
       include: [
@@ -148,7 +151,7 @@ export class SequelizeBookEvaluationRepository
             {
               model: Place,
               as: 'place',
-              attributes: ['FullName'],
+              attributes: ['fullName'],
               required: true
             }
           ]
@@ -163,8 +166,13 @@ export class SequelizeBookEvaluationRepository
         }
       }
     });
-    return results.map(
-      (r) => r.dataValues.relevantes?.replace(/[/"]/g, '') as string
-    );
+    return results.map((r) => ({
+      nturma: r.dataValues.nturma,
+      matricula: r.dataValues.matricula,
+      leitor: r.dataValues.leitor,
+      relevantes: r.dataValues.relevantes,
+      placeFullName:
+        r.bookEvaluations.dataValues.place?.dataValues.fullName || ''
+    }));
   }
 }
