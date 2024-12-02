@@ -29,7 +29,7 @@ export class Notebook extends Model<
   'tema 8'?: string;
   'tema 9'?: string;
   'tema 10'?: string;
-  'conteúdos relevantes'?: string;
+  'conteúdos relevantes'?: string | null;
   a1?: string;
   a2?: string;
   a3?: string;
@@ -43,7 +43,7 @@ export class Notebook extends Model<
   a11?: string;
   a12?: string;
   a13?: string;
-  'conclusão do avaliador'!: string;
+  'conclusão do avaliador'!: string | null;
   'exclusão de arquivos recebidos'?: string;
   'Carimbo de data/hora'?: Date | null;
   idpep?: number | null;
