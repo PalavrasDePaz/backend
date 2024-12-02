@@ -3991,7 +3991,7 @@
 						}
 					}
 				},
-				"description": "Endpoint to Get Relevant Phrases after a specific date",
+				"description": "Endpoint to Get Relevant Phrases after a specific date download",
 				"tags": [
 					"Book evaluation"
 				],
