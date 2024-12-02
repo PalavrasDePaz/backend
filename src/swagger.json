@@ -71,7 +71,6 @@
 					"enoughTime",
 					"workshopSubject",
 					"idAttend",
-					"idpep",
 					"idvol"
 				],
 				"type": "object"
@@ -307,7 +306,6 @@
 				"required": [
 					"workshopSubject",
 					"idvol",
-					"idpep",
 					"enoughTime",
 					"studyRetention"
 				],
@@ -1917,6 +1915,36 @@
 			"UpdatePepClassEntity": {
 				"$ref": "#/components/schemas/Omit_PepClassEntity.id-or-placeId_"
 			},
+			"FileError": {
+				"properties": {
+					"name": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ErrorName"
+							},
+							{
+								"type": "string",
+								"enum": [
+									"UNSPECIFIED_ERROR"
+								]
+							}
+						]
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"details": {}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"VolunteerEntity": {
 				"properties": {
 					"email": {
@@ -3028,9 +3056,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -3890,61 +3916,6 @@
 						}
 					}
 				]
-			},
-			"delete": {
-				"operationId": "DeleteBookEvaluation",
-				"responses": {
-					"204": {
-						"description": "Successfully delete evaluation",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "boolean"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Could not find evaluation",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BookEvaluationError"
-								},
-								"examples": {
-									"Example 1": {
-										"value": {
-											"name": "EVALUATION_NOT_FOUND_ERROR",
-											"message": "Evaluation with id {evaluationId} not found"
-										}
-									}
-								}
-							}
-						}
-					}
-				},
-				"description": "Get evaluation by class ID\r\n\r\n(The volunteer must have bookPermission, which is checked using JWT)",
-				"tags": [
-					"Book evaluation"
-				],
-				"security": [
-					{
-						"jwt": [
-							"bookPermission"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "evaluationId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
 			}
 		},
 		"/book-evaluations/by-class/{classId}": {
@@ -4004,7 +3975,7 @@
 				]
 			}
 		},
-		"/book-evaluations/relevant/phrases/{date}": {
+		"/book-evaluations/relevant/phrases/{date}/download": {
 			"get": {
 				"operationId": "GetRelevantPhrases",
 				"responses": {
@@ -4013,10 +3984,8 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"type": "string"
-									},
-									"type": "array"
+									"type": "string",
+									"format": "byte"
 								}
 							}
 						}
@@ -5003,6 +4972,81 @@
 				]
 			}
 		},
+		"/notebooks/reflections/{date}/download": {
+			"get": {
+				"operationId": "GetRelevantReflections",
+				"responses": {
+					"200": {
+						"description": "Successfully get relevant reflections",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"details": {
+											"$ref": "#/components/schemas/FieldErrors"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"details",
+										"message"
+									],
+									"type": "object"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"message": "Validation Failed",
+											"details": {
+												"exampleField1": {
+													"message": "invalid string value",
+													"value": 12
+												},
+												"exampleField2": {
+													"message": "'exampleField2' is required"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Endpoint to Get Relevant Reflections after a specific date",
+				"tags": [
+					"Notebook"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/pep-class": {
 			"get": {
 				"operationId": "GetClasses",
@@ -5270,6 +5314,209 @@
 						}
 					}
 				}
+			}
+		},
+		"/schedule/upload": {
+			"post": {
+				"operationId": "UploadFile",
+				"responses": {
+					"200": {
+						"description": "Successfully Upload schedule",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"message": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"message"
+											],
+											"type": "object"
+										},
+										{}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid File Name",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FileError"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"name": "INVALID_NAME",
+											"message": "Invalid File Name"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"description": "Enpoint for upload schedule.",
+				"tags": [
+					"Upload - Agenda"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string",
+										"description": "Content Title of schedule."
+									},
+									"description": {
+										"type": "string",
+										"description": "Content of schedule."
+									},
+									"fileName": {
+										"type": "string",
+										"description": "File name of schedule, can be schedule1 to schedule5."
+									},
+									"file": {
+										"type": "string",
+										"format": "binary",
+										"description": "Image of schedule, can be png, jpg and jpeg (via form-data)."
+									}
+								},
+								"required": [
+									"title",
+									"description",
+									"fileName",
+									"file"
+								]
+							}
+						}
+					}
+				}
+			}
+		},
+		"/schedule/{scheduleName}": {
+			"put": {
+				"operationId": "UpdateSchedule",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"message": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"message"
+											],
+											"type": "object"
+										},
+										{}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Enpoint for update a schedule.",
+				"tags": [
+					"Upload - Agenda"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "scheduleName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string",
+										"description": "Content Title of schedule."
+									},
+									"description": {
+										"type": "string",
+										"description": "Content of schedule."
+									},
+									"file": {
+										"type": "string",
+										"format": "binary",
+										"description": "Image of schedule, can be png, jpg and jpeg (via form-data)."
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteFile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"message": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"message"
+											],
+											"type": "object"
+										},
+										{}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete a schedule by name.",
+				"tags": [
+					"Upload - Agenda"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Name of schedule to delete.",
+						"in": "path",
+						"name": "scheduleName",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/volunteers/{email}": {

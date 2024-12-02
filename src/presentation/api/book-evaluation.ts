@@ -290,7 +290,7 @@ export class BookEvaluationAPI extends Controller {
   }
 
   /**
-   * Endpoint to Get Relevant Phrases after a specific date
+   * Endpoint to Get Relevant Phrases after a specific date download
    *
    */
   @Get('relevant/phrases/{date}/download')
