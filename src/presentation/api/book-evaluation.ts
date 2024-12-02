@@ -293,7 +293,7 @@ export class BookEvaluationAPI extends Controller {
    * Endpoint to Get Relevant Phrases after a specific date
    *
    */
-  @Get('relevant/phrases/{date}')
+  @Get('relevant/phrases/{date}/download')
   @Security('jwt')
   @SuccessResponse(200, 'Successfully get relevant phrases')
   async getRelevantPhrases(
@@ -311,7 +311,7 @@ export class BookEvaluationAPI extends Controller {
 
     req.res?.setHeader(
       'Content-Disposition',
-      'attachment; filename=' + `avaliação-do-livro.xlsx`
+      'attachment; filename=' + `avaliação-do-livro-a-partir-de-${date}.xlsx`
     );
     req.res?.setHeader('Content-Type', 'application/octet-stream');
     req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
