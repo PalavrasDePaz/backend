@@ -7,7 +7,10 @@ import {
   NotebookWithPlaceAndVolunteer
 } from '@src/domain/entities/notebook/notebook-entity';
 import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
-import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook-repository';
+import {
+  NotebookRepository,
+  RecletionsReturnType
+} from '@src/domain/interfaces/repositories/notebook-repository';
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import moment from 'moment';
@@ -189,7 +192,7 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     return notebooks.map(evalutionListNotebookModelToEntityDownload);
   }
 
-  async getReflections(date: string): Promise<Notebook[]> {
+  async getReflections(date: string): Promise<RecletionsReturnType[]> {
     const notebooks = await Notebook.findAll({
       attributes: [
         [Sequelize.col('nome do(a) aluno(a)'), 'nome do(a) aluno(a)'],
@@ -209,6 +212,11 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       }
     });
 
-    return notebooks;
+    return notebooks.map((n) => ({
+      name: n.getDataValue('nome do(a) aluno(a)'),
+      registration: n.getDataValue('número de matrícula do(a) aluno(a)'),
+      prisonUnit: n.getDataValue('unidade prisional do(a) aluno(a)'),
+      relevantContents: n.getDataValue('conteúdos relevantes')
+    }));
   }
 }
