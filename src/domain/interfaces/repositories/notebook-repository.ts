@@ -47,5 +47,12 @@ export interface NotebookRepository {
     pagination: PaginationParams
   ): Promise<EvaluateNotebookEntityDownload[]>;
 
-  getReflections(date: string): Promise<Notebook[]>;
+  getReflections(date: string): Promise<RecletionsReturnType[]>;
 }
+
+export type RecletionsReturnType = {
+  name: string;
+  registration: string | undefined;
+  prisonUnit: string | undefined;
+  relevantContents: string | null | undefined;
+};
