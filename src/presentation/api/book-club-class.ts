@@ -194,7 +194,7 @@ export class BookClubClassAPI extends Controller {
    * (The volunteer must have bookPermission, which is checked using JWT)
    */
   @Get('available/{idvol}')
-  @Security('jwt', ['bookPermission'])
+  @Security('jwt')
   @SuccessResponse(200, 'Successfully fetched the essays')
   async getAvailableClasses(
     @Path() idvol: number

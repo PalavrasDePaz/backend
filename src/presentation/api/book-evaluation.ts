@@ -290,17 +290,42 @@ export class BookEvaluationAPI extends Controller {
   }
 
   /**
-   * Endpoint to Get Relevant Phrases after a specific date
+   * Endpoint to Get Relevant Phrases after a specific date download
    *
    */
-  @Get('relevant/phrases/{date}')
+  @Get('relevant/phrases/{date}/download')
   @Security('jwt')
   @SuccessResponse(200, 'Successfully get relevant phrases')
-  async getRelevantPhrases(@Path() date: string): Promise<string[]> {
+  async getRelevantPhrases(
+    @Path() date: string,
+    @Request() req: express.Request
+  ): Promise<Readable> {
     const response = await this.bookEvaluationRepository.getRelevantPhrases(
       date
     );
 
-    return response;
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(response);
+    xlsx.utils.book_append_sheet(wb, ws, `avaliação-do-livro.xlsx`);
+    const xlsxBuffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+    req.res?.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `avaliação-do-livro-a-partir-de-${date}.xlsx`
+    );
+    req.res?.setHeader('Content-Type', 'application/octet-stream');
+    req.res?.setHeader('Content-Length', xlsxBuffer.byteLength);
+
+    const stream = Readable.from(xlsxBuffer);
+
+    stream.on('error', (error) => {
+      logger.error(error);
+    });
+
+    stream.on('close', () => {
+      logger.info('Closing stream');
+    });
+
+    return stream;
   }
 }

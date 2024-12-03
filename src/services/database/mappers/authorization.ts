@@ -12,7 +12,8 @@ export const authorizationModelToEntity = (
       determineVolunteerModulePermission: authorization['mod det vol'],
       essayModulePermission: authorization['mod bo redacao'],
       notebookModulePermission: authorization['mod bo cadernos'],
-      moduleNewsPermission: authorization['mod news']
+      moduleNewsPermission: authorization['mod news'],
+      moduleRelevants: authorization['mod relevantes']
     }
   };
 };
