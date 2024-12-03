@@ -224,29 +224,26 @@ export class FilesController extends Controller {
   public async deleteFile(
     scheduleName: string
   ): Promise<{ message: string } | void> {
-    try {
-      const files = await fs.readdir(this.uploadDirectory);
+    const files = await fs.readdir(this.uploadDirectory);
 
-      const fileToDelete = files.find(
-        (file) => path.parse(file).name === scheduleName
+    const fileToDelete = files.find(
+      (file) => path.parse(file).name === scheduleName
+    );
+
+    if (!fileToDelete) {
+      throw new ApiError(
+        400,
+        new FileError({
+          name: 'SCHEDULE_NOT_FOUND',
+          message: `File with name "${scheduleName}" not found`
+        })
       );
+    }
 
-      if (!fileToDelete) {
-        throw new ApiError(
-          400,
-          new FileError({
-            name: 'SCHEDULE_NOT_FOUND',
-            message: `File with name "${scheduleName}" not found`
-          })
-        );
-      }
+    const filePath = path.join(this.uploadDirectory, fileToDelete);
 
-      const filePath = path.join(this.uploadDirectory, fileToDelete);
-
+    try {
       await fs.unlink(filePath);
-      await fs.unlink(`${this.uploadDirectory}/${scheduleName}.json`);
-
-      return { message: 'Arquivo deletado com sucesso' };
     } catch (err) {
       throw new ApiError(
         400,
@@ -256,5 +253,19 @@ export class FilesController extends Controller {
         })
       );
     }
+
+    try {
+      await fs.unlink(`${this.uploadDirectory}/${scheduleName}.json`);
+    } catch (err) {
+      throw new ApiError(
+        400,
+        new FileError({
+          name: 'ERROR_DELETING_FILE',
+          message: `Erro while deleting schedule "${scheduleName}"`
+        })
+      );
+    }
+
+    return { message: 'Arquivo deletado com sucesso' };
   }
 }

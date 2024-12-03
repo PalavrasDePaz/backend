@@ -1,7 +1,8 @@
 import {
   BookEvaluationEntity,
   BookEvaluationList,
-  BookEvaluationListDownload
+  BookEvaluationListDownload,
+  BookEvaluationsRelevantPhrases
 } from '@src/domain/entities/book-evaluation/book-evaluation-entity';
 import { CreateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/create-book-evaluation-entity';
 import { UpdateBookEvaluationEntity } from '@src/domain/entities/book-evaluation/update-book-evaluation-entity';
@@ -35,5 +36,5 @@ export interface BookEvaluationRepository {
   ): Promise<BookEvaluationEntity | null>;
 
   deleteBookEvaluation(evaluationId: number): Promise<boolean>;
-  getRelevantPhrases(date: string): Promise<string[]>;
+  getRelevantPhrases(date: string): Promise<BookEvaluationsRelevantPhrases[]>;
 }

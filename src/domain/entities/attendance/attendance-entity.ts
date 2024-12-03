@@ -1,5 +1,5 @@
 export type AttendanceEntity = {
-  idvol: number;  
+  idvol: number;
   idpep?: number;
   idAttend: number;
   workshopSubject: string;

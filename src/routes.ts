@@ -13,6 +13,8 @@ import { NotebookAPI } from './presentation/api/notebooks';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PepAPI } from './presentation/api/pep-class';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { FilesController } from './presentation/api/schedule';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UnsecuredVolunteerAPI } from './presentation/api/unsecured-volunteer';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { VolunteerAPI } from './presentation/api/volunteer';
@@ -22,6 +24,8 @@ const promiseAny = require('promise.any');
 import { iocContainer } from './ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { RequestHandler, Router } from 'express';
+const multer = require('multer');
+const upload = multer();
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
@@ -35,10 +39,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AttendanceEntity": {
         "dataType": "refAlias",
-
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idpep":{"dataType":"double","required":true},"idvol":{"dataType":"double","required":true}},"validators":{}},
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"submissionDate":{"dataType":"datetime","required":true},"expressYourself":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"howCanWeImprove":{"dataType":"string"},"studyRetention":{"dataType":"string","required":true},"enoughTime":{"dataType":"string","required":true},"workshopSubject":{"dataType":"string","required":true},"idAttend":{"dataType":"double","required":true},"idpep":{"dataType":"double"},"idvol":{"dataType":"double","required":true}},"validators":{}},
-
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AttendanceInfoEntity": {
@@ -95,11 +96,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_AttendanceEntity.Exclude_keyofAttendanceEntity.idAttend-or-submissionDate__": {
         "dataType": "refAlias",
-
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"workshopSubject":{"dataType":"string","required":true},"idvol":{"dataType":"double","required":true},"idpep":{"dataType":"double","required":true},"enoughTime":{"dataType":"string","required":true},"studyRetention":{"dataType":"string","required":true},"howCanWeImprove":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"expressYourself":{"dataType":"string"}},"validators":{}},
-
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"workshopSubject":{"dataType":"string","required":true},"idvol":{"dataType":"double","required":true},"idpep":{"dataType":"double"},"enoughTime":{"dataType":"string","required":true},"studyRetention":{"dataType":"string","required":true},"howCanWeImprove":{"dataType":"string"},"applicableKnowledge":{"dataType":"string"},"differentKnowledgeLearned":{"dataType":"string"},"whatChallengedYou":{"dataType":"string"},"expressYourself":{"dataType":"string"}},"validators":{}},
-
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_AttendanceEntity.idAttend-or-submissionDate_": {
@@ -411,6 +408,17 @@ const models: TsoaRoute.Models = {
     "UpdatePepClassEntity": {
         "dataType": "refAlias",
         "type": {"ref":"Omit_PepClassEntity.id-or-placeId_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FileError": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"union","subSchemas":[{"ref":"ErrorName"},{"dataType":"enum","enums":["UNSPECIFIED_ERROR"]}],"required":true},
+            "message": {"dataType":"string","required":true},
+            "stack": {"dataType":"string"},
+            "details": {"dataType":"any"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "VolunteerEntity": {
@@ -818,7 +826,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-club-class/available/:idvol',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.getAvailableClasses)),
 
@@ -1223,7 +1231,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/book-evaluations/relevant/phrases/:date',
+        app.get('/book-evaluations/relevant/phrases/:date/download',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getRelevantPhrases)),
@@ -1231,6 +1239,7 @@ export function RegisterRoutes(app: Router) {
             async function BookEvaluationAPI_getRelevantPhrases(request: any, response: any, next: any) {
             const args = {
                     date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -1567,6 +1576,38 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/notebooks/reflections/:date/download',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
+            ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.getRelevantReflections)),
+
+            async function NotebookAPI_getRelevantReflections(request: any, response: any, next: any) {
+            const args = {
+                    date: {"in":"path","name":"date","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<NotebookAPI>(NotebookAPI);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getRelevantReflections.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/pep-class',
             authenticateMiddleware([{"jwt":["notebookModulePermission"]}]),
             ...(fetchMiddlewares<RequestHandler>(PepAPI)),
@@ -1656,6 +1697,104 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.updateClass.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/schedule/upload',
+            upload.single('file'),
+            ...(fetchMiddlewares<RequestHandler>(FilesController)),
+            ...(fetchMiddlewares<RequestHandler>(FilesController.prototype.uploadFile)),
+
+            async function FilesController_uploadFile(request: any, response: any, next: any) {
+            const args = {
+                    title: {"in":"formData","name":"title","required":true,"dataType":"string"},
+                    description: {"in":"formData","name":"description","required":true,"dataType":"string"},
+                    fileName: {"in":"formData","name":"fileName","required":true,"dataType":"string"},
+                    file: {"in":"formData","name":"file","required":true,"dataType":"file"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<FilesController>(FilesController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.uploadFile.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, 200, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/schedule/:scheduleName',
+            upload.single('file'),
+            ...(fetchMiddlewares<RequestHandler>(FilesController)),
+            ...(fetchMiddlewares<RequestHandler>(FilesController.prototype.updateSchedule)),
+
+            async function FilesController_updateSchedule(request: any, response: any, next: any) {
+            const args = {
+                    scheduleName: {"in":"path","name":"scheduleName","required":true,"dataType":"string"},
+                    title: {"in":"formData","name":"title","dataType":"string"},
+                    description: {"in":"formData","name":"description","dataType":"string"},
+                    file: {"in":"formData","name":"file","dataType":"file"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<FilesController>(FilesController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.updateSchedule.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/schedule/:scheduleName',
+            ...(fetchMiddlewares<RequestHandler>(FilesController)),
+            ...(fetchMiddlewares<RequestHandler>(FilesController.prototype.deleteFile)),
+
+            async function FilesController_deleteFile(request: any, response: any, next: any) {
+            const args = {
+                    scheduleName: {"in":"path","name":"scheduleName","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<FilesController>(FilesController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.deleteFile.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }

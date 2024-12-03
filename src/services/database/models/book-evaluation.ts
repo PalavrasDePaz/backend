@@ -4,8 +4,11 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
+  NonAttribute,
   Sequelize
 } from 'sequelize';
+import { Place } from './place';
+import { BookClubClass } from './book-club-class';
 
 export class BookEvaluation extends Model<
   InferAttributes<BookEvaluation>,
@@ -36,6 +39,8 @@ export class BookEvaluation extends Model<
   'hist-observ'?: string;
   'hist-relat'?: string;
   'data valid'?: Date;
+  bookEvaluations!: NonAttribute<BookClubClass>;
+  place!: NonAttribute<Place>;
 
   public static initialize(sequelize: Sequelize) {
     this.init(

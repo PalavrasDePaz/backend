@@ -11,7 +11,7 @@ import { NotebookRepository } from '@src/domain/interfaces/repositories/notebook
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
 import moment from 'moment';
-import { FindOptions, Op } from 'sequelize';
+import { FindOptions, Op, Sequelize } from 'sequelize';
 import {
   evaluateNotebookEntityToEvaluateNotebookModel,
   evalutionListNotebookModelToEntity,
@@ -187,5 +187,28 @@ export class SequelizeNotebookRepository implements NotebookRepository {
     >(options);
 
     return notebooks.map(evalutionListNotebookModelToEntityDownload);
+  }
+
+  async getReflections(date: string): Promise<Notebook[]> {
+    const notebooks = await Notebook.findAll({
+      attributes: [
+        [Sequelize.col('nome do(a) aluno(a)'), 'nome do(a) aluno(a)'],
+        [
+          Sequelize.col('número de matrícula do(a) aluno(a)'),
+          'número de matrícula do(a) aluno(a)'
+        ],
+        [
+          Sequelize.col('unidade prisional do(a) aluno(a)'),
+          'unidade prisional do(a) aluno(a)'
+        ],
+        [Sequelize.col('conteúdos relevantes'), 'conteúdos relevantes']
+      ],
+      where: {
+        'Carimbo de data/hora': { [Op.gt]: date },
+        'conteúdos relevantes': { [Op.not]: null }
+      }
+    });
+
+    return notebooks;
   }
 }
