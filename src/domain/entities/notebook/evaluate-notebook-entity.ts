@@ -46,7 +46,7 @@ export type EvaluateNotebookEntityDownload = {
   'Questão 8:': string;
   'Questão 9:': string;
   'Questão 10:': string;
-  'Conclusão do avaliador': string;
+  'Conclusão do avaliador': string | null;
   Aprovado: string;
   'Exclusão de arquivos recebidos': string;
 };

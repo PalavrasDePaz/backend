@@ -19,7 +19,7 @@ export type NotebookEntity = {
   subject8?: string;
   subject9?: string;
   subject10?: string;
-  relevantContent?: string;
+  relevantContent?: string | null | undefined;
   a1?: string;
   a2?: string;
   a3?: string;
@@ -33,7 +33,7 @@ export type NotebookEntity = {
   a11?: string;
   a12?: string;
   a13?: string;
-  conclusion: string;
+  conclusion: string | null;
   approved: boolean;
   archivesExclusion: boolean;
   evaluatedDate?: Date | null;

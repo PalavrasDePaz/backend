@@ -8,7 +8,6 @@ import {
 } from '@src/domain/entities/notebook/notebook-entity';
 import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 import { PaginationParams } from '@src/presentation/types/paginationParams';
-import { Notebook } from '@src/services/database/models/notebook';
 import { PaginationResult } from '@src/services/repositories/helpers/wrapPagination';
 
 export interface NotebookRepository {
