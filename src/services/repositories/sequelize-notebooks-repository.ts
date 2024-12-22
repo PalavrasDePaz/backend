@@ -194,7 +194,8 @@ export class SequelizeNotebookRepository implements NotebookRepository {
   }
 
   async getReflections(date: string): Promise<RecletionsReturnType[]> {
-    const notebooks = (await sequelize.query<RecletionsReturnType>(`
+    const notebooks = await sequelize.query<RecletionsReturnType>(
+      `
       SELECT 
           c.\`NOME DO(A) ALUNO(A)\` AS name, 
           c.\`NÚMERO DE MATRÍCULA DO(A) ALUNO(A)\` AS registration, 
@@ -205,10 +206,12 @@ export class SequelizeNotebookRepository implements NotebookRepository {
       LEFT JOIN Place pl ON pe.IDPlace = pl.ID
       WHERE c.\`Carimbo de data/hora\` > :date
       AND c.\`CONTEÚDOS RELEVANTES\` IS NOT NULL
-    `,{
-      replacements: { date },
-      type: QueryTypes.SELECT,
-    }));
+    `,
+      {
+        replacements: { date },
+        type: QueryTypes.SELECT
+      }
+    );
 
     return notebooks;
   }
