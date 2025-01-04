@@ -57,12 +57,11 @@ export class FilesController extends Controller {
     message: 'Invalid File Name'
   })
   public async uploadFile(
-    @FormField() title: string,
-    @FormField() description: string,
     @FormField() fileName: string,
-    @UploadedFile() file: Express.Multer.File
+    @FormField() title?: string,
+    @UploadedFile() file?: Express.Multer.File,
+    @FormField() description?: string
   ): Promise<{ message: string } | void> {
-    const allowedExtensions = ['.png', '.jpg', '.jpeg'];
     const allowedFileNames = [
       'schedule1',
       'schedule2',
@@ -70,9 +69,6 @@ export class FilesController extends Controller {
       'schedule4',
       'schedule5'
     ];
-
-    const fileExtension = path.extname(file.originalname).toLowerCase();
-
     if (!allowedFileNames.includes(fileName)) {
       throw new ApiError(
         400,
@@ -83,38 +79,54 @@ export class FilesController extends Controller {
       );
     }
 
-    if (!allowedExtensions.includes(fileExtension)) {
-      throw new ApiError(
-        400,
-        new FileError({
-          name: 'INVALID_FILE_EXTENSION',
-          message: 'Invalid File Extension'
-        })
-      );
-    }
-
     await this.verifyDirectory();
 
-    const filePath = path.join(
-      this.uploadDirectory,
-      `${fileName}${fileExtension}`
-    );
-
-    try {
-      if (title && description) {
+    if (title && description) {
+      try {
         const content = JSON.stringify({ title, description });
         await fs.writeFile(`${this.uploadDirectory}/${fileName}.json`, content);
+        return { message: 'Arquivo enviado com sucesso' };
+      } catch (e) {
+        throw new ApiError(
+          400,
+          new FileError({
+            name: 'UPLOAD_ERROR',
+            message: 'Error uploading file'
+          })
+        );
       }
-      await fs.writeFile(filePath, file.buffer);
-      return { message: 'Arquivo enviado com sucesso' };
-    } catch (e) {
-      throw new ApiError(
-        400,
-        new FileError({
-          name: 'UPLOAD_ERROR',
-          message: 'Error uploading file'
-        })
+    }
+
+    if (file) {
+      const allowedExtensions = ['.png', '.jpg', '.jpeg'];
+      const fileExtension = path.extname(file.originalname).toLowerCase();
+
+      if (!allowedExtensions.includes(fileExtension)) {
+        throw new ApiError(
+          400,
+          new FileError({
+            name: 'INVALID_FILE_EXTENSION',
+            message: 'Invalid File Extension'
+          })
+        );
+      }
+      const filePath = path.join(
+        this.uploadDirectory,
+        `${fileName}${fileExtension}`
       );
+
+      try {
+        await fs.writeFile(filePath, file.buffer);
+        return { message: 'Arquivo enviado com sucesso' };
+      } catch (e) {
+        throw new ApiError(
+          400,
+          new FileError({
+            name: 'UPLOAD_ERROR',
+            message: 'Error uploading file'
+          })
+        );
+      }
     }
   }
 
