@@ -204,7 +204,7 @@ export class BookEvaluationAPI extends Controller {
    * (The volunteer must have bookPermission, which is checked using JWT)
    */
   @Get('{evaluationId}')
-  @Security('jwt', ['bookPermission'])
+  @Security('jwt')
   @SuccessResponse(200, 'Successfully get the evaluation')
   @Response<BookEvaluationError>(404, 'Could not find evaluation', {
     name: 'EVALUATION_NOT_FOUND_ERROR',
