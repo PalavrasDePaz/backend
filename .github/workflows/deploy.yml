@@ -1,0 +1,40 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '17'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build application
+      run: npm run build
+
+    - name: Copy additional files
+      run: |
+        mkdir build/src
+        mkdir build/src/services
+        mkdir build/src/services/email-service
+        cp src/services/email-service/created-volunteer-body.html build/src/services/email-service
+        cp src/services/email-service/created-volunteer-alternative-body.html build/src/services/email-service
+        mkdir ./build/services/email-service/attachments
+        cp ./src/services/email-service/attachments/ethicscode.pdf ./build/services/email-service/attachments
+
+    - name: List build directory
+      run: ls -l build
+
