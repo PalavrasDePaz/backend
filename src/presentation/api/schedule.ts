@@ -237,6 +237,8 @@ export class FilesController extends Controller {
     scheduleName: string
   ): Promise<{ message: string } | void> {
     const files = await fs.readdir(this.uploadDirectory);
+    let imageExists = false;
+    let jsonExists = false;
 
     const fileToDelete = files.find(
       (file) => path.parse(file).name === scheduleName
@@ -255,27 +257,26 @@ export class FilesController extends Controller {
     const filePath = path.join(this.uploadDirectory, fileToDelete);
 
     try {
-      await fs.unlink(filePath);
+      await fs.access(filePath);
+
+      imageExists = true;
     } catch (err) {
-      throw new ApiError(
-        400,
-        new FileError({
-          name: 'ERROR_DELETING_FILE',
-          message: `Erro while deleting schedule "${scheduleName}"`
-        })
-      );
+      imageExists = false;
+    }
+
+    if (imageExists) {
+      await fs.unlink(filePath);
     }
 
     try {
-      await fs.unlink(`${this.uploadDirectory}/${scheduleName}.json`);
+      await fs.access(`${this.uploadDirectory}/${scheduleName}.json`);
+      jsonExists = true;
     } catch (err) {
-      throw new ApiError(
-        400,
-        new FileError({
-          name: 'ERROR_DELETING_FILE',
-          message: `Erro while deleting schedule "${scheduleName}"`
-        })
-      );
+      jsonExists = false;
+    }
+
+    if (jsonExists) {
+      await fs.unlink(`${this.uploadDirectory}/${scheduleName}.json`);
     }
 
     return { message: 'Arquivo deletado com sucesso' };
