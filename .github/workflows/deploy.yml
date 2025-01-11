@@ -1,46 +1,35 @@
 name: Build and Deploy
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: 
   push:
     branches:
-      - main
-
+      - main 
   pull_request:
     branches:
       - main
 
 jobs:
-  build-and-deploy:
+  upload-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: List repository files
+      run: ls -l
+
+    - name: Upload files and run commands
+      uses: easingthemes/ssh-deploy@main
       with:
-        node-version: '17.9.0'
-
-    - name: Install dependencies
-      run: |
-        npm pkg delete scripts.prepare
-        npm i && npm i --dev
-
-    - name: Build application
-      run: npm run build
-
-    - name: Copy additional files
-      run: |
-        mkdir build/src
-        mkdir build/src/services
-        mkdir build/src/services/email-service
-        cp src/services/email-service/created-volunteer-body.html build/src/services/email-service
-        cp src/services/email-service/created-volunteer-alternative-body.html build/src/services/email-service
-        mkdir ./build/services/email-service/attachments
-        cp ./src/services/email-service/attachments/ethicscode.pdf ./build/services/email-service/attachments
-
-    - name: List build directory
-      run: ls -l build
-
+        SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }} 
+        ARGS: "-rlgoDzvc --delete" 
+        SOURCE: "./" 
+        REMOTE_HOST: ${{ secrets.SERVER_SSH_HOST }} 
+        REMOTE_USER: ${{ secrets.SERVER_SSH_USER }} 
+        TARGET: ${{ secrets.REMOTE_TARGET }} 
+        SCRIPT_AFTER: |
+          cd ${{ secrets.REMOTE_TARGET }}
+          ${{ secrets.REMOTE_SCRIPT_AFTER }}
+          echo "Deploy complete."
