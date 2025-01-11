@@ -85,7 +85,6 @@ export class FilesController extends Controller {
       try {
         const content = JSON.stringify({ title, description });
         await fs.writeFile(`${this.uploadDirectory}/${fileName}.json`, content);
-        return { message: 'Arquivo enviado com sucesso' };
       } catch (e) {
         throw new ApiError(
           400,
@@ -117,7 +116,6 @@ export class FilesController extends Controller {
 
       try {
         await fs.writeFile(filePath, file.buffer);
-        return { message: 'Arquivo enviado com sucesso' };
       } catch (e) {
         throw new ApiError(
           400,
@@ -128,6 +126,7 @@ export class FilesController extends Controller {
         );
       }
     }
+    return { message: 'Arquivo enviado com sucesso' };
   }
 
   /**
