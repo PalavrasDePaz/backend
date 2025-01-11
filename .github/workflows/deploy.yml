@@ -24,7 +24,7 @@ jobs:
         node-version: '17.9.0'
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Build application
       run: npm run build
