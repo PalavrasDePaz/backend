@@ -2,7 +2,6 @@ import { Container, decorate, injectable } from 'inversify';
 import { buildProviderModule } from 'inversify-binding-decorators';
 import { Controller } from 'tsoa';
 import { IocContainer } from 'tsoa';
-import { EmailManager } from './services/email-service/email-manager';
 
 export class InversifyAdapter implements IocContainer {
   private container: Container;
