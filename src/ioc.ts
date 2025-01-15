@@ -23,8 +23,6 @@ decorate(injectable(), Controller);
 
 container.load(buildProviderModule());
 
-console.log(container.isBound(EmailManager));
-
 const iocContainer = new InversifyAdapter(container);
 
 export { iocContainer };
