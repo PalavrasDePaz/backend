@@ -81,6 +81,29 @@ export class FilesController extends Controller {
 
     await this.verifyDirectory();
 
+    const files = await fs.readdir(this.uploadDirectory);
+
+    const fileToDelete = files.map(async (file) => {
+      let fileExists = false;
+      if (file.includes(fileName)) {
+        const filePath = path.join(this.uploadDirectory, `${file}`);
+
+        try {
+          await fs.access(filePath);
+
+          fileExists = true;
+        } catch (err) {
+          fileExists = false;
+        }
+
+        if (fileExists) {
+          await fs.unlink(filePath);
+        }
+      }
+    });
+
+    await Promise.all(fileToDelete);
+
     if (title && description) {
       try {
         const content = JSON.stringify({ title, description });
@@ -205,8 +228,6 @@ export class FilesController extends Controller {
           this.uploadDirectory,
           `${scheduleName}${fileExtension}`
         );
-
-        await fs.unlink(filePath);
 
         await fs.writeFile(filePath, file.buffer);
       }
