@@ -143,6 +143,29 @@ export class FilesController extends Controller {
     @FormField() description?: string,
     @UploadedFile() file?: Express.Multer.File
   ): Promise<{ message: string } | void> {
+    const files = await fs.readdir(this.uploadDirectory);
+
+    const fileToDelete = files.map(async (file) => {
+      let fileExists = false;
+      if (file.includes(scheduleName)) {
+        const filePath = path.join(this.uploadDirectory, `${file}`);
+
+        try {
+          await fs.access(filePath);
+
+          fileExists = true;
+        } catch (err) {
+          fileExists = false;
+        }
+
+        if (fileExists) {
+          await fs.unlink(filePath);
+        }
+      }
+    });
+
+    await Promise.all(fileToDelete);
+
     try {
       if (file) {
         const allowedExtensions = ['.png', '.jpg', '.jpeg'];
@@ -236,47 +259,27 @@ export class FilesController extends Controller {
     scheduleName: string
   ): Promise<{ message: string } | void> {
     const files = await fs.readdir(this.uploadDirectory);
-    let imageExists = false;
-    let jsonExists = false;
 
-    const fileToDelete = files.find(
-      (file) => path.parse(file).name === scheduleName
-    );
+    const fileToDelete = files.map(async (file) => {
+      let fileExists = false;
+      if (file.includes(scheduleName)) {
+        const filePath = path.join(this.uploadDirectory, `${file}`);
 
-    if (!fileToDelete) {
-      throw new ApiError(
-        400,
-        new FileError({
-          name: 'SCHEDULE_NOT_FOUND',
-          message: `File with name "${scheduleName}" not found`
-        })
-      );
-    }
+        try {
+          await fs.access(filePath);
 
-    const filePath = path.join(this.uploadDirectory, fileToDelete);
+          fileExists = true;
+        } catch (err) {
+          fileExists = false;
+        }
 
-    try {
-      await fs.access(filePath);
+        if (fileExists) {
+          await fs.unlink(filePath);
+        }
+      }
+    });
 
-      imageExists = true;
-    } catch (err) {
-      imageExists = false;
-    }
-
-    if (imageExists) {
-      await fs.unlink(filePath);
-    }
-
-    try {
-      await fs.access(`${this.uploadDirectory}/${scheduleName}.json`);
-      jsonExists = true;
-    } catch (err) {
-      jsonExists = false;
-    }
-
-    if (jsonExists) {
-      await fs.unlink(`${this.uploadDirectory}/${scheduleName}.json`);
-    }
+    await Promise.all(fileToDelete);
 
     return { message: 'Arquivo deletado com sucesso' };
   }
