@@ -6,3 +6,4 @@ firebase-admin.json
 package-lock.json
 *.log
 .docker
+public

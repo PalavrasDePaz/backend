@@ -86,7 +86,7 @@ export class BookEvaluationAPI extends Controller {
    */
 
   @Get('/download')
-  @Security('jwt', ['bookPermission'])
+  @Security('jwt')
   @Middlewares(paginationMiddleware)
   @SuccessResponse(200, 'Successfully generated the metrics')
   public async getVBookEvaluationListDownload(
