@@ -266,7 +266,7 @@ export class BookEvaluationAPI extends Controller {
    * (The volunteer must have bookPermission, which is checked using JWT)
    */
   @Delete('/{evaluationId}')
-  @Security('jwt', ['bookPermission'])
+  @Security('jwt')
   @SuccessResponse(204, 'Successfully delete evaluation')
   @Response<BookEvaluationError>(404, 'Could not find evaluation', {
     name: 'EVALUATION_NOT_FOUND_ERROR',

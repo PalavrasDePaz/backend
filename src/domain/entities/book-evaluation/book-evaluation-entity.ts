@@ -1,5 +1,6 @@
 export type BookEvaluationEntity = {
   id: number;
+  idavLivro?: number;
   readerName: string;
   readerRegistration: number;
   classId: number;
