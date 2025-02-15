@@ -53,8 +53,8 @@ export class SequelizeBCCRepository implements BookClubClassRepository {
   async countEvaluatedClassesByIdVol(
     idvol: number
   ): Promise<{ count: number }> {
-    const count = await BookClubClass.count({
-      where: { idvol, datafimaval: { [Op.ne]: null } }
+    const count = await BookEvaluation.count({
+      where: { idvol }
     });
     return { count };
   }
