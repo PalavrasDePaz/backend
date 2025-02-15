@@ -38,6 +38,7 @@ export const bookEvaluationToBookEvaluationListEntity = (
   bookEvaluation: BookEvaluation & { 'volunteer.nome'?: string }
 ): BookEvaluationList => ({
   id: bookEvaluation.idavLivro,
+  idavLivro: bookEvaluation.idavLivro,
   readerName: bookEvaluation.leitor,
   readerRegistration: bookEvaluation.matricula,
   classId: bookEvaluation.nturma,
