@@ -36,8 +36,8 @@ export type NotebookEntity = {
   conclusion: string | null;
   approved: boolean;
   archivesExclusion: boolean;
-  evaluatedDate?: string | null;
-  reservationDate?: string | null;
+  evaluatedDate?: Date | null;
+  reservationDate?: Date | null;
 } & Pick<PepClassEntity, 'notebookDirectory'>;
 
 export type NotebookWithPlaceAndVolunteer = {

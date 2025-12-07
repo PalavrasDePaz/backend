@@ -1,6 +1,6 @@
 import { ErrorBase } from './error-base';
 
-type ErrorName =
+type VolunteerErrorName =
   | 'VOLUNTEER_NOT_FOUND'
   | 'VOLUNTEER_ALREADY_EXISTS'
   | 'VOLUNTEER_NOT_UPDATED'
@@ -12,4 +12,4 @@ type ErrorName =
   | 'HOURS_ALREADY_REGISTERED'
   | 'HOURS_NOT_FOUND';
 
-export class VolunteerError extends ErrorBase<ErrorName> {}
+export class VolunteerError extends ErrorBase<VolunteerErrorName> {}
