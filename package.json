@@ -13,7 +13,7 @@
     "generate:routes": "tsoa spec-and-routes",
     "build": "rm -rf build && tsoa spec-and-routes && tsc && tsc-alias",
     "start": "node build/index.js",
-    "prepare": "husky install",
+    "prepare": "test -d .git && npx husky install || echo 'Husky ignorado em produção'",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc src/**/*.ts --write",
