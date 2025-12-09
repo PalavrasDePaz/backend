@@ -44,7 +44,7 @@ export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   conclusion: notebook['conclusão do avaliador'],
   archivesExclusion: notebook['exclusão de arquivos recebidos'] === 'SIM',
   evaluatedDate: notebook['Carimbo de data/hora'],
-  reservationDate: notebook.datareserva,
+  reservationDate: notebook.datareserva?.toISOString(),
   notebookDirectory: notebook.pep?.directory
 });
 
@@ -148,7 +148,7 @@ export const evaluateNotebookEntityToEvaluateNotebookModel = (
   a13: notebook.a13,
   'conclusão do avaliador': notebook.conclusion,
   'exclusão de arquivos recebidos': notebook.archivesExclusion ? 'SIM' : 'NÃO',
-  'Carimbo de data/hora': new Date()
+  'Carimbo de data/hora': new Date().toISOString()
 });
 
 export const updateNotebookEntityToUpdateModel = (
