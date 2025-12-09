@@ -1,5 +1,5 @@
 import { ErrorBase } from './error-base';
 
-type SendEmailEErrorName = 'COULD_NOT_SEND_EMAIL_ERROR';
+type ErrorName = 'COULD_NOT_SEND_EMAIL_ERROR';
 
-export class SendEmailError extends ErrorBase<SendEmailEErrorName> {}
+export class SendEmailError extends ErrorBase<ErrorName> {}

@@ -6,7 +6,6 @@ import { NotebookEntity } from '@src/domain/entities/notebook/notebook-entity';
 import { UpdateNotebookEntity } from '@src/domain/entities/notebook/update-notebook-entity';
 import { Notebook } from '../models/notebook';
 import UpdateModel from './helpers/update-model-type';
-import { normalizeDate } from './helpers/normalizeDate';
 
 export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   idcad: notebook.idcad,
@@ -44,8 +43,8 @@ export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   approved: notebook.aprovado == 'SIM' ? true : false,
   conclusion: notebook['conclusão do avaliador'],
   archivesExclusion: notebook['exclusão de arquivos recebidos'] === 'SIM',
-  evaluatedDate: normalizeDate(notebook['Carimbo de data/hora']),
-  reservationDate: normalizeDate(notebook.datareserva),
+  evaluatedDate: notebook['Carimbo de data/hora'],
+  reservationDate: notebook.datareserva,
   notebookDirectory: notebook.pep?.directory
 });
 
