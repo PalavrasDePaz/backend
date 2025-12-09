@@ -1,5 +1,5 @@
 import { ErrorBase } from './error-base';
 
-type FetchFilesErrorName = 'FILE_NOT_FOUND';
+type ErrorName = 'FILE_NOT_FOUND';
 
-export class FetchFilesError extends ErrorBase<FetchFilesErrorName> {}
+export class FetchFilesError extends ErrorBase<ErrorName> {}
