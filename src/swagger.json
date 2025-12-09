@@ -655,6 +655,10 @@
 					"readerName": {
 						"type": "string"
 					},
+					"idavLivro": {
+						"type": "number",
+						"format": "double"
+					},
 					"id": {
 						"type": "number",
 						"format": "double"
@@ -910,6 +914,10 @@
 			},
 			"Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-createdAt__": {
 				"properties": {
+					"idavLivro": {
+						"type": "number",
+						"format": "double"
+					},
 					"readerName": {
 						"type": "string"
 					},
@@ -1034,6 +1042,10 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"idavLivro": {
+						"type": "number",
+						"format": "double"
 					},
 					"readerName": {
 						"type": "string"
@@ -1226,7 +1238,6 @@
 					},
 					"reservationDate": {
 						"type": "string",
-						"format": "date-time",
 						"nullable": true
 					},
 					"studentName": {
@@ -1276,12 +1287,10 @@
 						"properties": {
 							"reservationDate": {
 								"type": "string",
-								"format": "date-time",
 								"nullable": true
 							},
 							"evaluatedDate": {
 								"type": "string",
-								"format": "date-time",
 								"nullable": true
 							},
 							"archivesExclusion": {
@@ -1291,7 +1300,8 @@
 								"type": "boolean"
 							},
 							"conclusion": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"a13": {
 								"type": "string"
@@ -1333,7 +1343,8 @@
 								"type": "string"
 							},
 							"relevantContent": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"subject10": {
 								"type": "string"
@@ -1461,7 +1472,8 @@
 						"type": "string"
 					},
 					"relevantContent": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"a1": {
 						"type": "string"
@@ -1503,7 +1515,8 @@
 						"type": "string"
 					},
 					"conclusion": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"approved": {
 						"type": "boolean"
@@ -1556,12 +1569,10 @@
 				"properties": {
 					"reservationDate": {
 						"type": "string",
-						"format": "date-time",
 						"nullable": true
 					},
 					"evaluatedDate": {
 						"type": "string",
-						"format": "date-time",
 						"nullable": true
 					},
 					"subject1": {
@@ -1595,7 +1606,8 @@
 						"type": "string"
 					},
 					"relevantContent": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"a1": {
 						"type": "string"
@@ -1637,7 +1649,8 @@
 						"type": "string"
 					},
 					"conclusion": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"approved": {
 						"type": "boolean"
@@ -2892,9 +2905,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -3652,9 +3663,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": []
@@ -3715,9 +3724,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": []
@@ -3845,9 +3852,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -3900,9 +3905,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"bookPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -4071,9 +4074,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"readPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": []
@@ -4139,9 +4140,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"readPermission"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": []
@@ -5375,29 +5374,26 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"title": {
-										"type": "string",
-										"description": "Content Title of schedule."
-									},
-									"description": {
-										"type": "string",
-										"description": "Content of schedule."
-									},
 									"fileName": {
 										"type": "string",
 										"description": "File name of schedule, can be schedule1 to schedule5."
+									},
+									"title": {
+										"type": "string",
+										"description": "Content Title of schedule."
 									},
 									"file": {
 										"type": "string",
 										"format": "binary",
 										"description": "Image of schedule, can be png, jpg and jpeg (via form-data)."
+									},
+									"description": {
+										"type": "string",
+										"description": "Content of schedule."
 									}
 								},
 								"required": [
-									"title",
-									"description",
-									"fileName",
-									"file"
+									"fileName"
 								]
 							}
 						}
