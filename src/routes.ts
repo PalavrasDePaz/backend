@@ -188,7 +188,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "BookEvaluationEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"createdAt":{"dataType":"datetime","required":true},"observedHistories":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"relevantPhrases":{"dataType":"string"},"concept":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"isAppropriation":{"dataType":"boolean","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"evaluatorId":{"dataType":"double","required":true},"classId":{"dataType":"double","required":true},"readerRegistration":{"dataType":"double","required":true},"readerName":{"dataType":"string","required":true},"id":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"createdAt":{"dataType":"datetime","required":true},"observedHistories":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"relevantPhrases":{"dataType":"string"},"concept":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"isAppropriation":{"dataType":"boolean","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"evaluatorId":{"dataType":"double","required":true},"classId":{"dataType":"double","required":true},"readerRegistration":{"dataType":"double","required":true},"readerName":{"dataType":"string","required":true},"idavLivro":{"dataType":"double"},"id":{"dataType":"double","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AssociatedBCCEntity": {
@@ -244,7 +244,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-createdAt__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"readerName":{"dataType":"string","required":true},"readerRegistration":{"dataType":"double","required":true},"classId":{"dataType":"double","required":true},"evaluatorId":{"dataType":"double","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idavLivro":{"dataType":"double"},"readerName":{"dataType":"string","required":true},"readerRegistration":{"dataType":"double","required":true},"classId":{"dataType":"double","required":true},"evaluatorId":{"dataType":"double","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_BookEvaluationEntity.id-or-createdAt_": {
@@ -270,7 +270,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_BookEvaluationEntity.Exclude_keyofBookEvaluationEntity.id-or-classId-or-evaluatorId__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"createdAt":{"dataType":"datetime","required":true},"readerName":{"dataType":"string","required":true},"readerRegistration":{"dataType":"double","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"createdAt":{"dataType":"datetime","required":true},"idavLivro":{"dataType":"double"},"readerName":{"dataType":"string","required":true},"readerRegistration":{"dataType":"double","required":true},"isParcialPlagiarism":{"dataType":"boolean","required":true},"isAppropriation":{"dataType":"boolean","required":true},"textAestheticsAvaliation":{"dataType":"string","required":true},"textReliabilityAvaliation":{"dataType":"string","required":true},"textClarityAvaliation":{"dataType":"string","required":true},"bookCriticalAnalysisAvaliation":{"dataType":"string","required":true},"societyCriticalAnalysisAvaliation":{"dataType":"string","required":true},"grammarAvaliation":{"dataType":"string","required":true},"syntheticAvaliation":{"dataType":"string","required":true},"observations":{"dataType":"string","required":true},"concept":{"dataType":"string","required":true},"relevantPhrases":{"dataType":"string"},"readHistories":{"dataType":"array","array":{"dataType":"string"},"required":true},"observedHistories":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_BookEvaluationEntity.id-or-classId-or-evaluatorId_": {
@@ -306,7 +306,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AvailableNotebookRowEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"notebookPath":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"studentName":{"dataType":"string","required":true},"classId":{"dataType":"double","required":true},"studentId":{"dataType":"double","required":true},"notebookId":{"dataType":"double","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"notebookPath":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"studentName":{"dataType":"string","required":true},"classId":{"dataType":"double","required":true},"studentId":{"dataType":"double","required":true},"notebookId":{"dataType":"double","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_PepClassEntity.notebookDirectory_": {
@@ -316,12 +316,12 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NotebookEntity": {
         "dataType": "refAlias",
-        "type": {"dataType":"intersection","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"archivesExclusion":{"dataType":"boolean","required":true},"approved":{"dataType":"boolean","required":true},"conclusion":{"dataType":"string","required":true},"a13":{"dataType":"string"},"a12":{"dataType":"string"},"a11":{"dataType":"string"},"a10":{"dataType":"string"},"a9":{"dataType":"string"},"a8":{"dataType":"string"},"a7":{"dataType":"string"},"a6":{"dataType":"string"},"a5":{"dataType":"string"},"a4":{"dataType":"string"},"a3":{"dataType":"string"},"a2":{"dataType":"string"},"a1":{"dataType":"string"},"relevantContent":{"dataType":"string"},"subject10":{"dataType":"string"},"subject9":{"dataType":"string"},"subject8":{"dataType":"string"},"subject7":{"dataType":"string"},"subject6":{"dataType":"string"},"subject5":{"dataType":"string"},"subject4":{"dataType":"string"},"subject3":{"dataType":"string"},"subject2":{"dataType":"string"},"subject1":{"dataType":"string"},"evaluatorEmail":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"studentPrisonUnit":{"dataType":"string"},"studentRegistration":{"dataType":"double","required":true},"studentName":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"idpep":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"idcad":{"dataType":"double","required":true}}},{"ref":"Pick_PepClassEntity.notebookDirectory_"}],"validators":{}},
+        "type": {"dataType":"intersection","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"archivesExclusion":{"dataType":"boolean","required":true},"approved":{"dataType":"boolean","required":true},"conclusion":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"a13":{"dataType":"string"},"a12":{"dataType":"string"},"a11":{"dataType":"string"},"a10":{"dataType":"string"},"a9":{"dataType":"string"},"a8":{"dataType":"string"},"a7":{"dataType":"string"},"a6":{"dataType":"string"},"a5":{"dataType":"string"},"a4":{"dataType":"string"},"a3":{"dataType":"string"},"a2":{"dataType":"string"},"a1":{"dataType":"string"},"relevantContent":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]},{"dataType":"undefined"}]},"subject10":{"dataType":"string"},"subject9":{"dataType":"string"},"subject8":{"dataType":"string"},"subject7":{"dataType":"string"},"subject6":{"dataType":"string"},"subject5":{"dataType":"string"},"subject4":{"dataType":"string"},"subject3":{"dataType":"string"},"subject2":{"dataType":"string"},"subject1":{"dataType":"string"},"evaluatorEmail":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"studentPrisonUnit":{"dataType":"string"},"studentRegistration":{"dataType":"double","required":true},"studentName":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"idpep":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"idcad":{"dataType":"double","required":true}}},{"ref":"Pick_PepClassEntity.notebookDirectory_"}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"studentPrisonUnit":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"evaluatorEmail":{"dataType":"string"},"subject1":{"dataType":"string"},"subject2":{"dataType":"string"},"subject3":{"dataType":"string"},"subject4":{"dataType":"string"},"subject5":{"dataType":"string"},"subject6":{"dataType":"string"},"subject7":{"dataType":"string"},"subject8":{"dataType":"string"},"subject9":{"dataType":"string"},"subject10":{"dataType":"string"},"relevantContent":{"dataType":"string"},"a1":{"dataType":"string"},"a2":{"dataType":"string"},"a3":{"dataType":"string"},"a4":{"dataType":"string"},"a5":{"dataType":"string"},"a6":{"dataType":"string"},"a7":{"dataType":"string"},"a8":{"dataType":"string"},"a9":{"dataType":"string"},"a10":{"dataType":"string"},"a11":{"dataType":"string"},"a12":{"dataType":"string"},"a13":{"dataType":"string"},"conclusion":{"dataType":"string","required":true},"approved":{"dataType":"boolean","required":true},"archivesExclusion":{"dataType":"boolean","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"idvol":{"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},"studentPrisonUnit":{"dataType":"string"},"evaluatorName":{"dataType":"string","required":true},"evaluatorEmail":{"dataType":"string"},"subject1":{"dataType":"string"},"subject2":{"dataType":"string"},"subject3":{"dataType":"string"},"subject4":{"dataType":"string"},"subject5":{"dataType":"string"},"subject6":{"dataType":"string"},"subject7":{"dataType":"string"},"subject8":{"dataType":"string"},"subject9":{"dataType":"string"},"subject10":{"dataType":"string"},"relevantContent":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]},{"dataType":"undefined"}]},"a1":{"dataType":"string"},"a2":{"dataType":"string"},"a3":{"dataType":"string"},"a4":{"dataType":"string"},"a5":{"dataType":"string"},"a6":{"dataType":"string"},"a7":{"dataType":"string"},"a8":{"dataType":"string"},"a9":{"dataType":"string"},"a10":{"dataType":"string"},"a11":{"dataType":"string"},"a12":{"dataType":"string"},"a13":{"dataType":"string"},"conclusion":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"approved":{"dataType":"boolean","required":true},"archivesExclusion":{"dataType":"boolean","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_%2F%2Feslint-disable-next-lineprettier%2FprettierNotebookEntity.-or-idcad-or-studentName-or-studentRegistration-or-idpep-or-reservationDate-or-evaluatedDate-or-notebookDirectory_": {
@@ -346,7 +346,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Pick_NotebookEntity.Exclude_keyofNotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory__": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},"subject1":{"dataType":"string"},"subject2":{"dataType":"string"},"subject3":{"dataType":"string"},"subject4":{"dataType":"string"},"subject5":{"dataType":"string"},"subject6":{"dataType":"string"},"subject7":{"dataType":"string"},"subject8":{"dataType":"string"},"subject9":{"dataType":"string"},"subject10":{"dataType":"string"},"relevantContent":{"dataType":"string"},"a1":{"dataType":"string"},"a2":{"dataType":"string"},"a3":{"dataType":"string"},"a4":{"dataType":"string"},"a5":{"dataType":"string"},"a6":{"dataType":"string"},"a7":{"dataType":"string"},"a8":{"dataType":"string"},"a9":{"dataType":"string"},"a10":{"dataType":"string"},"a11":{"dataType":"string"},"a12":{"dataType":"string"},"a13":{"dataType":"string"},"conclusion":{"dataType":"string","required":true},"approved":{"dataType":"boolean","required":true},"archivesExclusion":{"dataType":"boolean","required":true}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"reservationDate":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"evaluatedDate":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},"subject1":{"dataType":"string"},"subject2":{"dataType":"string"},"subject3":{"dataType":"string"},"subject4":{"dataType":"string"},"subject5":{"dataType":"string"},"subject6":{"dataType":"string"},"subject7":{"dataType":"string"},"subject8":{"dataType":"string"},"subject9":{"dataType":"string"},"subject10":{"dataType":"string"},"relevantContent":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]},{"dataType":"undefined"}]},"a1":{"dataType":"string"},"a2":{"dataType":"string"},"a3":{"dataType":"string"},"a4":{"dataType":"string"},"a5":{"dataType":"string"},"a6":{"dataType":"string"},"a7":{"dataType":"string"},"a8":{"dataType":"string"},"a9":{"dataType":"string"},"a10":{"dataType":"string"},"a11":{"dataType":"string"},"a12":{"dataType":"string"},"a13":{"dataType":"string"},"conclusion":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"approved":{"dataType":"boolean","required":true},"archivesExclusion":{"dataType":"boolean","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Omit_NotebookEntity.-or-idcad-or-idvol-or-idpep-or-studentName-or-studentRegistration-or-studentPrisonUnit-or-evaluatorName-or-evaluatorEmail-or-notebookDirectory_": {
@@ -763,7 +763,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-club-class/download/:idclass',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookClubClassAPI.prototype.downloadClassReport)),
 
@@ -1014,7 +1014,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-evaluations',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getVBookEvaluationList)),
 
@@ -1045,7 +1045,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-evaluations/download',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getVBookEvaluationListDownload)),
 
@@ -1139,7 +1139,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/book-evaluations/:evaluationId',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.getBookEvaluationById)),
 
@@ -1201,7 +1201,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.delete('/book-evaluations/:evaluationId',
-            authenticateMiddleware([{"jwt":["bookPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI)),
             ...(fetchMiddlewares<RequestHandler>(BookEvaluationAPI.prototype.deleteBookEvaluation)),
 
@@ -1264,7 +1264,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/notebooks/evaluation-list',
-            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
             ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.getNotebooksEvaluation)),
 
@@ -1295,7 +1295,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/notebooks/evaluation-list/download',
-            authenticateMiddleware([{"jwt":["readPermission"]}]),
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(NotebookAPI)),
             ...(fetchMiddlewares<RequestHandler>(NotebookAPI.prototype.getNotebooksEvaluationDownload)),
 
@@ -1709,10 +1709,10 @@ export function RegisterRoutes(app: Router) {
 
             async function FilesController_uploadFile(request: any, response: any, next: any) {
             const args = {
-                    title: {"in":"formData","name":"title","required":true,"dataType":"string"},
-                    description: {"in":"formData","name":"description","required":true,"dataType":"string"},
                     fileName: {"in":"formData","name":"fileName","required":true,"dataType":"string"},
-                    file: {"in":"formData","name":"file","required":true,"dataType":"file"},
+                    title: {"in":"formData","name":"title","dataType":"string"},
+                    file: {"in":"formData","name":"file","dataType":"file"},
+                    description: {"in":"formData","name":"description","dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

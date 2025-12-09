@@ -13,6 +13,6 @@ export type AvailableNotebookRowEntity = {
   studentId: number;
   classId: number;
   studentName: string;
-  reservationDate?: Date | null;
+  reservationDate?: string | null;
   notebookPath?: string | null;
 };
