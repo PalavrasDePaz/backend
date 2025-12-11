@@ -44,7 +44,7 @@ export const notebookModelToEntity = (notebook: Notebook): NotebookEntity => ({
   conclusion: notebook['conclusão do avaliador'],
   archivesExclusion: notebook['exclusão de arquivos recebidos'] === 'SIM',
   evaluatedDate: notebook['Carimbo de data/hora'],
-  reservationDate: notebook.datareserva?.toISOString(),
+  reservationDate: notebook.datareserva ? String(notebook.datareserva) : null,
   notebookDirectory: notebook.pep?.directory
 });
 
