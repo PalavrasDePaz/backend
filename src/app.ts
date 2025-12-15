@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import initModels from './services/database';
-import { RegisterRoutes } from './routes';
+import routes from './routes';
 import { validationMiddleware } from './presentation/middlewares/validation';
 import swaggerUi from 'swagger-ui-express';
 import 'reflect-metadata';
@@ -20,6 +20,6 @@ app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
   return res.send(swaggerUi.generateHTML(await import('./swagger.json')));
 });
 
-RegisterRoutes(app);
+app.use(routes);
 
 app.use(validationMiddleware);
