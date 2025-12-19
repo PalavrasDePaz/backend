@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
+  "engines": {
+    "node": "20.x"
+  },
   "_moduleAliases": {
     "@src": "./src",
     "@test": "./src/test"
@@ -44,14 +47,14 @@
     "uuid": "^9.0.0",
     "winston": "^3.10.0",
     "xlsx": "^0.18.5",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "reflect-metadata": "~0.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@tsoa/cli": "6.4.0",
     "@tsoa/runtime": "6.4.0",
-    "tsoa": "6.4.0",
     "@types/archiver": "^5.3.2",
     "@types/bcrypt-nodejs": "^0.0.31",
     "@types/cors": "^2.8.12",
@@ -80,7 +83,6 @@
     "nodemon": "^3.0.1",
     "onchange": "^7.1.0",
     "prettier": "^2.7.1",
-    "reflect-metadata": "^0.2.2",
     "rimraf": "^3.0.2",
     "supertest": "^6.3.0",
     "ts-jest": "^29.0.3",
@@ -88,6 +90,7 @@
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.2",
     "tsconfig-paths": "^4.1.0",
+    "tsoa": "6.4.0",
     "typescript": "5.4"
   },
   "config": {
