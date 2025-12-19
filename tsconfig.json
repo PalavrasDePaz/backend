@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "es2019",
     "moduleResolution": "node",
-    "module": "CommonJS",
-    "lib": ["ES2021", "DOM"],
+    "module": "commonjs",
+    "lib": ["es2019", "dom"],
     "sourceMap": true,
     "outDir": "build",
     "types": ["reflect-metadata", "jest"],
@@ -20,14 +20,27 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/*"],
-      "@test/*": ["src/test/*"],
-      "tsoa": ["node_modules/tsoa/dist"]
+      "@src/*": [
+        "./src/*"
+      ],
+      "@test/*": [
+        "src/test/*"
+      ],
+      "tsoa": ["node_modules/tsoa/dist"],
     },
-    "rootDirs": ["./src", "src/test"],
+    "rootDirs": [
+      "./src",
+      "src/test"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["./src/**/*.ts", "src/test/**/*.ts"],
-  "exclude": ["./node_modules/*", "build"]
+  "include": [
+    "./src/**/*.ts",
+    "src/test/**/*.ts",
+  ],
+  "exclude": [
+    "./node_modules/*",
+    "build"
+  ]
 }
