@@ -14,7 +14,7 @@
     "test": "jest --projects ./src/test/",
     "start:dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
     "generate:routes": "tsoa spec-and-routes",
-    "build": "rm -rf build && tsoa spec-and-routes && tsc && tsc-alias",
+    "build": "rm -rf build && tsoa spec-and-routes && tsc && tsc-alias && [ -f .env ] && cp .env build/.env",
     "start": "node build/index.js",
     "prepare": "test -d .git && npx husky install || echo 'Husky ignorado em produção'",
     "lint": "eslint . --ext .ts",
