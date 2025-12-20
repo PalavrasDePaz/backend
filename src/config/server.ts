@@ -9,6 +9,11 @@ export const PORT = ENV.PORT ? parseInt(ENV.PORT) : 3000;
 export const JWT_SECRET_KEY = ENV.JWT_SECRET_KEY;
 export const ENCRYPTION_KEY = ENV.ENCRYPTION_KEY;
 
+export const TLS =
+  ENV.USE_TLS && ENV.TLS_KEY && ENV.TLS_CERT
+    ? { key: ENV.TLS_KEY, cert: ENV.TLS_CERT }
+    : null;
+
 export const INFO_EMAIL = ENV.INFO_EMAIL;
 export const HELPDESK_EMAIL = ENV.HELPDESK_EMAIL;
 export const INFO_EMAIL_PASSWORD = ENV.INFO_EMAIL_PASSWORD;

@@ -1,9 +1,22 @@
+import { PORT, TLS } from '@src/config/server';
+import fs from 'fs';
+import https from 'https';
 import 'module-alias/register';
 import { app } from './app';
-import { NODE_ENV, PORT } from '@src/config/server';
 
 const port = Number(PORT) || 3000;
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`[server]: Server is running on port ${port}`);
-});
+if (TLS) {
+  const httpsOptions = {
+    key: fs.readFileSync(TLS.key, 'utf8'),
+    cert: fs.readFileSync(TLS.cert, 'utf8')
+  };
+
+  https.createServer(httpsOptions, app).listen(port, '0.0.0.0', () => {
+    console.log(`[server]: HTTPS server is running on port ${port}`);
+  });
+} else {
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`[server]: HTTP server is running on port ${port}`);
+  });
+}
