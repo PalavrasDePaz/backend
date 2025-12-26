@@ -9,6 +9,8 @@ const envSchema = z.object({
   PORT: z.string().optional(),
   JWT_SECRET_KEY: z.string(),
   ENCRYPTION_KEY: z.string(),
+  SMTP_SERVER: z.string(),
+  SMTP_PORT: z.string(),
   INFO_EMAIL: z.string(),
   HELPDESK_EMAIL: z.string(),
   INFO_EMAIL_PASSWORD: z.string(),

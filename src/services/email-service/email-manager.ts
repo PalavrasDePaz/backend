@@ -1,15 +1,20 @@
-import { INFO_EMAIL, INFO_EMAIL_PASSWORD } from '@src/config/server';
+import {
+  INFO_EMAIL,
+  INFO_EMAIL_PASSWORD,
+  SMTP_PORT,
+  SMTP_SERVER
+} from '@src/config/server';
 import { SendEmailError } from '@src/domain/errors/send-email';
 import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
+import { provideSingleton } from '@src/helpers/provide-singleton';
 import nodemailer from 'nodemailer';
 import { SendEmailData } from './types/send-email-data';
-import { provideSingleton } from '@src/helpers/provide-singleton';
 
 @provideSingleton(EmailManager)
 export class EmailManager implements IEmailManager {
   transporter: nodemailer.Transporter = nodemailer.createTransport({
-    host: 'smtpi.kinghost.net',
-    port: 587,
+    host: SMTP_SERVER,
+    port: SMTP_PORT,
     secure: false,
     auth: {
       user: INFO_EMAIL,
