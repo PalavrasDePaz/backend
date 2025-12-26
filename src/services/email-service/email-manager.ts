@@ -1,8 +1,8 @@
 import {
-  INFO_EMAIL,
   INFO_EMAIL_PASSWORD,
   SMTP_PORT,
-  SMTP_SERVER
+  SMTP_SERVER,
+  SMTP_USER
 } from '@src/config/server';
 import { SendEmailError } from '@src/domain/errors/send-email';
 import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
@@ -17,7 +17,7 @@ export class EmailManager implements IEmailManager {
     port: SMTP_PORT,
     secure: false,
     auth: {
-      user: INFO_EMAIL,
+      user: SMTP_USER,
       pass: INFO_EMAIL_PASSWORD
     },
     tls: {

@@ -9,6 +9,7 @@ export const PORT = ENV.PORT ? parseInt(ENV.PORT) : 3000;
 export const JWT_SECRET_KEY = ENV.JWT_SECRET_KEY;
 export const ENCRYPTION_KEY = ENV.ENCRYPTION_KEY;
 
+export const SMTP_USER = ENV.SMTP_USER || ENV.INFO_EMAIL;
 export const SMTP_SERVER = ENV.SMTP_SERVER || 'smtpi.kinghost.net';
 export const SMTP_PORT = ENV.SMTP_PORT ? parseInt(ENV.SMTP_PORT) : 587;
 export const INFO_EMAIL = ENV.INFO_EMAIL;
