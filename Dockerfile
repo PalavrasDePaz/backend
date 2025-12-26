@@ -8,6 +8,10 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
+# Copy static email assets
+RUN mkdir -p build/src/services/email-service/ && mkdir -p build/services/email-service/attachments && \
+    cp src/services/email-service/*.html build/src/services/email-service/ && \
+    cp src/services/email-service/attachments/ethicscode.pdf build/services/email-service/attachments/
 
 # ---------- Runtime stage ----------
 FROM node:20-alpine AS runtime
