@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+[ -t 0 ] || exit 0
+
 exec < /dev/tty 
