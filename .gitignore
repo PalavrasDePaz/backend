@@ -1,9 +1,23 @@
-node_modules
-build
+# Dependencies
+node_modules/
+
+# Build output
+build/
+public/
+
+# Environment files
 .env
-src/services/firebase/firebase-admin-credential.json
-firebase-admin.json
-package-lock.json
+
+# Logs
 *.log
-.docker
-public
+
+# Docker
+.docker/
+
+# Firebase / credentials
+firebase-admin.json
+src/services/firebase/firebase-admin-credential.json
+
+# Generated files (tsoa)
+src/swagger.json
+src/routes.ts
