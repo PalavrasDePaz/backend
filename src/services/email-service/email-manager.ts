@@ -4,6 +4,7 @@ import {
   HELPDESK_EMAIL_USER,
   IMAP_PORT,
   IMAP_SECURE,
+  IMAP_SENT_MAILBOX_NAME,
   IMAP_SERVER,
   INFO_EMAIL,
   INFO_EMAIL_PASSWORD,
@@ -19,6 +20,7 @@ import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager
 import { provideSingleton } from '@src/helpers/provide-singleton';
 import { ImapFlow } from 'imapflow';
 import nodemailer from 'nodemailer';
+import MailComposer from 'nodemailer/lib/mail-composer';
 import { SendEmailData } from './types/send-email-data';
 
 type ImapAuth = { user: string; pass: string };
@@ -36,7 +38,7 @@ export class EmailManager implements IEmailManager {
   private helpdeskTransporter = nodemailer.createTransport({
     host: SMTP_SERVER,
     port: SMTP_PORT,
-    secure: false,
+    secure: SMTP_SECURE,
     auth: { user: HELPDESK_EMAIL_USER, pass: HELPDESK_EMAIL_PASSWORD },
     tls: { rejectUnauthorized: false }
   });
@@ -44,16 +46,16 @@ export class EmailManager implements IEmailManager {
   private defaultTransporter = nodemailer.createTransport({
     host: SMTP_SERVER,
     port: SMTP_PORT,
-    secure: false,
+    secure: SMTP_SECURE,
     auth: { user: SMTP_USER, pass: SMTP_PASS },
     tls: { rejectUnauthorized: false }
   });
 
   /**
-   * Adjust if your server uses a different Sent mailbox name.
-   * Common alternatives: "INBOX.Sent", "Sent Items"
+   * Must match exactly what your IMAP server exposes.
+   * Common: "Sent", "INBOX.Sent", "Sent Items"
    */
-  private sentMailboxName = 'Sent';
+  private sentMailboxName = IMAP_SENT_MAILBOX_NAME;
 
   private pickTransporter(sender: string): nodemailer.Transporter {
     switch (sender) {
@@ -77,10 +79,22 @@ export class EmailManager implements IEmailManager {
     }
   }
 
+  private async buildRawMessage(sendEmailData: SendEmailData): Promise<Buffer> {
+    const composer = new MailComposer({
+      from: sendEmailData.sender,
+      to: sendEmailData.receiver,
+      subject: sendEmailData.subject,
+      html: sendEmailData.body,
+      attachments: sendEmailData.attachments
+    });
+
+    const raw = await composer.compile().build();
+    return raw;
+  }
+
   private async appendToSent(opts: {
-    raw: Buffer | string;
+    raw: Buffer;
     auth: ImapAuth;
-    sentMailboxName?: string;
   }): Promise<void> {
     if (!IMAP_SERVER) return;
 
@@ -92,18 +106,18 @@ export class EmailManager implements IEmailManager {
       tls: { rejectUnauthorized: false }
     });
 
-    const mailbox = opts.sentMailboxName ?? this.sentMailboxName;
-
     try {
       await client.connect();
 
+      // Try open, otherwise create then open
       try {
-        await client.mailboxOpen(mailbox);
+        await client.mailboxOpen(this.sentMailboxName);
       } catch {
-        await client.mailboxCreate(mailbox);
+        await client.mailboxCreate(this.sentMailboxName);
+        await client.mailboxOpen(this.sentMailboxName);
       }
 
-      await client.append(mailbox, opts.raw, ['\\Seen']);
+      await client.append(this.sentMailboxName, opts.raw, ['\\Seen']);
     } finally {
       try {
         await client.logout();
@@ -118,17 +132,20 @@ export class EmailManager implements IEmailManager {
       const transporter = this.pickTransporter(sendEmailData.sender);
       const imapAuth = this.pickImapAuth(sendEmailData.sender);
 
-      const info = await transporter.sendMail({
-        from: sendEmailData.sender,
-        to: sendEmailData.receiver,
-        subject: sendEmailData.subject,
-        html: sendEmailData.body,
-        attachments: sendEmailData.attachments
+      // Build the exact raw message once, reuse it for both actions
+      const raw = await this.buildRawMessage(sendEmailData);
+
+      // Send via SMTP using the raw message
+      await transporter.sendMail({
+        envelope: {
+          from: sendEmailData.sender,
+          to: [sendEmailData.receiver]
+        },
+        raw
       });
 
-      if (info?.message) {
-        await this.appendToSent({ raw: info.message, auth: imapAuth });
-      }
+      // Append into IMAP Sent
+      await this.appendToSent({ raw, auth: imapAuth });
     } catch (error) {
       throw new SendEmailError({
         name: 'COULD_NOT_SEND_EMAIL_ERROR',

@@ -21,6 +21,7 @@ const envSchema = z.object({
   IMAP_SERVER: z.string().optional(),
   IMAP_PORT: z.string().optional(),
   IMAP_SECURE: z.string().optional(),
+  IMAP_SENT_MAILBOX_NAME: z.string().optional(),
   RESET_PASSWORD_FRONTED_ROUTE: z.string(),
   RESET_PASSWORD_FRONTEND_HOST: z.string(),
   GOOGLE_CLOUD_KEY: z.string(),
