@@ -12,7 +12,7 @@
     "start:dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
     "generate:routes": "tsoa spec-and-routes",
     "build": "rm -rf build && tsoa spec-and-routes && tsc && tsc-alias",
-    "start": "node build/index.js",
+    "start": "cd build && node index.js",
     "prepare": "husky install",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
