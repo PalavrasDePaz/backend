@@ -1,5 +1,11 @@
 import {
+  HELPDESK_EMAIL,
+  HELPDESK_EMAIL_PASSWORD,
+  HELPDESK_EMAIL_USER,
+  INFO_EMAIL,
   INFO_EMAIL_PASSWORD,
+  INFO_EMAIL_USER,
+  SMTP_PASS,
   SMTP_PORT,
   SMTP_SERVER,
   SMTP_USER
@@ -12,13 +18,39 @@ import { SendEmailData } from './types/send-email-data';
 
 @provideSingleton(EmailManager)
 export class EmailManager implements IEmailManager {
-  transporter: nodemailer.Transporter = nodemailer.createTransport({
+  infoTransporter: nodemailer.Transporter = nodemailer.createTransport({
+    host: SMTP_SERVER,
+    port: SMTP_PORT,
+    secure: false,
+    auth: {
+      user: INFO_EMAIL_USER,
+      pass: INFO_EMAIL_PASSWORD
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+
+  helpdeskTransporter: nodemailer.Transporter = nodemailer.createTransport({
+    host: SMTP_SERVER,
+    port: SMTP_PORT,
+    secure: false,
+    auth: {
+      user: HELPDESK_EMAIL_USER,
+      pass: HELPDESK_EMAIL_PASSWORD
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+
+  defaultTransporter: nodemailer.Transporter = nodemailer.createTransport({
     host: SMTP_SERVER,
     port: SMTP_PORT,
     secure: false,
     auth: {
       user: SMTP_USER,
-      pass: INFO_EMAIL_PASSWORD
+      pass: SMTP_PASS
     },
     tls: {
       rejectUnauthorized: false
@@ -27,8 +59,21 @@ export class EmailManager implements IEmailManager {
 
   async sendEmail(sendEmailData: SendEmailData): Promise<void> {
     try {
+      let transporter = this.defaultTransporter;
+
+      switch (sendEmailData.sender) {
+        case INFO_EMAIL:
+          transporter = this.infoTransporter;
+          break;
+        case HELPDESK_EMAIL:
+          transporter = this.helpdeskTransporter;
+          break;
+        default:
+          break;
+      }
+
       await new Promise((resolve, reject) => {
-        this.transporter.sendMail(
+        transporter.sendMail(
           {
             from: sendEmailData.sender,
             to: sendEmailData.receiver,
