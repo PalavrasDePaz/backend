@@ -1,4 +1,4 @@
-import { STORAGE_DOWNLOAD_FOLDER } from '@src/config/server';
+import { STORAGE_DATA_FOLDER } from '@src/config/server';
 import { validationExample } from '@src/documentation/validation-example';
 import AvailableClassRowEntity from '@src/domain/entities/book-club-class/available-class-row-entity';
 import {
@@ -137,7 +137,11 @@ export class BookClubClassAPI extends Controller {
     const folderId = bcclass.folderLink.split('/').slice(-1)[0].split('?')[0];
 
     const volunteerId = req.res?.locals.user.idvol;
-    const downloadFolder = path.join(STORAGE_DOWNLOAD_FOLDER, `${volunteerId}`);
+    const downloadFolder = path.join(
+      `${STORAGE_DATA_FOLDER}`,
+      'downloads',
+      `${volunteerId}`
+    );
     mkdirSync(downloadFolder, { recursive: true });
 
     await this.fileHandler.downloadFilesFromSourceToFolder(
