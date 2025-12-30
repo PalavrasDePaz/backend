@@ -1,30 +1,34 @@
+import { STORAGE_DATA_FOLDER } from '@src/config/server';
+import { FileError } from '@src/domain/errors/fileErrors';
+import { mkdirSync } from 'fs';
+import * as fs from 'fs/promises';
+import { provide } from 'inversify-binding-decorators';
+import * as path from 'path';
 import {
-  Post,
-  Route,
-  FormField,
-  UploadedFile,
   Controller,
   Delete,
-  Tags,
-  Put,
+  FormField,
   Path,
+  Post,
+  Put,
+  Response,
+  Route,
   SuccessResponse,
-  Response
+  Tags,
+  UploadedFile
 } from 'tsoa';
-import { provide } from 'inversify-binding-decorators';
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import { ApiError } from '../types/api-error';
-import { FileError } from '@src/domain/errors/fileErrors';
 
 @Route('schedule')
 @Tags('Upload - Agenda')
 @provide(FilesController)
 export class FilesController extends Controller {
-  private uploadDirectory = path.join(__dirname, '../../../public');
+  private uploadDirectory = path.join(STORAGE_DATA_FOLDER, './schedule');
 
   constructor() {
     super();
+
+    mkdirSync(this.uploadDirectory);
   }
 
   private async directoryExists(): Promise<boolean> {
