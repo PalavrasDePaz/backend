@@ -1,6 +1,5 @@
 import { STORAGE_DATA_FOLDER } from '@src/config/server';
 import { FileError } from '@src/domain/errors/fileErrors';
-import { mkdirSync } from 'fs';
 import * as fs from 'fs/promises';
 import { provide } from 'inversify-binding-decorators';
 import * as path from 'path';
@@ -27,8 +26,6 @@ export class FilesController extends Controller {
 
   constructor() {
     super();
-
-    mkdirSync(this.uploadDirectory);
   }
 
   private async directoryExists(): Promise<boolean> {
