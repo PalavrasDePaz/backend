@@ -11,14 +11,14 @@ export const sendVolunteerCreatedEmail = async (
   const body = getVolCreatedEmailBody(volunteerData);
 
   if (volunteerData.pep) {
-    await emailManager.sendEmail({
+    await emailManager.deliverEmail({
       sender: INFO_EMAIL,
       receiver: volunteerData.email,
       subject: '🎓 Bem-vindo(a) ao Programa de Educação para a Paz 🤝',
       body: body
     });
   } else {
-    await emailManager.sendEmail({
+    await emailManager.deliverEmail({
       sender: INFO_EMAIL,
       receiver: volunteerData.email,
       subject: 'Conta criado em Palavras de Paz!',

@@ -18,7 +18,7 @@ export const sendEmailToVolunteer = async (
     emailHash
   );
 
-  await emailManager.sendEmail({
+  await emailManager.deliverEmail({
     sender: INFO_EMAIL,
     receiver: email,
     subject: 'Cadastro Senha Palavra da Paz',
