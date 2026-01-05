@@ -51,11 +51,11 @@ export class EmailManager implements IEmailManager {
     tls: { rejectUnauthorized: false }
   });
 
-  /**
-   * Must match exactly what your IMAP server exposes.
-   * Common: "Sent", "INBOX.Sent", "Sent Items"
-   */
-  private sentMailboxName = IMAP_SENT_MAILBOX_NAME;
+  /** Sent mailbox name */
+  private sentMailboxName = IMAP_SENT_MAILBOX_NAME || 'Sent';
+
+  /** Inbox mailbox name */
+  private inboxMailboxName = 'INBOX';
 
   private pickTransporter(sender: string): nodemailer.Transporter {
     switch (sender) {
@@ -68,8 +68,21 @@ export class EmailManager implements IEmailManager {
     }
   }
 
-  private pickImapAuth(sender: string): ImapAuth {
+  /** IMAP auth for sender (used for Sent) */
+  private pickImapAuthForSender(sender: string): ImapAuth {
     switch (sender) {
+      case INFO_EMAIL:
+        return { user: INFO_EMAIL_USER, pass: INFO_EMAIL_PASSWORD };
+      case HELPDESK_EMAIL:
+        return { user: HELPDESK_EMAIL_USER, pass: HELPDESK_EMAIL_PASSWORD };
+      default:
+        return { user: SMTP_USER, pass: SMTP_PASS };
+    }
+  }
+
+  /** IMAP auth for recipient (used for Inbox injection) - may have different credentials */
+  private pickImapAuthForRecipient(recipient: string): ImapAuth {
+    switch (recipient) {
       case INFO_EMAIL:
         return { user: INFO_EMAIL_USER, pass: INFO_EMAIL_PASSWORD };
       case HELPDESK_EMAIL:
@@ -85,16 +98,20 @@ export class EmailManager implements IEmailManager {
       to: sendEmailData.receiver,
       subject: sendEmailData.subject,
       html: sendEmailData.body,
-      attachments: sendEmailData.attachments
+      attachments: sendEmailData.attachments,
+      headers: {
+        'X-Injected-By': 'WebsiteBackend'
+      }
     });
 
-    const raw = await composer.compile().build();
-    return raw;
+    return await composer.compile().build();
   }
 
-  private async appendToSent(opts: {
+  private async appendToMailbox(opts: {
     raw: Buffer;
     auth: ImapAuth;
+    mailbox: string;
+    flags?: string[];
   }): Promise<void> {
     if (!IMAP_SERVER) return;
 
@@ -109,15 +126,16 @@ export class EmailManager implements IEmailManager {
     try {
       await client.connect();
 
-      // Try open, otherwise create then open
       try {
-        await client.mailboxOpen(this.sentMailboxName);
+        await client.mailboxOpen(opts.mailbox);
       } catch {
-        await client.mailboxCreate(this.sentMailboxName);
-        await client.mailboxOpen(this.sentMailboxName);
+        if (opts.mailbox.toUpperCase() !== 'INBOX') {
+          await client.mailboxCreate(opts.mailbox);
+        }
+        await client.mailboxOpen(opts.mailbox);
       }
 
-      await client.append(this.sentMailboxName, opts.raw, ['\\Seen']);
+      await client.append(opts.mailbox, opts.raw, opts.flags ?? []);
     } finally {
       try {
         await client.logout();
@@ -127,15 +145,26 @@ export class EmailManager implements IEmailManager {
     }
   }
 
+  private async appendToSent(opts: {
+    raw: Buffer;
+    auth: ImapAuth;
+  }): Promise<void> {
+    await this.appendToMailbox({
+      raw: opts.raw,
+      auth: opts.auth,
+      mailbox: this.sentMailboxName,
+      flags: ['\\Seen']
+    });
+  }
+
+  /** Outbound SMTP + append to Sent */
   async sendEmail(sendEmailData: SendEmailData): Promise<void> {
     try {
       const transporter = this.pickTransporter(sendEmailData.sender);
-      const imapAuth = this.pickImapAuth(sendEmailData.sender);
+      const imapAuth = this.pickImapAuthForSender(sendEmailData.sender);
 
-      // Build the exact raw message once, reuse it for both actions
       const raw = await this.buildRawMessage(sendEmailData);
 
-      // Send via SMTP using the raw message
       await transporter.sendMail({
         envelope: {
           from: sendEmailData.sender,
@@ -144,7 +173,6 @@ export class EmailManager implements IEmailManager {
         raw
       });
 
-      // Append into IMAP Sent
       await this.appendToSent({ raw, auth: imapAuth });
     } catch (error) {
       throw new SendEmailError({
@@ -153,5 +181,44 @@ export class EmailManager implements IEmailManager {
         details: error
       });
     }
+  }
+
+  /** Insert message directly into recipient INBOX */
+  async injectIncomingEmail(sendEmailData: SendEmailData): Promise<void> {
+    try {
+      const raw = await this.buildRawMessage(sendEmailData);
+      const recipientAuth = this.pickImapAuthForRecipient(
+        sendEmailData.receiver
+      );
+
+      await this.appendToMailbox({
+        raw,
+        auth: recipientAuth,
+        mailbox: this.inboxMailboxName,
+        flags: []
+      });
+    } catch (error) {
+      throw new SendEmailError({
+        name: 'COULD_NOT_INJECT_EMAIL_ERROR',
+        message: `Could not inject email into INBOX of ${sendEmailData.receiver}`,
+        details: error
+      });
+    }
+  }
+
+  /** Send outbound or inject locally */
+  async deliverEmail(sendEmailData: SendEmailData): Promise<void> {
+    const receiver = (sendEmailData.receiver || '').toLowerCase();
+
+    const isLocal =
+      receiver === INFO_EMAIL.toLowerCase() ||
+      receiver === HELPDESK_EMAIL.toLowerCase();
+
+    if (isLocal) {
+      await this.injectIncomingEmail(sendEmailData);
+      return;
+    }
+
+    await this.sendEmail(sendEmailData);
   }
 }
