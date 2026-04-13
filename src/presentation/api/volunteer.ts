@@ -209,15 +209,6 @@ export class VolunteerAPI extends Controller {
         })
       );
 
-    if (turmaHeader) {
-      await sendVolunteerCreatedEmail(this.emailManager, {
-        email: updatedVolunteer.email,
-        idvol: updatedVolunteer.idvol,
-        name: updatedVolunteer.name,
-        pep: updatedVolunteer.pep
-      });
-    }
-
     return updatedVolunteer;
   }
 
