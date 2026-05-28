@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ValidateError } from 'tsoa';
+import { ValidateError } from './validation-error';
 import { ApiError } from '../types/api-error';
 
 type Issue = {
