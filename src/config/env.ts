@@ -26,6 +26,8 @@ const envSchema = z.object({
   RESET_PASSWORD_FRONTEND_HOST: z.string(),
   GOOGLE_CLOUD_KEY: z.string(),
   STORAGE_DATA_FOLDER: z.string().default('/data'),
+  DRIVE_CACHE_FOLDER: z.string().default('/cache'),
+  DRIVE_CACHE_TTL_SECONDS: z.string().optional(),
   NODE_ENV: z.string().default('development')
 });
 
