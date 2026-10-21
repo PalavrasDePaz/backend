@@ -5,7 +5,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import * as path from 'path';
 import initModels from './services/database';
-import { RegisterRoutes } from './routes';
+import routes from './routes';
 import { validationMiddleware } from './presentation/middlewares/validation';
 
 export const app = express();
@@ -31,6 +31,6 @@ app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response) => {
   return res.send(swaggerUi.generateHTML(await import('./swagger.json')));
 });
 
-RegisterRoutes(app);
+app.use(routes);
 
 app.use(validationMiddleware);

@@ -35,7 +35,6 @@ import {
 import xlsx from 'xlsx';
 import { paginationMiddleware } from '../middlewares/paginationMiddleware';
 import { ApiError } from '../types/api-error';
-import { request } from 'http';
 import { IEmailManager } from '@src/domain/interfaces/repositories/email-manager';
 import { EmailManager } from '@src/services/email-service/email-manager';
 import { sendVolunteerCreatedEmail } from '@src/services/email-service/use-cases/send-volunteer-create-email';
